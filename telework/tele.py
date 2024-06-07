@@ -7,18 +7,30 @@ from PIL import Image, ImageTk
 import sqlite3
 from gtts import gTTS
 import pygame
+from tkinter import simpledialog
 import os
+import subprocess
+import time
 
 
 class LoginForm(tk.Tk):
     def __init__(self):
         super().__init__()
-        self.title("PAMPROSTEES Bank log in") 
-        self.geometry("1080x760")
-        self.state('zoomed')
-        self.resizable(0, 0)
+        self.title("PROPATEES Bank log in") 
+         # Get the screen's width and height
+        screen_width = self.winfo_screenwidth()
+        screen_height = self.winfo_screenheight()
+
+        # Assuming the taskbar's height is 40 pixels (you may need to adjust this)
+        taskbar_height = 40
+
+        # Set the window's geometry to the screen's width and height, minus the taskbar's height
+        self.geometry(f"{screen_width}x{screen_height - taskbar_height}")
+
+        self.state('normal')  # Instead of 'zoomed', use 'normal' to allow the window to be resized
+        self.resizable(0, 0)  # But then disable resizing
         self.window = self
-        state = self.state('zoomed')
+        # state = self.state('zoomed')
 
         # background image
         self.bg_image = Image.open('yellowSho2.png')
@@ -32,7 +44,7 @@ class LoginForm(tk.Tk):
         self.lgn_frame.place(x=300, y=100)
         
         # welcome text
-        self.txt = """WELCOME TO PAMPROSTEES BANK"""
+        self.txt = """WELCOME TO PROPATEES BANK"""
         self.heading = Label(self.lgn_frame, text=self.txt, font=('yu gothic ui', 25, 'bold'), bg='#3B3C36', fg='white')
         self.heading.place(x=0, y=5, width=550, height=100)
         
@@ -44,8 +56,9 @@ class LoginForm(tk.Tk):
         self.lgn_button_label.place(x=550, y=450)
         self.login = Button(self.lgn_button_label, text='LOGIN', font=("yu gothic ui", 13, "bold"), width=25, bd=0, bg='#3047ff', cursor='hand2', activebackground='#3047ff', fg='white', command=self.login_function)
         self.login.place(x=20, y=10)
+        
 
-        self.bind("<Return>", lambda event: self.login_function())
+        
         
         # logo pic
         self.logoside = Image.open('ps2.png')
@@ -90,6 +103,7 @@ class LoginForm(tk.Tk):
 
         self.password_entry = Entry(self.lgn_frame, highlightthickness=0, relief=FLAT, bg="#3B3C36", fg="#6b6a69", font=("yu gothic ui", 12, "bold"), show="*", insertbackground = '#6b6a69')
         self.password_entry.place(x=580, y=416, width=244)
+        self.password_entry.bind("<Return>", lambda event: self.login_function())
 
         self.password_line = Canvas(self.lgn_frame, width=300, height=2.0, bg="#bdb9b1", highlightthickness=0)
         self.password_line.place(x=550, y=440)
@@ -100,7 +114,8 @@ class LoginForm(tk.Tk):
 
         # Bind the Enter key to focus on the password entry field
         self.username_entry.bind("<Return>", lambda event: focus_password_entry(self))
-        self.bind("<Return>", lambda event: self.login_function())
+        
+        
 
         # ======== Password icon ================
         self.password_icon = Image.open('password_icon.png')
@@ -108,10 +123,6 @@ class LoginForm(tk.Tk):
         self.password_icon_label = Label(self.lgn_frame, image=photo, bg='#3B3C36')
         self.password_icon_label.image = photo
         self.password_icon_label.place(x=550, y=414)
-
-        # Forgot button
-        self.forgot_button = Button(self.lgn_frame, text="Forgot Password ?",font=("yu gothic ui", 13, "bold underline"), fg="white", relief=FLAT,activebackground="pink", borderwidth=0, background="#3B3C36", cursor="hand2")
-        self.forgot_button.place(x=630, y=510)
 
         # =========== Sign Up ===========
         self.sign_label = Label(self.lgn_frame, text='No account yet?', font=("yu gothic ui", 11, "bold"), relief=FLAT, borderwidth=0, background="#3B3C36", fg='white')
@@ -137,6 +148,60 @@ class LoginForm(tk.Tk):
         self.show_button = Button(self.lgn_frame, image=self.show_image, command=self.show, relief=FLAT,activebackground="white", borderwidth=0, background="#3B3C36", cursor="hand2")
         self.show_button.place(x=860, y=420)
 
+        
+        # Forgot button
+        self.forgot_button = Button(self.lgn_frame, text="Forgot Password ?",font=("yu gothic ui", 13, "bold underline"), fg="white", relief=FLAT,activebackground="pink", borderwidth=0, background="#3B3C36", cursor="hand2", command=self.submit_reset_password)
+        self.forgot_button.place(x=630, y=510)
+        
+        
+
+    def submit_reset_password(self):
+        dialog = tk.Toplevel(self.window)
+        dialog.title("Forgot Password")
+
+        tk.Label(dialog, text="Enter your username:").pack()
+        username_entry = tk.Entry(dialog)
+        username_entry.pack()
+
+        tk.Label(dialog, text="Enter your date of birth (DD/MM/YYYY):").pack()
+        dob_entry = tk.Entry(dialog)
+        dob_entry.pack()
+
+        def ok_callback():
+            username = username_entry.get()
+            dob = dob_entry.get()
+            if username and dob:
+                try:
+                    day, month, year = map(int, dob.split('/'))
+                    dob_formatted = f"{year}-{month:02d}-{day:02d}"  # Convert to YYYY-MM-DD format
+                    # Check credentials and call go_backLogin if valid
+                    conn = sqlite3.connect("users.db")
+                    c = conn.cursor()
+                    c.execute("SELECT * FROM users WHERE username=? AND dob=?", (username, dob_formatted))
+                    row = c.fetchone()
+                    conn.close()
+                    if row:
+                        # Show a message box with a welcome message
+                        messagebox.showinfo("Login Success", f"Welcome, {username}! Login successful!")
+
+                        # self.play_welcome_audio_pygame(username)
+                        self.play_welcome_audio_pyttsx3(username)
+
+                        # Open a new window
+                        self.create_welcome_window(username)
+                        self.withdraw()
+                        dialog.destroy()
+                    else:
+                        messagebox.showerror("Error", "Invalid username or date of birth")
+                except ValueError:
+                    messagebox.showerror("Error", "Invalid date of birth format. Please use DD/MM/YYYY")
+            else:
+                messagebox.showerror("Error", "Please enter both username and date of birth")
+
+        tk.Button(dialog, text="OK", command=ok_callback).pack()
+        dob_entry.bind("<Return>", ok_callback)
+
+                   
     def show(self):
         self.hide_button = Button(self.lgn_frame, image=self.hide_image, command=self.hide, relief=FLAT, activebackground="white", borderwidth=0, background="#3B3C36", cursor="hand2")
         self.hide_button.place(x=860, y=420)
@@ -146,6 +211,27 @@ class LoginForm(tk.Tk):
         self.show_button = Button(self.lgn_frame, image=self.show_image, command=self.show, relief=FLAT,activebackground="white", borderwidth=0, background="#3B3C36", cursor="hand2")
         self.show_button.place(x=860, y=420)
         self.password_entry.config(show='*')
+
+    def create_welcome_window(self, username):
+        new_window = tk.Toplevel(self.window)
+        new_window.title("PROPATEES Bank App")
+         # Get the screen's width and height
+        screen_width = new_window.winfo_screenwidth()
+        screen_height = new_window.winfo_screenheight()
+
+        # Assuming the taskbar's height is 40 pixels (you may need to adjust this)
+        taskbar_height = 40
+
+        # Set the window's geometry to the screen's width and height, minus the taskbar's height
+        new_window.geometry(f"{screen_width}x{screen_height - taskbar_height}")
+
+        new_window.state('normal')  # Instead of 'zoomed', use 'normal' to allow the window to be resized
+        new_window.resizable(0, 0)  # But then disable resizing
+        
+        new_window.configure(bg='#F7E7CE')
+
+        label = Label(new_window, text=f"Welcome {username}, to our simple and easy to use bank app!", font=('yu gothic ui', 16, 'bold'), bg='#FF4F00', fg='white')
+        label.place(x=50, y=50)
 
     
 
@@ -169,45 +255,45 @@ class LoginForm(tk.Tk):
             # Show a message box with a welcome message
             messagebox.showinfo("Login Success", f"Welcome, {username}! Login successful!")
 
-            # self.play_welcome_audio_pygame(username)
-            self.play_welcome_audio_pyttsx3(username)
-
-            # Open a new window
-            new_window = tk.Toplevel(self.window)
-            new_window.title("Welcome")
-            new_window.geometry("1080x760")
-            new_window.state('zoomed')
-            new_window.configure(bg='#F7E7CE')
-            self.withdraw()
-
-            
-
-            label = Label(new_window, text=f"Welcome {username}, to our simple and easy to use bank app!", font=('yu gothic ui', 16, 'bold'), bg='#FF4F00', fg='white')
-            label.place(x=50, y=50)
-
             # Play a welcome audio
-            # if self.check_internet():
+            if self.check_wifi_connection():
                 # If there is an internet connection, use pygame
+                self.play_audio(username)
             
-            # else:
+
+                # Open a new window
+                self.create_welcome_window(username)
+                self.withdraw()
+            
+            else:
                 # If there is no internet connection, use pyttsx3
-                # 
+                self.play_welcome_audio_pyttsx3(username)
+
+                # Open a new window
+                self.create_welcome_window(username)
+                self.withdraw()
+                
         else:
             messagebox.showerror("Login Error", "Invalid username or password")
 
         conn.close()
+        
 
     
-    def play_sound(text, username):
-        tts = gTTS(text=f"Welcome, {username}", lang='en')
-        tts.save("welcome.mp3")
-        pygame.init()
-        pygame.mixer.init()
-        pygame.mixer.music.load("welcome.mp3")
-        pygame.mixer.music.play()
-        while pygame.mixer.music.get_busy() == True:
-            continue
-        os.remove("welcome.mp3")
+    def play_audio(self, username):
+        username = self.username_entry.get()
+        if username:
+            tts = gTTS(text=f"Welcome, {username}!", lang='en')
+            tts.save("welcome.mp3")
+            pygame.mixer.init()
+            pygame.mixer.music.load("welcome.mp3")
+            pygame.mixer.music.play()
+            while pygame.mixer.music.get_busy() == True:
+                time.sleep(0.1)  # wait for the audio to finish playing
+            pygame.mixer.quit()  # quit Pygame to release the file
+            os.remove("welcome.mp3")
+        else:
+            messagebox.showerror("Error", "Please enter a username")
 
     def play_welcome_audio_pyttsx3(self, username):
         engine = pyttsx3.init()
@@ -216,28 +302,20 @@ class LoginForm(tk.Tk):
         engine.say(f"Welcome, {username}!")
         engine.runAndWait()
 
-    # def check_internet(self):
-    #     hostname = "8.8.8.8"  # Google's public DNS server
-    #     response = os.system("ping -c 1 " + hostname)
-
-    #     # check the response...
-    #     if response == 0:
-    #         return True
-    #     else:
-    #         return False
+                        
     
-    # def check_wifi_connection(self):
-    #     try:
-    #         output = subprocess.check_output(["netsh", "wlan", "show", "interfaces"])
-    #         output = output.decode("utf-8")
-    #         for line in output.split("\n"):
-    #             if "SSID" in line:
-    #                 ssid = line.split(":")[1].strip()
-    #                 if ssid:
-    #                     return True
-    #         return False
-    #     except subprocess.CalledProcessError:
-    #         return False
+    def check_wifi_connection(self):
+        try:
+            output = subprocess.check_output(["netsh", "wlan", "show", "interfaces"])
+            output = output.decode("utf-8")
+            for line in output.split("\n"):
+                if "SSID" in line:
+                    ssid = line.split(":")[1].strip()
+                    if ssid:
+                        return True
+            return False
+        except subprocess.CalledProcessError:
+            return False
 
 
     def open_new_window(self):
@@ -256,10 +334,21 @@ class LoginForm(tk.Tk):
 class NewWindow(tk.Toplevel):
     def __init__(self, master):
         super().__init__(master)
-        self.title("New Window")
-        self.geometry("400x200")
-        self.state('zoomed')
+        self.title("Register with PROPATEES")
         self.master = master
+         # Get the screen's width and height
+        screen_width = self.winfo_screenwidth()
+        screen_height = self.winfo_screenheight()
+
+        # Assuming the taskbar's height is 40 pixels (you may need to adjust this)
+        taskbar_height = 40
+
+        # Set the window's geometry to the screen's width and height, minus the taskbar's height
+        self.geometry(f"{screen_width}x{screen_height - taskbar_height}")
+
+        self.state('normal')  # Instead of 'zoomed', use 'normal' to allow the window to be resized
+        self.resizable(0, 0)  # But then disable resizing
+        self.window = self
 
         # background image
         self.bg_image = Image.open('yellowSho2.png')
@@ -274,7 +363,7 @@ class NewWindow(tk.Toplevel):
         self.lgn_frame.place(x=300, y=100)
 
         # welcome text
-        self.txt = """WELCOME TO PAMPROSTEES BANK"""
+        self.txt = """WELCOME TO PROPATEES BANK"""
         self.heading = Label(self.lgn_frame, text=self.txt, font=('yu gothic ui', 25, 'bold'), bg='#7C0902', fg='white')
         self.heading.place(x=0, y=5, width=550, height=100)
         
@@ -286,8 +375,10 @@ class NewWindow(tk.Toplevel):
         self.lgn_button_label.place(x=550, y=450)
         self.login = Button(self.lgn_button_label, text='REGISTER', font=("yu gothic ui", 13, "bold"), width=25, bd=0, bg='#3047ff', cursor='hand2', activebackground='#3047ff', fg='white', command=self.register)
         self.login.place(x=20, y=10)
-        self.login = Button(self, text='GO BACK TO LOGIN PAGE', font=("yu gothic ui", 13, "bold"), width=25, bd=0, bg='#3047ff', cursor='hand2', activebackground='#3047ff', fg='white', command=self.register)
+        self.login = Button(self, text='GO BACK TO LOGIN PAGE', font=("yu gothic ui", 13, "bold"), width=25, bd=0, bg='#3047ff', cursor='hand2', activebackground='#3047ff', fg='white', command=self.go_backLogin)
         self.login.place(x=20, y=30)
+
+        
         
         # logo pic
         self.logoside = Image.open('ps2.png')
@@ -314,9 +405,20 @@ class NewWindow(tk.Toplevel):
 
         self.username_entry = Entry(self.lgn_frame, highlightthickness=0, relief=FLAT, bg="#7C0902", fg="#6b6a69", font=("yu gothic ui ", 12, "bold"), insertbackground = '#6b6a69')
         self.username_entry.place(x=580, y=335, width=270)
+        
 
         self.username_line = Canvas(self.lgn_frame, width=300, height=2.0, bg="#bdb9b1", highlightthickness=0)
         self.username_line.place(x=550, y=359)
+
+        # Date of Birth Section
+        self.dob_label = Label(self.lgn_frame, text="Date of Birth", bg="#4B3621", fg="white", font=("yu gothic ui", 13, "bold"))
+        self.dob_label.place(x=350, y=300)
+
+        self.dob_entry = Entry(self.lgn_frame, highlightthickness=0, relief=FLAT, bg="#7C0902", fg="#6b6a69", font=("yu gothic ui ", 12, "bold"), insertbackground = '#6b6a69')
+        self.dob_entry.place(x=380, y=340, width=100)
+
+        self.dob_line = Canvas(self.lgn_frame, width=75, height=2.0, bg="#bdb9b1", highlightthickness=0)
+        self.dob_line.place(x=380, y=360)
 
                 # ===== Username icon =========
         self.username_icon = Image.open('username_icon.png')
@@ -332,9 +434,22 @@ class NewWindow(tk.Toplevel):
 
         self.password_entry = Entry(self.lgn_frame, highlightthickness=0, relief=FLAT, bg="#7C0902", fg="#6b6a69", font=("yu gothic ui", 12, "bold"), show="*", insertbackground = '#6b6a69')
         self.password_entry.place(x=580, y=416, width=244)
+        self.dob_entry.bind("<Return>", lambda event: self.register())
 
         self.password_line = Canvas(self.lgn_frame, width=300, height=2.0, bg="#bdb9b1", highlightthickness=0)
         self.password_line.place(x=550, y=440)
+
+        def focus_password_entry(self, event=None):
+            self.password_entry.focus()
+
+        # Bind the Enter key to focus on the password entry field
+        self.username_entry.bind("<Return>", lambda event: focus_password_entry(self))
+
+        def focus_password_entry1(self, event=None):
+            self.dob_entry.focus()
+
+        # Bind the Enter key to focus on the password entry field
+        self.password_entry.bind("<Return>", lambda event: focus_password_entry1(self))
 
         # ======== Password icon ================
         self.password_icon = Image.open('password_icon.png')
@@ -374,9 +489,18 @@ class NewWindow(tk.Toplevel):
     def register(self):
         username = self.username_entry.get()
         password = self.password_entry.get()
+        dob = self.dob_entry.get()
 
-        if not username or not password:
-            messagebox.showerror("Error", "Please fill in both username and password")
+        if not username or not password or not dob:
+            messagebox.showerror("Error", "Please fill in all fields: username, password, and date of birth")
+            return
+
+        # Parse the date of birth
+        try:
+            day, month, year = map(int, dob.split('/'))
+            dob = f"{year}-{month:02d}-{day:02d}"
+        except ValueError:
+            messagebox.showerror("Error", "Invalid date of birth format. Please use DD/MM/YYYY")
             return
 
         # Connect to database
@@ -386,11 +510,19 @@ class NewWindow(tk.Toplevel):
         # Create table if it doesn't exist
         c.execute("""CREATE TABLE IF NOT EXISTS users (
             username TEXT PRIMARY KEY,
-            password TEXT
+            password TEXT,
+            dob DATE
         )""")
 
+        # Check if username already exists
+        c.execute("SELECT 1 FROM users WHERE username=?", (username,))
+        if c.fetchone():
+            messagebox.showerror("Error", "Username already exists. Please choose a different username.")
+            conn.close()
+            return
+
         # Insert new user
-        c.execute("INSERT INTO users (username, password) VALUES (?, ?)", (username, password))
+        c.execute("INSERT INTO users (username, password, dob) VALUES (?, ?, ?)", (username, password, dob))
         conn.commit()
         conn.close()
 
@@ -402,7 +534,21 @@ class NewWindow(tk.Toplevel):
             self.master.state('zoomed')
         else:
             self.master.state('normal')
+        self.withdraw()
         self.master.deiconify()
+
+    
+
+    def go_backLogin(self):
+            self.username_entry.delete(0, tk.END)
+            self.password_entry.delete(0, tk.END) 
+            self.master.geometry(self.master.geometry_string)
+            if self.master.state_string == 'zoomed':
+                self.master.state('zoomed')
+            else:
+                self.master.state('normal')
+            self.withdraw()
+            self.master.deiconify()
 
 
 
