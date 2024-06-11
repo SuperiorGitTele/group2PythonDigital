@@ -7,24 +7,19 @@ from PIL import Image, ImageTk
 import sqlite3
 from gtts import gTTS
 import pygame
-from tkinter import simpledialog
 import os
 import subprocess
 import time
 from registerWindow import NewWindow
-from sideBar import Sidebar
 import threading
-from tkinter import ttk
 from mainBank import WelcomeWindow
-
-# from test import get_selected_option
-
-# def work(self):
-#     self.get_selected_option()
+import mysql.connector
+import requests
 
 
 
-class LoginForm(tk.Tk):
+
+class LoginWindow(tk.Tk):
     def __init__(self):
         super().__init__()
         self.title("PROPATEES Bank log in") 
@@ -33,7 +28,7 @@ class LoginForm(tk.Tk):
         screen_height = self.winfo_screenheight()
 
         # Assuming the taskbar's height is 40 pixels (you may need to adjust this)
-        taskbar_height = 40
+        taskbar_height = 70
 
         # Set the window's geometry to the screen's width and height, minus the taskbar's height
         self.geometry(f"{screen_width}x{screen_height - taskbar_height}")
@@ -44,11 +39,13 @@ class LoginForm(tk.Tk):
         # state = self.state('zoomed')
 
         # background image
-        self.bg_image = Image.open('yellowSho2.png')
-        self.bg_photo = ImageTk.PhotoImage(self.bg_image)
-        self.bg_label = tk.Label(self, image=self.bg_photo)
-        self.bg_label.image = self.bg_photo
-        self.bg_label.pack(fill='both', expand='yes')
+        # self.bg_image = Image.open('yellowSho2.png')
+        # self.bg_photo = ImageTk.PhotoImage(self.bg_image)
+        # self.bg_label = tk.Label(self, image=self.bg_photo)
+        # self.bg_label.image = self.bg_photo
+        # self.bg_label.pack(fill='both', expand='yes')
+
+        self.configure(bg='#003262')
 
          # light frame at the center
         self.lgn_frame = tk.Frame(self, bg='#3B3C36', width='950', height="600")
@@ -56,8 +53,8 @@ class LoginForm(tk.Tk):
         
         # welcome text
         self.txt = """WELCOME TO PROPATEES BANK"""
-        self.heading = Label(self.lgn_frame, text=self.txt, font=('yu gothic ui', 25, 'bold'), bg='#3B3C36', fg='white')
-        self.heading.place(x=0, y=5, width=550, height=100)
+        
+        
         
         # login button pic and button function
         self.lgn_button = Image.open('btn1.png')
@@ -99,7 +96,7 @@ class LoginForm(tk.Tk):
         self.sign_in_label.place(x=560, y=240)
 
         # Username Entry Section
-        self.username_label = Label(self.lgn_frame, text="Username", bg="#32174D", fg="white", font=("yu gothic ui", 13, "bold"))
+        self.username_label = Label(self.lgn_frame, text="Username", bg="#003262", fg="white", font=("yu gothic ui", 13, "bold"))
         self.username_label.place(x=550, y=300)
 
         self.username_entry = Entry(self.lgn_frame, highlightthickness=0, relief=FLAT, bg="#3B3C36", fg="#6b6a69", font=("yu gothic ui ", 12, "bold"), insertbackground = '#6b6a69')
@@ -110,7 +107,7 @@ class LoginForm(tk.Tk):
         self.username_line.place(x=550, y=359)
 
         # Password Entry Section
-        self.password_label = Label(self.lgn_frame, text="Password", bg="#32174D", fg="white", font=("yu gothic ui", 13, "bold"))
+        self.password_label = Label(self.lgn_frame, text="Password", bg="#003262", fg="white", font=("yu gothic ui", 13, "bold"))
         self.password_label.place(x=550, y=380)
 
         self.password_entry = Entry(self.lgn_frame, highlightthickness=0, relief=FLAT, bg="#3B3C36", fg="#6b6a69", font=("yu gothic ui", 12, "bold"), show="*", insertbackground = '#6b6a69')
@@ -191,11 +188,18 @@ class LoginForm(tk.Tk):
                         # Show a message box with a welcome message
                         messagebox.showinfo("Login Success", f"Welcome, {username}! Login successful!")
 
-                        # self.play_welcome_audio_pygame(username)
-                        self.play_welcome_audio_pyttsx3(username)
+                        if self.check_wifi_connection():
+                            # If there is an internet connection, use pygame
+                            # self.play_audio(username)
+                            self.open_welcome_window(username)
+                            self.withdraw()
+                            
+                        else:
+                            # If there is no internet connection, use pyttsx3
+                            self.play_welcome_audio_pyttsx3(username)
 
                         # Open a new window
-                        self.create_welcome_window(username)
+                        self.open_welcome_window(username)
                         self.withdraw()
                         dialog.destroy()
                     else:
@@ -234,36 +238,49 @@ class LoginForm(tk.Tk):
             messagebox.showerror("Error", "Please fill in all fields")
             return
 
-        # Connect to database
-        conn = sqlite3.connect("users.db")
-        c = conn.cursor()
+        # Connect to MySQL database
+        db = mysql.connector.connect(
+            host="localhost",
+            user="tele",
+            password="telesql19",
+            database="new_database"
+        )
+        cursor = db.cursor()
 
-        # Check if username and password exist in the database
-        c.execute("SELECT * FROM users WHERE username=? AND password=?", (username, password))
-        row = c.fetchone()
+        try:
+            # Check if username and password exist in the database
+            cursor.execute("SELECT * FROM users WHERE username = %s AND password = %s", (username, password))
+            row = cursor.fetchone()
 
-        if row:
-            # Show a message box with a welcome message
-            messagebox.showinfo("Login Success", f"Welcome, {username}! Login successful!")
+            if row:
+                # Show a message box with a welcome message
+                messagebox.showinfo("Login Success", f"Welcome, {username}! Login successful!")
 
-            # Play a welcome audio
-            if self.check_wifi_connection():
-                # If there is an internet connection, use pygame
-                self.play_audio(username)
-                self.open_welcome_window(username)
-                self.withdraw()
+                # Play a welcome audio
+                if self.check_wifi_and_internet_speed():
+                    # If there is an internet connection, use pygame
+                    self.play_audio(username)
+                    self.open_welcome_window(username)
+                    self.withdraw()
+                    
+                else:
+                    # If there is no internet connection, use pyttsx3
+                    self.play_welcome_audio_pyttsx3(username)
 
+                    # Open a new window
+                    self.open_welcome_window(username)
+                    self.withdraw()
+               
             else:
-                # If there is no internet connection, use pyttsx3
-                self.play_welcome_audio_pyttsx3(username)
+                messagebox.showerror("Login Error", "Invalid username or password")
 
-            # Open a new window
-            self.open_welcome_window(username)
-            self.withdraw()
-        else:
-            messagebox.showerror("Login Error", "Invalid username or password")
+        except mysql.connector.Error as err:
+            messagebox.showerror("Database Error", f"Error: {err}")
+        finally:
+            # Close the connection
+            cursor.close()
+            db.close()
 
-        conn.close()
         
 
     
@@ -296,19 +313,34 @@ class LoginForm(tk.Tk):
         engine.runAndWait()
 
                         
-    
-    def check_wifi_connection(self):
+
+    def check_wifi_and_internet_speed(self):
         try:
+            # Check Wi-Fi connection
             output = subprocess.check_output(["netsh", "wlan", "show", "interfaces"])
             output = output.decode("utf-8")
+            ssid = None
             for line in output.split("\n"):
-                if "SSID" in line:
+                if "SSID" in line and "BSSID" not in line:
                     ssid = line.split(":")[1].strip()
-                    if ssid:
-                        return True
+                    break
+
+            if not ssid:
+                return False
+
+            # Perform a simple internet speed test
+            start_time = time.time()
+            response = requests.get("https://httpbin.org/bytes/1024", timeout=2)
+            end_time = time.time()
+
+            # Check if the response was successful and if the time taken is less than 2 seconds
+            if response.status_code == 200 and (end_time - start_time) < 2:
+                return True
+            else:
+                return False
+        except (subprocess.CalledProcessError, requests.RequestException):
             return False
-        except subprocess.CalledProcessError:
-            return False
+
 
 
     def open_new_window(self):
@@ -328,7 +360,7 @@ class LoginForm(tk.Tk):
 
 
 if __name__ == "__main__":
-    app = LoginForm()
+    app = LoginWindow()
     app.mainloop()
 
 
