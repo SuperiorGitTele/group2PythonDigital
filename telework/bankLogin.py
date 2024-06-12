@@ -36,6 +36,7 @@ class LoginWindow(tk.Tk):
         self.state('normal')  # Instead of 'zoomed', use 'normal' to allow the window to be resized
         self.resizable(0, 0)  # But then disable resizing
         self.window = self
+        
         # state = self.state('zoomed')
 
         # background image
@@ -53,6 +54,8 @@ class LoginWindow(tk.Tk):
         
         # welcome text
         self.txt = """WELCOME TO PROPATEES BANK"""
+        self.heading = Label(self.lgn_frame, text=self.txt, font=('Times New Roman', 25, 'bold'), bg='#343434', fg='white')
+        self.heading.place(x=0, y=5, width=550, height=100)
         
         
         
@@ -81,7 +84,7 @@ class LoginWindow(tk.Tk):
         photo = ImageTk.PhotoImage(self.sign_in_image)
         self.sign_in_image_label = Label(self.lgn_frame, image=photo, bg='#3B3C36')
         self.sign_in_image_label.image = photo
-        self.sign_in_image_label.place(x=620, y=130)
+        self.sign_in_image_label.place(x=620, y=110)
                
                 # ===== Username icon =========
         self.username_icon = Image.open('username_icon.png')
@@ -92,8 +95,9 @@ class LoginWindow(tk.Tk):
         self.username_icon_label.place(x=550, y=332)
         
         # Sign in text
-        self.sign_in_label = Label(self.lgn_frame, text="Sign In OR Register below", bg="#36454F", fg="white", font=("yu gothic ui", 17, "bold"))
-        self.sign_in_label.place(x=560, y=240)
+        self.sign_in_label = Label(self.lgn_frame, text="""Sign In OR Click the Sign up 
+button below to create an account""", bg="#36454F", fg="white", font=("Georgia", 17, "bold"))
+        self.sign_in_label.place(x=520, y=220)
 
         # Username Entry Section
         self.username_label = Label(self.lgn_frame, text="Username", bg="#003262", fg="white", font=("yu gothic ui", 13, "bold"))
@@ -102,6 +106,12 @@ class LoginWindow(tk.Tk):
         self.username_entry = Entry(self.lgn_frame, highlightthickness=0, relief=FLAT, bg="#3B3C36", fg="#6b6a69", font=("yu gothic ui ", 12, "bold"), insertbackground = '#6b6a69')
         self.username_entry.place(x=580, y=335, width=270)
         self.username_entry.focus()
+        self.username_entry.insert(0, "Type your username here...")
+        self.username_entry.bind("<FocusIn>", self.clear_on_focus)
+
+    def clear_on_focus(self, event):
+        if self.username_entry.get() == "Type your username here...":
+            event.widget.delete(0, tk.END)
 
         self.username_line = Canvas(self.lgn_frame, width=300, height=2.0, bg="#bdb9b1", highlightthickness=0)
         self.username_line.place(x=550, y=359)
@@ -262,7 +272,7 @@ class LoginWindow(tk.Tk):
                     self.play_audio(username)
                     self.open_welcome_window(username)
                     self.withdraw()
-                    
+
                 else:
                     # If there is no internet connection, use pyttsx3
                     self.play_welcome_audio_pyttsx3(username)
@@ -270,7 +280,7 @@ class LoginWindow(tk.Tk):
                     # Open a new window
                     self.open_welcome_window(username)
                     self.withdraw()
-               
+
             else:
                 messagebox.showerror("Login Error", "Invalid username or password")
 
@@ -288,7 +298,7 @@ class LoginWindow(tk.Tk):
         username = self.username_entry.get()
         if username:
             def play_audio_async():
-                tts = gTTS(text=f"Welcome, {username}!", lang='en')
+                tts = gTTS(text=f"Welcome, {username} to Properties Bank!", lang='en')
                 tts.save("welcome.mp3")
                 pygame.mixer.init()
                 pygame.mixer.music.load("welcome.mp3")
@@ -330,11 +340,11 @@ class LoginWindow(tk.Tk):
 
             # Perform a simple internet speed test
             start_time = time.time()
-            response = requests.get("https://httpbin.org/bytes/1024", timeout=2)
+            response = requests.get("https://httpbin.org/bytes/1024", timeout=5)
             end_time = time.time()
 
             # Check if the response was successful and if the time taken is less than 2 seconds
-            if response.status_code == 200 and (end_time - start_time) < 2:
+            if response.status_code == 200 and (end_time - start_time) < 5:
                 return True
             else:
                 return False

@@ -5,6 +5,7 @@ from sideBar import Sidebar
 from tkinter import messagebox
 import mysql.connector
 from PIL import ImageTk, Image
+from datetime import datetime
 
 class WelcomeWindow:
     def __init__(self, master, username):
@@ -25,7 +26,7 @@ class WelcomeWindow:
 
         self.new_window.state('normal')  # Instead of 'zoomed', use 'normal' to allow the window to be resized
         self.new_window.resizable(0, 0)  # But then disable resizing
-        self.new_window.configure(bg='#F7E7CE')
+        self.new_window.configure(bg='#003262')
 
         self.lgn_frame = tk.Frame(self.new_window, bg='#3B3C36', bd=5, height=220, width=1528)
         self.lgn_frame.place(x=0, y=0)
@@ -44,7 +45,7 @@ class WelcomeWindow:
         self.lgn_frame.after(5000, label.destroy)
 
         style = ttk.Style()
-        style.configure("Big.TButton", font=("Arial", 17), foreground="red", background="black")
+        style.configure("Big.TButton", font=("Arial", 17), foreground="#013220", background="black")
 
         # Create a Button to check the account balance
         self.check_balance_button = ttk.Button(self.lgn_frame, text="Check Balance", style="Big.TButton", command=lambda: self.toggle_balance(username))
@@ -80,9 +81,18 @@ your other PTP account""", style="Big.TButton", command=self.show_fund_account_d
         # Convert the image to a PhotoImage
         dropdown_image = ImageTk.PhotoImage(image)
 
-        self.sidebar_button = tk.Button(self.lgn_frame, image=dropdown_image, compound="top", font=("yu gothic ui", 4, "bold"), width=70, bd=0, bg='red', cursor='hand2', activebackground='#3B3C36', fg='white', command=self.toggle_sidebar)
+        self.sidebar_button = tk.Button(self.lgn_frame, image=dropdown_image, compound="top", font=("yu gothic ui", 4, "bold"), width=70, bd=0, bg='#003262', cursor='hand2', activebackground='#3B3C36', fg='white', command=self.toggle_sidebar)
         self.sidebar_button.image = dropdown_image
         self.sidebar_button.place(x=10, y=0)
+
+        # logo pic
+        self.logoside = Image.open('vector.png')
+        self.logoside = self.logoside.resize((350, 350), resample=Image.LANCZOS)  # Resize the image to 50x50 pixels using Lanczos resampling
+        logos = ImageTk.PhotoImage(self.logoside)
+        self.logo_label = tk.Label(self.new_window, image=logos, bg='#003262')
+        self.logo_label.image = logos
+        self.logo_label.__reduce__()
+        self.logo_label.place(x=25, y=450)
 
         self.settings = tk.StringVar()
         self.settings.set("Settings")  # default value
@@ -92,15 +102,187 @@ your other PTP account""", style="Big.TButton", command=self.show_fund_account_d
 
         self.sidebar = None
 
-        self.bankHistory = tk.Frame(self.new_window,bg='blue', width='700', height="350")
-        self.bankHistory.place(x=310, y=300)
+        # # Transaction history frame
+        # self.bankHistory = tk.Frame(self.new_window, bg='#6CB4EE', width=700, height=350)
+        # self.bankHistory.place(x=310, y=300)
 
-        self.txt = """History"""
-        self.heading = tk.Label(self.bankHistory, text=self.txt, font=('yu gothic ui', 25, 'bold'), bg='#3B3C36', fg='white')
+        # self.txt = "History"
+        # self.heading = tk.Label(self.bankHistory, text=self.txt, font=('yu gothic ui', 25, 'bold'), bg='#6CB4EE', fg='white')
+        # self.heading.pack(anchor='w', pady=10)
+
+        # # Treeview for displaying transaction history
+        # self.history_tree = ttk.Treeview(self.bankHistory, columns=("Date", "Type", "Amount", "Balance", "Recipient"), show="headings", height=10)
+        # self.history_tree.heading("Date", text="Date")
+        # self.history_tree.heading("Type", text="Type")
+        # self.history_tree.heading("Amount", text="Amount (₦)")
+        # self.history_tree.heading("Balance", text="Balance (₦)")
+        # self.history_tree.heading("Recipient", text="Recipient")
+
+        # self.history_tree.column("Date", width=120)
+        # self.history_tree.column("Type", width=100)
+        # self.history_tree.column("Amount", width=100)
+        # self.history_tree.column("Balance", width=100)
+        # self.history_tree.column("Recipient", width=120)
+
+        # self.history_tree.pack(fill="both", expand=True)
+
+        # # Scrollbar for Treeview
+        # self.tree_scroll = ttk.Scrollbar(self.bankHistory, orient="vertical", command=self.history_tree.yview)
+        # self.history_tree.configure(yscroll=self.tree_scroll.set)
+        # self.tree_scroll.pack(side="right", fill="y")
+
+        # # Load initial transaction history
+        # self.load_transaction_history()
+
+    
+
+    def load_transaction_history(self):
+        # Clear existing entries
+        for item in self.history_tree.get_children():
+            self.history_tree.delete(item)
+
+        # Connect to MySQL database to fetch transactions
+        db = mysql.connector.connect(
+            host="localhost",
+            user="tele",
+            password="telesql19",
+            database="new_database"
+        )
+        cursor = db.cursor()
+
+        try:
+            cursor.execute(
+                "SELECT date, trans_type, amount, balance, recipient_account FROM transactions WHERE username = %s ORDER BY date DESC",
+                (self.username,))
+            transactions = cursor.fetchall()
+
+            if not transactions:
+                self.history_tree.insert("", tk.END, values=("No transaction history found.", "", "", "", ""))
+                return
+
+            for transaction in transactions:
+                self.history_tree.insert("", tk.END, values=transaction)
+
+        except mysql.connector.Error as err:
+            messagebox.showerror("Database Error", f"Error: {err}")
+        finally:
+            cursor.close()
+            db.close()
+
+    def show_transfer_dialog(self):
+        transfer_dialog = tk.Toplevel(self.new_window)
+        transfer_dialog.title("Transfer Money")
+
+        tk.Label(transfer_dialog, text="Recipient Account Number:").pack()
+        recipient_entry = tk.Entry(transfer_dialog)
+        recipient_entry.pack()
+
+        tk.Label(transfer_dialog, text="Amount to Transfer ₦ :").pack()
+        amount_entry = tk.Entry(transfer_dialog)
+        amount_entry.pack()
+
+        tk.Label(transfer_dialog, text="Transaction PIN:").pack()
+        pin_entry = tk.Entry(transfer_dialog, show="*")
+        pin_entry.pack()
+
+        def transfer_callback():
+            recipient_account = recipient_entry.get()
+            try:
+                amount = int(amount_entry.get())
+            except ValueError:
+                messagebox.showerror("Error", "Invalid amount. Please enter a numeric value.")
+                return
+            transaction_pin = pin_entry.get()
+
+            self.transfer_money(self.username, recipient_account, amount, transaction_pin)
+            transfer_dialog.destroy()
+
+        transfer_button = tk.Button(transfer_dialog, text="Transfer", command=transfer_callback)
+        transfer_button.pack()
+
+        pin_entry.bind("<Return>", lambda event: transfer_button.invoke())
+
+    def transfer_money(self, sender_username, recipient_account, amount, transaction_pin):
+        db = mysql.connector.connect(
+            host="localhost",
+            user="tele",
+            password="telesql19",
+            database="new_database"
+        )
+        cursor = db.cursor()
+
+        try:
+            # Fetch sender's details
+            cursor.execute("SELECT account_number, account_balance, transaction_pin FROM users WHERE username = %s", (sender_username,))
+            sender = cursor.fetchone()
+            if not sender:
+                messagebox.showerror("Error", "Sender account not found.")
+                return
+
+            sender_account, sender_balance, stored_pin = sender
+
+            # Validate transaction PIN
+            if transaction_pin != stored_pin:
+                messagebox.showerror("Error", "Invalid transaction PIN.")
+                return
+
+            # Ensure sufficient balance
+            if sender_balance < amount:
+                messagebox.showerror("Error", "Insufficient balance.")
+                return
+
+            # Prevent transferring to self
+            if sender_account == recipient_account:
+                messagebox.showerror("Error", "Cannot transfer money to your own account.")
+                return
+
+            # Fetch recipient's details
+            cursor.execute("SELECT account_balance FROM users WHERE account_number = %s", (recipient_account,))
+            recipient = cursor.fetchone()
+            if not recipient:
+                messagebox.showerror("Error", "Recipient account not found.")
+                return
+
+            recipient_balance = recipient[0]
+
+            # Update balances
+            new_sender_balance = sender_balance - amount
+            new_recipient_balance = recipient_balance + amount
+
+            cursor.execute("UPDATE users SET account_balance = %s WHERE account_number = %s", (new_sender_balance, sender_account))
+            cursor.execute("UPDATE users SET account_balance = %s WHERE account_number = %s", (new_recipient_balance, recipient_account))
+            db.commit()
+
+            # Log the transaction
+            now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            cursor.execute(
+                "INSERT INTO transactions (username, date, trans_type, amount, balance, recipient_account) VALUES (%s, %s, %s, %s, %s, %s)",
+                (sender_username, now, 'Transfer', amount, new_sender_balance, recipient_account)
+            )
+            db.commit()
+
+            messagebox.showinfo("Success", "Transfer completed successfully!")
+
+            # Update transaction history
+            self.load_transaction_history()
+
+        except mysql.connector.Error as err:
+            messagebox.showerror("Database Error", f"Error: {err}")
+        finally:
+            cursor.close()
+            db.close()
+
+    def print_receipt(self, transaction):
+        date, trans_type, amount, balance, recipient_account = transaction
+        receipt = f"Receipt:\n\nDate: {date}\nType: {trans_type}\nAmount: ₦{amount}\nBalance: ₦{balance}\nRecipient: {recipient_account}"
+        messagebox.showinfo("Receipt", receipt)
+
+
+
+        self.txt = """Beneficiary"""
+        self.heading = tk.Label(self.bene_frame, text=self.txt, font=('yu gothic ui', 25, 'bold'), bg='#0095B6', fg='white')
         self.heading.place(x=0, y=5, width=550, height=60)
 
-        self.bene_frame = tk.Frame(self.new_window   , bg='PINK', width='400', height="350")
-        self.bene_frame.place(x=1040, y=300)
 
     def toggle_sidebar(self):
         if self.sidebar is None:
@@ -140,7 +322,7 @@ your other PTP account""", style="Big.TButton", command=self.show_fund_account_d
             # Get the account balance from the database or wherever it's stored
             account_balance = self.get_account_balance(username)  # Replace with your own function
             style = ttk.Style()
-            style.configure("Big.TLabel", font=("Arial", 15), foreground="red", background="brown")
+            style.configure("Big.TLabel", font=("Arial", 15), foreground="#013220", background="brown")
 
             # Create a Label to display the account balance
             self.balance_label = ttk.Label(self.lgn_frame, text=f"Account Balance ₦: {account_balance}", style="Big.TLabel", width="23")
@@ -150,95 +332,6 @@ your other PTP account""", style="Big.TButton", command=self.show_fund_account_d
             self.balance_label = None
 
 
-    def show_transfer_dialog(self):
-        transfer_dialog = tk.Toplevel(self.new_window)
-        transfer_dialog.title("Transfer Money")
-
-        tk.Label(transfer_dialog, text="Recipient Account Number:").pack()
-        recipient_entry = tk.Entry(transfer_dialog)
-        recipient_entry.pack()
-
-        tk.Label(transfer_dialog, text="Amount to Transfer ₦ :").pack()
-        amount_entry = tk.Entry(transfer_dialog)
-        amount_entry.pack()
-
-        tk.Label(transfer_dialog, text="Transaction PIN:").pack()
-        pin_entry = tk.Entry(transfer_dialog, show="*")
-        pin_entry.pack()
-
-        def transfer_callback():
-            recipient_account = recipient_entry.get()
-            try:
-                amount = int(amount_entry.get())
-            except ValueError:
-                messagebox.showerror("Error", "Invalid amount. Please enter a numeric value.")
-                return
-            transaction_pin = pin_entry.get()
-
-            self.transfer_money(self.username, recipient_account, amount, transaction_pin)
-            transfer_dialog.destroy()
-
-        tk.Button(transfer_dialog, text="Transfer", command=transfer_callback).pack()
-
-    def transfer_money(self, sender_username, recipient_account, amount, transaction_pin):
-        # Connect to MySQL database
-        db = mysql.connector.connect(
-            host="localhost",
-            user="tele",
-            password="telesql19",
-            database="new_database"
-        )
-        cursor = db.cursor()
-
-        try:
-            # Fetch sender's details
-            cursor.execute("SELECT account_number, account_balance, transaction_pin FROM users WHERE username = %s", (sender_username,))
-            sender = cursor.fetchone()
-            if not sender:
-                messagebox.showerror("Error", "Sender account not found.")
-                return
-
-            sender_account, sender_balance, stored_pin = sender
-
-            # Validate transaction PIN
-            if transaction_pin != stored_pin:
-                messagebox.showerror("Error", "Invalid transaction PIN.")
-                return
-
-            # Ensure sufficient balance
-            if sender_balance < amount:
-                messagebox.showerror("Error", "Insufficient balance.")
-                return
-
-            # Fetch recipient's details
-            cursor.execute("SELECT account_balance FROM users WHERE account_number = %s", (recipient_account,))
-            recipient = cursor.fetchone()
-            if not recipient:
-                messagebox.showerror("Error", "Recipient account not found.")
-                return
-
-            recipient_balance = recipient[0]
-
-            # Update balances
-            new_sender_balance = sender_balance - amount
-            new_recipient_balance = recipient_balance + amount
-
-            cursor.execute("UPDATE users SET account_balance = %s WHERE account_number = %s", (new_sender_balance, sender_account))
-            cursor.execute("UPDATE users SET account_balance = %s WHERE account_number = %s", (new_recipient_balance, recipient_account))
-            db.commit()
-
-            messagebox.showinfo("Success", "Transfer completed successfully!")
-
-            # Update balance display if visible
-            if self.balance_label:
-                self.toggle_balance(sender_username)
-                self.toggle_balance(sender_username)
-
-        except mysql.connector.Error as err:
-            messagebox.showerror("Database Error", f"Error: {err}")
-        finally:
-            cursor.close()
-            db.close()
 
     def show_fund_account_dialog(self):
         fund_account_dialog = tk.Toplevel(self.new_window)
@@ -303,6 +396,10 @@ your other PTP account""", style="Big.TButton", command=self.show_fund_account_d
             if not other_account:
                 messagebox.showerror("Error", "Other account not found.")
                 return
+            
+            if other_account_number == current_account_number:
+                messagebox.showerror("Error", "You cannot transfer money to your own account.")
+                return
 
             other_db_username, other_db_bvn, other_db_password, other_balance = other_account
 
@@ -357,7 +454,16 @@ your other PTP account""", style="Big.TButton", command=self.show_fund_account_d
     def go_backLogin1(self):
         self.new_window.withdraw()
         self.master.deiconify()
+        self.master.username_entry.delete(0, tk.END)
+        self.master.username_entry.insert(0, "Enter your username here...")
+        self.master.password_entry.delete(0, tk.END)
+        self.master.password_entry.insert(0, "Enter your password here...")
+        self.master.username_entry.bind("<FocusIn>", self.clear_on_focus)
+        self.master.password_entry.bind("<FocusIn>", self.clear_on_focus)
 
+
+    def clear_on_focus(self, event):
+        event.widget.delete(0, tk.END)
 
 # root = tk.Tk()
 # welcome_window = WelcomeWindow(root, "username")

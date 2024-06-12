@@ -16,12 +16,12 @@ class Sidebar(tk.Frame):
         image = Image.open("drop.png")
 
         # Resize the image
-        image = image.resize((20, 20), resample=Image.LANCZOS)  # Replace (20, 20) with your desired size
+        image = image.resize((20, 30), resample=Image.LANCZOS)  # Replace (20, 20) with your desired size
 
         # Convert the image to a PhotoImage
         dropdown_image = ImageTk.PhotoImage(image)
 
-        self.sidebar_button = tk.Button(self, image=dropdown_image, compound="top", font=("yu gothic ui", 4, "bold"), width=70, bd=0, bg='red', cursor='hand2', activebackground='#3B3C36', fg='white', command=self.close_sidebar)
+        self.sidebar_button = tk.Button(self, image=dropdown_image, compound="top", font=("yu gothic ui", 4, "bold"), width=70, bd=0, bg='#003262', cursor='hand2', activebackground='#3B3C36', fg='white', command=self.close_sidebar)
         self.sidebar_button.image = dropdown_image
         self.sidebar_button.place(x=10, y=2)
 
