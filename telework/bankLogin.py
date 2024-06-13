@@ -134,24 +134,11 @@ button below to create an account""", bg="#36454F", fg="white", font=("Georgia",
 
         self.username_entry = Entry(self.lgn_frame, highlightthickness=0, relief=FLAT, bg="#3B3C36", fg="#6b6a69", font=("yu gothic ui ", 12, "bold"), insertbackground = '#6b6a69')
         self.username_entry.place(x=580, y=335, width=270)
-        self.username_entry.focus()
+        # self.username_entry.focus()
         self.username_entry.insert(0, "Type your username here...")
         self.username_entry.bind("<FocusIn>", self.clear_on_focus)
 
-    def on_configure(self, event):
-        # Store the current geometry and state
-        if self.state() == 'normal':
-            self.geometry_string = self.geometry()
-        self.state_string = self.state()
-
-    def center_window(self):
-        # Update window size info
-        self.update_idletasks()
-        width = self.winfo_width()
-        height = self.winfo_height()
-        x = (self.winfo_screenwidth() // 2) - (width // 2)
-        y = (self.winfo_screenheight() // 2) - (height // 2)
-        self.geometry(f'{width}x{height}+{x}+{y}')
+    
 
     
 
@@ -207,8 +194,26 @@ button below to create an account""", bg="#36454F", fg="white", font=("Georgia",
         self.forgot_button = Button(self.lgn_frame, text="Forgot Password ?",font=("yu gothic ui", 13, "bold underline"), fg="white", relief=FLAT,activebackground="pink", borderwidth=0, background="#3B3C36", cursor="hand2", command=self.submit_reset_password)
         self.forgot_button.place(x=630, y=510)
 
-    
+
+    def clear_on_focus(self, event):
+        if self.username_entry.get() == "Type your username here...":
+            event.widget.delete(0, tk.END)
         
+    
+    def on_configure(self, event):
+        # Store the current geometry and state
+        if self.state() == 'normal':
+            self.geometry_string = self.geometry()
+        self.state_string = self.state()
+
+    def center_window(self):
+        # Update window size info
+        self.update_idletasks()
+        width = self.winfo_width()
+        height = self.winfo_height()
+        x = (self.winfo_screenwidth() // 2) - (width // 2)
+        y = (self.winfo_screenheight() // 2) - (height // 2)
+        self.geometry(f'{width}x{height}+{x}+{y}')
         
 
     def submit_reset_password(self):

@@ -259,7 +259,7 @@ your other PTP account""", style="Big.TButton", command=self.show_fund_account_d
 
         self.history_tree.pack(fill="both", expand=True)
 
-        self.buttonHistory = tk.Button(self.new_window, text="Show history",bg='red', width="15", command=self.toggle_balance1)
+        self.buttonHistory = tk.Button(self.new_window, text="Show history",bg='#0095B6', width="15", command=self.toggle_balance1)
         self.buttonHistory.place(x=550, y=260)
         
 
