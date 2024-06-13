@@ -21,9 +21,12 @@ class NewWindow(tk.Toplevel):
         super().__init__(master)
         self.title("Register with PROPATEES")
         self.master = master
+        img = PhotoImage(file='ps2.png')
+        self.iconphoto(False, img)
          # Get the screen's width and height
         screen_width = self.winfo_screenwidth()
         screen_height = self.winfo_screenheight()
+        # self.center_window()
 
         # Assuming the taskbar's height is 40 pixels (you may need to adjust this)
         taskbar_height = 40
@@ -175,6 +178,15 @@ class NewWindow(tk.Toplevel):
         self.reference_code_entry.bind("<Return>", lambda event: self.register())
 
         self.username_entry.focus()
+
+    def center_window(self):
+        # Update window size info
+        self.update_idletasks()
+        width = self.winfo_width()
+        height = self.winfo_height()
+        x = (self.winfo_screenwidth() // 2) - (width // 2)
+        y = (self.winfo_screenheight() // 2) - (height // 2)
+        self.geometry(f'{width}x{height}+{x}+{y}')
 
         def focus_password_entry(self, event=None):
             self.password_entry.focus()
@@ -366,8 +378,11 @@ class NewWindow(tk.Toplevel):
             self.withdraw()
             self.master.deiconify()
             self.master.username_entry.focus()
+            self.clear_on_focus()
 
-  
+    def clear_on_focus(self, event):
+        if self.username_entry.get() == "Type your username here...":
+            event.widget.delete(0, tk.END)
 # new_window = NewWindow(master=None)
 # new_window.mainloop()
 
