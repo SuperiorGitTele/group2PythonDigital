@@ -276,28 +276,28 @@ your other PTP account""", style="Big.TButton", command=self.show_fund_account_d
         self.buttonHistory.place(x=895, y=670)
         
 
-        # # Beneficiaries Frame
-        # self.beneficiaries_frame = tk.Frame(self.new_window, bg='#0095B6', width='300', height="350")
-        # self.beneficiaries_frame.place(x=1040, y=300)
+        # Beneficiaries Frame
+        self.beneficiaries_frame = tk.Frame(self.new_window, bg='#0095B6', width='300', height="350")
+        self.beneficiaries_frame.place(x=1040, y=300)
 
-        # # Label for Beneficiaries
-        # self.bene_label = tk.Label(self.beneficiaries_frame, text="Beneficiaries", font=('yu gothic ui', 20, 'bold'), bg='#0095B6', fg='white')
-        # self.bene_label.pack(anchor='w', pady=10)
+        # Label for Beneficiaries
+        self.bene_label = tk.Label(self.beneficiaries_frame, text="Beneficiaries", font=('yu gothic ui', 20, 'bold'), bg='#0095B6', fg='white')
+        self.bene_label.pack(anchor='w', pady=10)
 
-        # # Treeview for displaying beneficiaries
-        # self.bene_tree = ttk.Treeview(self.beneficiaries_frame, columns=("Name", "Account"), show="headings", height=10)
-        # self.bene_tree.heading("Name", text="Name")
-        # self.bene_tree.heading("Account", text="Account Number")
+        # Treeview for displaying beneficiaries
+        self.bene_tree = ttk.Treeview(self.beneficiaries_frame, columns=("Name", "Account"), show="headings", height=10)
+        self.bene_tree.heading("Name", text="Name")
+        self.bene_tree.heading("Account", text="Account Number")
 
-        # self.bene_tree.column("Name", width=150)
-        # self.bene_tree.column("Account", width=150)
+        self.bene_tree.column("Name", width=150)
+        self.bene_tree.column("Account", width=150)
 
-        # self.bene_tree.pack(fill="both", expand=True)
+        self.bene_tree.pack(fill="both", expand=True)
 
         self.load_transaction_history()
 
         # Load initial beneficiaries
-        # self.load_beneficiaries()
+        self.load_beneficiaries()
 
     
 

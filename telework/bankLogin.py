@@ -15,7 +15,7 @@ import threading
 from mainBank import WelcomeWindow
 import mysql.connector
 import requests
-import asyncio
+
 
 
 
@@ -212,55 +212,80 @@ class LoginWindow(tk.Tk):
     def submit_reset_password(self):
         dialog = tk.Toplevel(self.window)
         dialog.title("Forgot Password")
+        dialog.grab_set()
+
+        # Set size of the fund account dialog
+        dialog_width = 400
+        dialog_height = 300
+
+        # Center the dialog relative to the parent window (self)
+        parent_x = self.winfo_x()
+        parent_y = self.winfo_y()
+        parent_width = self.winfo_width()
+        parent_height = self.winfo_height()
+
+        # Calculate the position
+        x = parent_x + (parent_width // 2) - (dialog_width // 2)
+        y = parent_y + (parent_height // 2) - (dialog_height // 2)
+
+        dialog.geometry(f"{dialog_width}x{dialog_height}+{x}+{y}")
 
         tk.Label(dialog, text="Enter your username:").pack()
         username_entry = tk.Entry(dialog)
         username_entry.pack()
 
-        tk.Label(dialog, text="Enter your date of birth (DD/MM/YYYY):").pack()
-        dob_entry = tk.Entry(dialog)
-        dob_entry.pack()
+        tk.Label(dialog, text="Enter your Secret Question:").pack()
+        secret_entry = tk.Entry(dialog)
+        secret_entry.pack()
+
+        tk.Label(dialog, text="Enter your Secret Answer:").pack()
+        answer_entry = tk.Entry(dialog)
+        answer_entry.pack()
 
         def ok_callback():
             username = username_entry.get()
-            dob = dob_entry.get()
-            if username and dob:
+            secretQ = secret_entry.get()
+            secretA = answer_entry.get()
+            if username and secretQ and secretA:
                 try:
-                    day, month, year = map(int, dob.split('/'))
-                    dob_formatted = f"{year}-{month:02d}-{day:02d}"  # Convert to YYYY-MM-DD format
-                    # Check credentials and call go_backLogin if valid
-                    conn = sqlite3.connect("users.db")
-                    c = conn.cursor()
-                    c.execute("SELECT * FROM users WHERE username=? AND dob=?", (username, dob_formatted))
-                    row = c.fetchone()
-                    conn.close()
+                    db = mysql.connector.connect(
+                        host="localhost",
+                        user="tele",
+                        password="telesql19",
+                        database="new_database"
+                    )
+                    cursor = db.cursor()
+                    cursor.execute("SELECT * FROM users WHERE username = %s AND secret_question = %s AND secret_answer = %s", (username, secretQ, secretA))
+                    row = cursor.fetchone()
+                    db.close()
                     if row:
                         # Show a message box with a welcome message
                         messagebox.showinfo("Login Success", f"Welcome, {username}! Login successful!")
 
-                        if self.check_wifi_connection():
+                        if self.check_wifi_and_internet_speed():
                             # If there is an internet connection, use pygame
-                            # self.play_audio(username)
+                            self.play_audio(username)
                             self.open_welcome_window(username)
                             self.withdraw()
+                            dialog.destroy()
+
                             
                         else:
                             # If there is no internet connection, use pyttsx3
                             self.play_welcome_audio_pyttsx3(username)
-
-                        # Open a new window
-                        self.open_welcome_window(username)
-                        self.withdraw()
-                        dialog.destroy()
+                            # Open a new window
+                            self.open_welcome_window(username)
+                            self.withdraw()
+                            dialog.destroy()
                     else:
-                        messagebox.showerror("Error", "Invalid username or date of birth")
+                        messagebox.showerror("Error", "Invalid username or Secret Question and Answer")
                 except ValueError:
-                    messagebox.showerror("Error", "Invalid date of birth format. Please use DD/MM/YYYY")
+                    messagebox.showerror("Error", "Invalid Secret Question")
             else:
-                messagebox.showerror("Error", "Please enter both username and date of birth")
+                messagebox.showerror("Error", "Please enter username, secret question and answer")
 
         tk.Button(dialog, text="Retrieve Account", command=ok_callback).pack()
-        dob_entry.bind("<Return>", ok_callback)
+        answer_entry.bind("<Return>", ok_callback)
 
                    
     def show(self):
