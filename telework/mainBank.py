@@ -13,6 +13,9 @@ class WelcomeWindow:
         self.username = username
         self.new_window = tk.Toplevel(self.master)
         self.new_window.title("PROPATEES Bank App")
+
+        # img = ImageTk.PhotoImage(file='logo.png')
+        # self.iconphoto(False, img)
         
 
         # Get the screen's width and height
@@ -27,6 +30,7 @@ class WelcomeWindow:
 
         self.new_window.state('normal')  # Instead of 'zoomed', use 'normal' to allow the window to be resized
         self.new_window.resizable(0, 0)  # But then disable resizing
+        self.new_window.update_idletasks()
         self.new_window.configure(bg='#003262')
 
         
@@ -44,7 +48,7 @@ class WelcomeWindow:
         self.logo_label.place(x=70, y=0)
 
         self.username_label = tk.Label(self.new_window, text=f"{username}: Signed in", bg='#3B3C36', fg="white")
-        self.username_label.place(x=130, y=6)
+        self.username_label.place(x=180, y=6)
 
         # logo pic
         self.logoside = Image.open('ChangeCurve2.png')
@@ -84,12 +88,7 @@ class WelcomeWindow:
 
 
         label1 = tk.Label(self.lgn_frame, text=f"Welcome {username}, to our simple and easy to use bank app!", font=('yu gothic ui', 16, 'bold'), bg='#6CB4EE', fg='white')
-        # label1.place(x=900, y=36)
-        # self.lgn_frame.after(20000, label1.destroy)
         label = tk.Label(self.lgn_frame, text=f"Welcome {username}, to our simple and easy to use bank app!", font=('yu gothic ui', 16, 'bold'), bg='#0095B6', fg='white')
-        # self.lgn_frame.after(5000, label.place(x=900, y=36))
-        # self.lgn_frame.after(15000, label.destroy)
-        # self.lgn_frame.after(20000, label1.place(x=900, y=36))
         label1.place(x=900, y=36)
         self.lgn_frame.after(2000, label1.place_forget)
         self.lgn_frame.after(2000, lambda: label.place(x=900, y=36))
@@ -98,6 +97,8 @@ class WelcomeWindow:
         self.lgn_frame.after(4000, label1.place_forget)
         self.lgn_frame.after(4000, lambda: label.place(x=900, y=36))
         self.lgn_frame.after(5000, label.place_forget)
+        self.lgn_frame.after(5000, lambda: label1.place(x=900, y=36))
+        self.lgn_frame.after(6000, label1.place_forget)
 
         
 
@@ -161,7 +162,7 @@ your other PTP account""", style="Big.TButton", command=self.show_fund_account_d
         self.bankHistory1 = tk.Frame(self.new_window, bg='#6CB4EE', width='700', height="350")
         self.bankHistory1.place(x=310, y=300)
 
-        self.txt = "History"
+        self.txt = "Transaction history"
         self.heading = tk.Label(self.bankHistory1, text=self.txt, font=('yu gothic ui', 35, 'bold'), bg='#6CB4EE', fg='white')
         self.heading.place(x="0", y="7")
 
@@ -249,7 +250,7 @@ your other PTP account""", style="Big.TButton", command=self.show_fund_account_d
         self.bankHistory.place(x=310, y=300)
         
 
-        self.txt = "History"
+        self.txt = "Transaction History"
         self.heading = tk.Label(self.bankHistory, text=self.txt, font=('yu gothic ui', 35, 'bold'), bg='#6CB4EE', fg='white')
         self.heading.pack(anchor="w", pady=10)
 
@@ -272,38 +273,31 @@ your other PTP account""", style="Big.TButton", command=self.show_fund_account_d
         self.history_tree.pack(fill="both", expand=True)
 
         self.buttonHistory = tk.Button(self.new_window, text="Show history",bg='#0095B6', width="15", command=self.toggle_balance1)
-        self.buttonHistory.place(x=550, y=260)
+        self.buttonHistory.place(x=895, y=670)
         
 
-        
+        # # Beneficiaries Frame
+        # self.beneficiaries_frame = tk.Frame(self.new_window, bg='#0095B6', width='300', height="350")
+        # self.beneficiaries_frame.place(x=1040, y=300)
 
-        # Scrollbar for Treeview
-        # self.tree_scroll = ttk.Scrollbar(self.bankHistory, orient="vertical", command=self.history_tree.yview)
-        # self.history_tree.configure(yscroll=self.tree_scroll.set)
-        # self.tree_scroll.pack(side="right", fill="y")
+        # # Label for Beneficiaries
+        # self.bene_label = tk.Label(self.beneficiaries_frame, text="Beneficiaries", font=('yu gothic ui', 20, 'bold'), bg='#0095B6', fg='white')
+        # self.bene_label.pack(anchor='w', pady=10)
 
-        # Beneficiaries Frame
-        self.beneficiaries_frame = tk.Frame(self.new_window, bg='#0095B6', width='300', height="350")
-        self.beneficiaries_frame.place(x=1040, y=300)
+        # # Treeview for displaying beneficiaries
+        # self.bene_tree = ttk.Treeview(self.beneficiaries_frame, columns=("Name", "Account"), show="headings", height=10)
+        # self.bene_tree.heading("Name", text="Name")
+        # self.bene_tree.heading("Account", text="Account Number")
 
-        # Label for Beneficiaries
-        self.bene_label = tk.Label(self.beneficiaries_frame, text="Beneficiaries", font=('yu gothic ui', 20, 'bold'), bg='#0095B6', fg='white')
-        self.bene_label.pack(anchor='w', pady=10)
+        # self.bene_tree.column("Name", width=150)
+        # self.bene_tree.column("Account", width=150)
 
-        # Treeview for displaying beneficiaries
-        self.bene_tree = ttk.Treeview(self.beneficiaries_frame, columns=("Name", "Account"), show="headings", height=10)
-        self.bene_tree.heading("Name", text="Name")
-        self.bene_tree.heading("Account", text="Account Number")
-
-        self.bene_tree.column("Name", width=150)
-        self.bene_tree.column("Account", width=150)
-
-        self.bene_tree.pack(fill="both", expand=True)
+        # self.bene_tree.pack(fill="both", expand=True)
 
         self.load_transaction_history()
 
         # Load initial beneficiaries
-        self.load_beneficiaries()
+        # self.load_beneficiaries()
 
     
 

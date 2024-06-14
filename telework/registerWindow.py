@@ -21,7 +21,7 @@ class NewWindow(tk.Toplevel):
         super().__init__(master)
         self.title("Register with PROPATEES")
         self.master = master
-        img = PhotoImage(file='ps2.png')
+        img = PhotoImage(file='logo.png')
         self.iconphoto(False, img)
          # Get the screen's width and height
         screen_width = self.winfo_screenwidth()
@@ -37,6 +37,7 @@ class NewWindow(tk.Toplevel):
         self.state('normal')  # Instead of 'zoomed', use 'normal' to allow the window to be resized
         self.resizable(0, 0)  # But then disable resizing
         self.window = self
+        self.update_idletasks()
         self.configure(bg='#0047AB')
 
         # # background image
@@ -130,23 +131,24 @@ class NewWindow(tk.Toplevel):
 
 
 
-        self.secret_question_label = Label(self.lgn_frame, text="Secret Question", bg="#4B3621", fg="white", font=("yu gothic ui", 13, "bold"))
-        self.secret_question_label.place(x=600, y=249)
+        self.secret_question_label = Label(self.lgn_frame, text="""Secret Question(Windows + H, to quickly voice 
+type the question if no one is around you)""", bg="#4B3621", fg="white", font=("yu gothic ui", 13, "bold"))
+        self.secret_question_label.place(x=580, y=249)
 
         self.secret_question_entry = Entry(self.lgn_frame, highlightthickness=0, relief=FLAT, bg="#414A4C", fg="#6082B6", font=("yu gothic ui ", 12, "bold"), insertbackground = '#6082B6')
-        self.secret_question_entry.place(x=600, y=282, width=240)
+        self.secret_question_entry.place(x=600, y=297, width=240)
 
         self.secret_question_line = Canvas(self.lgn_frame, width=240, height=2.0, bg="#bdb9b1", highlightthickness=0)
-        self.secret_question_line.place(x=600, y=307)
+        self.secret_question_line.place(x=600, y=322)
 
         self.secret_answer_label = Label(self.lgn_frame, text="Secret Answer", bg="#4B3621", fg="white", font=("yu gothic ui", 13, "bold"))
-        self.secret_answer_label.place(x=600, y=326)
+        self.secret_answer_label.place(x=600, y=340)
 
         self.secret_answer_entry = Entry(self.lgn_frame, highlightthickness=0, relief=FLAT, bg="#414A4C", fg="#6082B6", font=("yu gothic ui ", 12, "bold"), insertbackground = '#6082B6')
-        self.secret_answer_entry.place(x=600, y=358, width=240)
+        self.secret_answer_entry.place(x=600, y=380, width=240)
 
         self.secret_answer_line = Canvas(self.lgn_frame, width=240, height=2.0, bg="#bdb9b1", highlightthickness=0)
-        self.secret_answer_line.place(x=600, y=383)
+        self.secret_answer_line.place(x=600, y=404)
 
         self.transaction_pin_label = Label(self.lgn_frame, text="Create transaction Pin", bg="#4B3621", fg="white", font=("yu gothic ui", 13, "bold"))
         self.transaction_pin_label.place(x=600, y=450)
@@ -322,9 +324,31 @@ class NewWindow(tk.Toplevel):
         # Use the username as the account name
         account_name = username
 
+
+        # Initialize account balance
+        if reference_code:
+            # Ask for initial deposit amount
+            initial_deposit_dialog = tk.Toplevel(self.window)
+            initial_deposit_dialog.title("Initial Deposit for Level 2 Account")
+
+            tk.Label(initial_deposit_dialog, text="Enter initial deposit amount (between 500,000 and 1,000,000):").pack()
+            initial_deposit_entry = tk.Entry(initial_deposit_dialog)
+            initial_deposit_entry.pack()
+
+            def ok_callback():
+                initial_deposit = int(initial_deposit_entry.get())
+                if 500000 <= initial_deposit <= 1000000:
+                    account_balance = initial_deposit
+                    initial_deposit_dialog.destroy()
+                    # Register user
+                    self.register_user(username, password, dob, secret_question, secret_answer, transaction_pin, account_number, account_balance, reference_code)
+                else:
+                    messagebox.showerror("Error", "Initial deposit amount must be between 500,000 and 1,000,000")
+
+            tk.Button(initial_deposit_dialog, text="Level Up", command=ok_callback).pack()
+
         # Initialize account balance
         account_balance = 100000
-
         # Register user
         self.register_user(username, password, dob, secret_question, secret_answer, transaction_pin, account_number, account_balance, reference_code, bvn, account_name, email)
 

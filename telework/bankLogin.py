@@ -15,10 +15,7 @@ import threading
 from mainBank import WelcomeWindow
 import mysql.connector
 import requests
-# import ctypes
-
-# myapp_id = 'mycompany.myproduct.subproduct.version'
-# ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myapp_id)
+import asyncio
 
 
 
@@ -34,25 +31,21 @@ class LoginWindow(tk.Tk):
          # Get the screen's width and height
         self.geometry("1450x760")
         
-        img = PhotoImage(file='ps2.png')
+        img = PhotoImage(file='logo.png')
         self.iconphoto(False, img)
 
     
-        self.resizable(True, True)  # But then disable resizing
+        self.resizable(True, True)  #disable resizing
         self.window = self
+        self.configure(bg='#003262')
         self.center_window()
         
-        # state = self.state('zoomed')
+        # light frame at the center
+        self.lgn_frame = tk.Frame(self, bg='#3B3C36', width='950', height="600")
+        self.lgn_frame.place(x=300, y=100) 
 
-        # background image
-        # self.bg_image = Image.open('yellowSho2.png')
-        # self.bg_photo = ImageTk.PhotoImage(self.bg_image)
-        # self.bg_label = tk.Label(self, image=self.bg_photo)
-        # self.bg_label.image = self.bg_photo
-        # self.bg_label.pack(fill='both', expand='yes')
-
+        # Change Curve
         self.logoside = Image.open('ChangeCurve2.png')
-        # self.logoside = self.logoside.resize((80, 80), resample=Image.LANCZOS)  # Resize the image to 50x50 pixels using Lanczos resampling
         logos = ImageTk.PhotoImage(self.logoside)
         self.logo_label = tk.Label(self, image=logos, width='300', height="300", bg='#003262')
         self.logo_label.image = logos
@@ -60,18 +53,12 @@ class LoginWindow(tk.Tk):
         self.logo_label.place(x=10, y=10)
 
         self.logoside = Image.open('ChangeCurve2.png')
-        # self.logoside = self.logoside.resize((80, 80), resample=Image.LANCZOS)  # Resize the image to 50x50 pixels using Lanczos resampling
         logos = ImageTk.PhotoImage(self.logoside)
         self.logo_label = tk.Label(self, image=logos, width='300', height="300", bg='#003262')
         self.logo_label.image = logos
         self.logo_label.__reduce__()
         self.logo_label.place(x=1210, y=550)
 
-        self.configure(bg='#003262')
-
-         # light frame at the center
-        self.lgn_frame = tk.Frame(self, bg='#3B3C36', width='950', height="600")
-        self.lgn_frame.place(x=300, y=100)
 
         self.logoside = Image.open('images2.png')
         self.logoside = self.logoside.resize((80, 80), resample=Image.LANCZOS)  # Resize the image to 50x50 pixels using Lanczos resampling
@@ -88,12 +75,17 @@ class LoginWindow(tk.Tk):
         self.logo_label.image = logos
         self.logo_label.__reduce__()
         self.logo_label.place(x=310, y=350) 
-        
+
+        #=================================================
+
         # welcome text
         self.txt = """WELCOME TO PROPATEES BANK"""
         self.heading = Label(self.lgn_frame, text=self.txt, font=('Times New Roman', 25, 'bold'), bg='#3B3C36', fg='white')
         self.heading.place(x=0, y=5, width=550, height=100)
         
+        # Sign in text
+        self.sign_in_label = Label(self.lgn_frame, text="Sign In Or Sign Up Below!", bg="#36454F", fg="white", font=("Georgia", 17, "bold"))
+        self.sign_in_label.place(x=545, y=220)
         
         
         # login button pic and button function
@@ -131,9 +123,6 @@ class LoginWindow(tk.Tk):
         self.username_icon_label.image = photo
         self.username_icon_label.place(x=550, y=332)
         
-        # Sign in text
-        self.sign_in_label = Label(self.lgn_frame, text="Sign In Or Sign Up Below!", bg="#36454F", fg="white", font=("Georgia", 17, "bold"))
-        self.sign_in_label.place(x=545, y=220)
 
         # Username Entry Section
         self.username_label = Label(self.lgn_frame, text="Username", bg="#003262", fg="white", font=("yu gothic ui", 13, "bold"))
@@ -145,12 +134,15 @@ class LoginWindow(tk.Tk):
         self.username_entry.insert(0, "Type your username here...")
         self.username_entry.bind("<FocusIn>", self.clear_on_focus)
 
-    
-
-    
-
         self.username_line = Canvas(self.lgn_frame, width=300, height=2.0, bg="#bdb9b1", highlightthickness=0)
         self.username_line.place(x=550, y=359)
+
+        # Password Icon
+        self.password_icon = Image.open('password_icon.png')
+        photo = ImageTk.PhotoImage(self.password_icon)
+        self.password_icon_label = Label(self.lgn_frame, image=photo, bg='#3B3C36')
+        self.password_icon_label.image = photo
+        self.password_icon_label.place(x=550, y=414)
 
         # Password Entry Section
         self.password_label = Label(self.lgn_frame, text="Password", bg="#003262", fg="white", font=("yu gothic ui", 13, "bold"))
@@ -179,12 +171,6 @@ class LoginWindow(tk.Tk):
         self.signup_button_label = tk.Button(self.lgn_frame, image=self.signup_img, bg='#98a65d', cursor="hand2", borderwidth=0, background="#3B3C36", activebackground="#3B3C36", command=self.open_new_window)
         self.signup_button_label.place(x=750, y=555, width=111, height=35)
 
-        # Password Icon
-        self.password_icon = Image.open('password_icon.png')
-        photo = ImageTk.PhotoImage(self.password_icon)
-        self.password_icon_label = Label(self.lgn_frame, image=photo, bg='#3B3C36')
-        self.password_icon_label.image = photo
-        self.password_icon_label.place(x=550, y=414)
 
         # ========= show/hide password ========
         self.show_image = ImageTk.PhotoImage \
@@ -394,16 +380,18 @@ class LoginWindow(tk.Tk):
 
             # Perform a simple internet speed test
             start_time = time.time()
-            response = requests.get("https://httpbin.org/bytes/1024", timeout=5)
+            response = requests.get("https://httpbin.org/bytes/1024", timeout=3)
             end_time = time.time()
 
             # Check if the response was successful and if the time taken is less than 2 seconds
-            if response.status_code == 200 and (end_time - start_time) < 5:
+            if response.status_code == 200 and (end_time - start_time) < 3:
                 return True
             else:
                 return False
         except (subprocess.CalledProcessError, requests.RequestException):
             return False
+        
+    
 
 
 
