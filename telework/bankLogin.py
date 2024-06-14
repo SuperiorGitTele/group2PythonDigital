@@ -76,14 +76,22 @@ class LoginWindow(tk.Tk):
         self.logoside = Image.open('images2.png')
         self.logoside = self.logoside.resize((80, 80), resample=Image.LANCZOS)  # Resize the image to 50x50 pixels using Lanczos resampling
         logos = ImageTk.PhotoImage(self.logoside)
-        self.logo_label = tk.Label(self.lgn_frame, image=logos, width='300', height="300", bg='#3B3C36')
+        self.logo_label = tk.Label(self.lgn_frame, image=logos, bg='#3B3C36')
         self.logo_label.image = logos
         self.logo_label.__reduce__()
-        self.logo_label.place(x=3, y=200)
+        self.logo_label.place(x=60, y=350)
+
+        self.logoside = Image.open('images3.png')
+        self.logoside = self.logoside.resize((80, 80), resample=Image.LANCZOS)  # Resize the image to 50x50 pixels using Lanczos resampling
+        logos = ImageTk.PhotoImage(self.logoside)
+        self.logo_label = tk.Label(self.lgn_frame, image=logos, bg='#3B3C36')
+        self.logo_label.image = logos
+        self.logo_label.__reduce__()
+        self.logo_label.place(x=310, y=350) 
         
         # welcome text
         self.txt = """WELCOME TO PROPATEES BANK"""
-        self.heading = Label(self.lgn_frame, text=self.txt, font=('Times New Roman', 25, 'bold'), bg='#343434', fg='white')
+        self.heading = Label(self.lgn_frame, text=self.txt, font=('Times New Roman', 25, 'bold'), bg='#3B3C36', fg='white')
         self.heading.place(x=0, y=5, width=550, height=100)
         
         
@@ -103,10 +111,10 @@ class LoginWindow(tk.Tk):
         # logo pic
         self.logoside = Image.open('ps2.png')
         logos = ImageTk.PhotoImage(self.logoside)
-        self.logo_label = Label(self.lgn_frame, image=logos, width='260', height="350", bg='#3B3C36')
+        self.logo_label = Label(self.lgn_frame, image=logos, bg='#3B3C36')
         self.logo_label.image = logos
         self.logo_label.__reduce__()
-        self.logo_label.place(x=80, y=250)
+        self.logo_label.place(x=95, y=70)
         
         # face login
         self.sign_in_image = Image.open('hyy.png')
@@ -124,15 +132,14 @@ class LoginWindow(tk.Tk):
         self.username_icon_label.place(x=550, y=332)
         
         # Sign in text
-        self.sign_in_label = Label(self.lgn_frame, text="""Sign In OR Click the Sign up 
-button below to create an account""", bg="#36454F", fg="white", font=("Georgia", 17, "bold"))
-        self.sign_in_label.place(x=520, y=220)
+        self.sign_in_label = Label(self.lgn_frame, text="Sign In Or Sign Up Below!", bg="#36454F", fg="white", font=("Georgia", 17, "bold"))
+        self.sign_in_label.place(x=545, y=220)
 
         # Username Entry Section
         self.username_label = Label(self.lgn_frame, text="Username", bg="#003262", fg="white", font=("yu gothic ui", 13, "bold"))
         self.username_label.place(x=550, y=300)
 
-        self.username_entry = Entry(self.lgn_frame, highlightthickness=0, relief=FLAT, bg="#3B3C36", fg="#6b6a69", font=("yu gothic ui ", 12, "bold"), insertbackground = '#6b6a69')
+        self.username_entry = Entry(self.lgn_frame, highlightthickness=0, relief=FLAT, bg="#353839", fg="#6082B6", font=("yu gothic ui ", 12, "bold"), insertbackground = '#6082B6')
         self.username_entry.place(x=580, y=335, width=270)
         # self.username_entry.focus()
         self.username_entry.insert(0, "Type your username here...")
@@ -149,8 +156,8 @@ button below to create an account""", bg="#36454F", fg="white", font=("Georgia",
         self.password_label = Label(self.lgn_frame, text="Password", bg="#003262", fg="white", font=("yu gothic ui", 13, "bold"))
         self.password_label.place(x=550, y=380)
 
-        self.password_entry = Entry(self.lgn_frame, highlightthickness=0, relief=FLAT, bg="#3B3C36", fg="#6b6a69", font=("yu gothic ui", 12, "bold"), show="*", insertbackground = '#6b6a69')
-        self.password_entry.place(x=580, y=416, width=244)
+        self.password_entry = Entry(self.lgn_frame, highlightthickness=0, relief=FLAT, bg="#353839", fg="#6082B6", font=("yu gothic ui", 12, "bold"), show="*", insertbackground = '#6082B6')
+        self.password_entry.place(x=580, y=416, width=300)
         self.password_entry.bind("<Return>", lambda event: self.login_function())
 
         self.password_line = Canvas(self.lgn_frame, width=300, height=2.0, bg="#bdb9b1", highlightthickness=0)
@@ -345,7 +352,7 @@ button below to create an account""", bg="#36454F", fg="white", font=("Georgia",
         username = self.username_entry.get()
         if username:
             def play_audio_async():
-                tts = gTTS(text=f"Welcome, {username} to Properties Bank!", lang='en')
+                tts = gTTS(text=f"Welcome {username}, to Properties Bank!", lang='en')
                 tts.save("welcome.mp3")
                 pygame.mixer.init()
                 pygame.mixer.music.load("welcome.mp3")
@@ -366,7 +373,7 @@ button below to create an account""", bg="#36454F", fg="white", font=("Georgia",
         engine = pyttsx3.init()
         engine.setProperty('voice', 'HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Speech\Voices\Tokens\TTS_MS_EN-US_ZIRA_11.0')
         engine.setProperty('rate', 150)  # Set the speech rate
-        engine.say(f"Welcome, {username}!")
+        engine.say(f"Welcome {username}, to Properties Bank!")
         engine.runAndWait()
 
                         

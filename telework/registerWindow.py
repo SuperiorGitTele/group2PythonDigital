@@ -61,7 +61,7 @@ class NewWindow(tk.Toplevel):
         photo = ImageTk.PhotoImage(self.lgn_button)
         self.lgn_button_label = Label(self.lgn_frame, image=photo, bg='#343434')
         self.lgn_button_label.image = photo
-        self.lgn_button_label.place(x=330, y=520)
+        self.lgn_button_label.place(x=330, y=540)
         self.login = Button(self.lgn_button_label, text='REGISTER', font=("yu gothic ui", 13, "bold"), width=25, bd=0, bg='#3047ff', cursor='hand2', activebackground='#3047ff', fg='white', command=self.register)
         self.login.place(x=20, y=10)
         self.login = Button(self, text='GO BACK TO LOGIN PAGE', font=("yu gothic ui", 13, "bold"), width=25, bd=0, bg='#3047ff', cursor='hand2', activebackground='#3047ff', fg='white', command=self.go_backLogin)
@@ -93,11 +93,11 @@ class NewWindow(tk.Toplevel):
         self.username_label = Label(self.lgn_frame, text="Username", bg="#4B3621", fg="white", font=("yu gothic ui", 13, "bold"))
         self.username_label.place(x=100, y=250)
 
-        self.username_entry = Entry(self.lgn_frame, highlightthickness=0, relief=FLAT, bg="#343434", fg="#6b6a69", font=("yu gothic ui ", 12, "bold"), insertbackground = '#6b6a69')
+        self.username_entry = Entry(self.lgn_frame, highlightthickness=0, relief=FLAT, bg="#414A4C", fg="#6082B6", font=("yu gothic ui ", 12, "bold"), insertbackground = '#6082B6')
         self.username_entry.place(x=127, y=280, width=200)
         
         
-        self.username_line = Canvas(self.lgn_frame, width=150, height=2.0, bg="#bdb9b1", highlightthickness=0)
+        self.username_line = Canvas(self.lgn_frame, width=200, height=2.0, bg="#bdb9b1", highlightthickness=0)
         self.username_line.place(x=127, y=304)
 
                 # ===== Username icon =========
@@ -110,30 +110,30 @@ class NewWindow(tk.Toplevel):
 
         # Password Section
         self.password_label = Label(self.lgn_frame, text="Password", bg="#4B3621", fg="white", font=("yu gothic ui", 13, "bold"))
-        self.password_label.place(x=100, y=380)
+        self.password_label.place(x=100, y=340)
 
-        self.password_entry = Entry(self.lgn_frame, highlightthickness=0, relief=FLAT, bg="#343434", fg="#6b6a69", font=("yu gothic ui", 12, "bold"), show="*", insertbackground = '#6b6a69')
-        self.password_entry.place(x=127, y=416, width=200)
+        self.password_entry = Entry(self.lgn_frame, highlightthickness=0, relief=FLAT, bg="#414A4C", fg="#6082B6", font=("yu gothic ui", 12, "bold"), show="*", insertbackground = '#6082B6')
+        self.password_entry.place(x=127, y=366, width=200)
 
-        self.password_line = Canvas(self.lgn_frame, width=150, height=2.0, bg="#bdb9b1", highlightthickness=0)
-        self.password_line.place(x=127, y=440)
+        self.password_line = Canvas(self.lgn_frame, width=200, height=2.0, bg="#bdb9b1", highlightthickness=0)
+        self.password_line.place(x=127, y=388)
 
         # Date of Birth Section
         self.dob_label = Label(self.lgn_frame, text="Date of Birth", bg="#4B3621", fg="white", font=("yu gothic ui", 13, "bold"))
-        self.dob_label.place(x=400, y=240)
+        self.dob_label.place(x=340, y=250)
 
-        self.dob_entry = Entry(self.lgn_frame, highlightthickness=0, relief=FLAT, bg="#343434", fg="#6b6a69", font=("yu gothic ui ", 12, "bold"), insertbackground = '#6b6a69')
-        self.dob_entry.place(x=400, y=280, width=107)
+        self.dob_entry = Entry(self.lgn_frame, highlightthickness=0, relief=FLAT, bg="#414A4C", fg="#6082B6", font=("yu gothic ui ", 12, "bold"), insertbackground = '#6082B6')
+        self.dob_entry.place(x=340, y=280, width=108)
 
-        self.dob_line = Canvas(self.lgn_frame, width=82, height=2.0, bg="#bdb9b1", highlightthickness=0)
-        self.dob_line.place(x=400, y=300)
+        self.dob_line = Canvas(self.lgn_frame, width=108, height=2.0, bg="#bdb9b1", highlightthickness=0)
+        self.dob_line.place(x=340, y=304)
 
 
 
         self.secret_question_label = Label(self.lgn_frame, text="Secret Question", bg="#4B3621", fg="white", font=("yu gothic ui", 13, "bold"))
         self.secret_question_label.place(x=600, y=249)
 
-        self.secret_question_entry = Entry(self.lgn_frame, highlightthickness=0, relief=FLAT, bg="#343434", fg="#6b6a69", font=("yu gothic ui ", 12, "bold"), insertbackground = '#6b6a69')
+        self.secret_question_entry = Entry(self.lgn_frame, highlightthickness=0, relief=FLAT, bg="#414A4C", fg="#6082B6", font=("yu gothic ui ", 12, "bold"), insertbackground = '#6082B6')
         self.secret_question_entry.place(x=600, y=282, width=240)
 
         self.secret_question_line = Canvas(self.lgn_frame, width=240, height=2.0, bg="#bdb9b1", highlightthickness=0)
@@ -142,51 +142,45 @@ class NewWindow(tk.Toplevel):
         self.secret_answer_label = Label(self.lgn_frame, text="Secret Answer", bg="#4B3621", fg="white", font=("yu gothic ui", 13, "bold"))
         self.secret_answer_label.place(x=600, y=326)
 
-        self.secret_answer_entry = Entry(self.lgn_frame, highlightthickness=0, relief=FLAT, bg="#343434", fg="#6b6a69", font=("yu gothic ui ", 12, "bold"), insertbackground = '#6b6a69')
+        self.secret_answer_entry = Entry(self.lgn_frame, highlightthickness=0, relief=FLAT, bg="#414A4C", fg="#6082B6", font=("yu gothic ui ", 12, "bold"), insertbackground = '#6082B6')
         self.secret_answer_entry.place(x=600, y=358, width=240)
 
         self.secret_answer_line = Canvas(self.lgn_frame, width=240, height=2.0, bg="#bdb9b1", highlightthickness=0)
-        self.secret_answer_line.place(x=600, y=385)
+        self.secret_answer_line.place(x=600, y=383)
 
-        self.transaction_pin_label = Label(self.lgn_frame, text="Transaction Pin", bg="#4B3621", fg="white", font=("yu gothic ui", 13, "bold"))
-        self.transaction_pin_label.place(x=600, y=395)
+        self.transaction_pin_label = Label(self.lgn_frame, text="Create transaction Pin", bg="#4B3621", fg="white", font=("yu gothic ui", 13, "bold"))
+        self.transaction_pin_label.place(x=600, y=450)
 
-        self.transaction_pin_entry = Entry(self.lgn_frame, highlightthickness=0, relief=FLAT, bg="#343434", fg="#6b6a69", font=("yu gothic ui ", 12, "bold"), insertbackground = '#6b6a69', show="*")
-        self.transaction_pin_entry.place(x=600, y=430, width=100)
+        self.transaction_pin_entry = Entry(self.lgn_frame, highlightthickness=0, relief=FLAT, bg="#414A4C", fg="#6082B6", font=("yu gothic ui ", 12, "bold"), insertbackground = '#6082B6', show="*")
+        self.transaction_pin_entry.place(x=600, y=490, width=100)
 
         self.transaction_pin_line = Canvas(self.lgn_frame, width=100, height=2.0, bg="#bdb9b1", highlightthickness=0)
-        self.transaction_pin_line.place(x=600, y=453)
+        self.transaction_pin_line.place(x=600, y=515)
 
         self.email_label = Label(self.lgn_frame, text="Enter Email(Optional)", bg="#4B3621", fg="white", font=("yu gothic ui", 13, "bold"))
-        self.email_label.place(x=400, y=350)
+        self.email_label.place(x=340, y=340)
 
-        self.email_entry = Entry(self.lgn_frame, highlightthickness=0, relief=FLAT, bg="#343434", fg="#6b6a69", font=("yu gothic ui ", 12, "bold"), insertbackground = '#6b6a69')
-        self.email_entry.place(x=400, y=390, width=100)
+        self.email_entry = Entry(self.lgn_frame, highlightthickness=0, relief=FLAT, bg="#414A4C", fg="#6082B6", font=("yu gothic ui ", 12, "bold"), insertbackground = '#6082B6')
+        self.email_entry.place(x=340, y=380, width=250)
 
-        self.email_line = Canvas(self.lgn_frame, width=100, height=2.0, bg="#bdb9b1", highlightthickness=0)
-        self.email_line.place(x=400, y=410)
+        self.email_line = Canvas(self.lgn_frame, width=250, height=2.0, bg="#bdb9b1", highlightthickness=0)
+        self.email_line.place(x=340, y=404)
         
 
-        self.reference_code_label = Label(self.lgn_frame, text="PROPATEES Reference Code(To start with a Level 2)", bg="#4B3621", fg="white", font=("yu gothic ui", 13, "bold"))
-        self.reference_code_label.place(x=400, y=440)
+        self.reference_code_label = Label(self.lgn_frame, text="""PROPATEES Reference Code
+(To start with a Level 2 Account)""", bg="#4B3621", fg="white", font=("yu gothic ui", 13, "bold"))
+        self.reference_code_label.place(x=105, y=450)
 
-        self.reference_code_entry = Entry(self.lgn_frame, highlightthickness=0, relief=FLAT, bg="#343434", fg="#6b6a69", font=("yu gothic ui ", 12, "bold"), insertbackground = '#6b6a69')
-        self.reference_code_entry.place(x=400, y=470, width=100)
+        self.reference_code_entry = Entry(self.lgn_frame, highlightthickness=0, relief=FLAT, bg="#414A4C", fg="#6082B6", font=("yu gothic ui ", 12, "bold"), insertbackground = '#6082B6')
+        self.reference_code_entry.place(x=110, y=510, width=100)
 
         self.reference_code_line = Canvas(self.lgn_frame, width=100, height=2.0, bg="#bdb9b1", highlightthickness=0)
-        self.reference_code_line.place(x=400, y=490)
+        self.reference_code_line.place(x=110, y=535)
         self.reference_code_entry.bind("<Return>", lambda event: self.register())
 
         self.username_entry.focus()
 
-    def center_window(self):
-        # Update window size info
-        self.update_idletasks()
-        width = self.winfo_width()
-        height = self.winfo_height()
-        x = (self.winfo_screenwidth() // 2) - (width // 2)
-        y = (self.winfo_screenheight() // 2) - (height // 2)
-        self.geometry(f'{width}x{height}+{x}+{y}')
+    
 
         def focus_password_entry(self, event=None):
             self.password_entry.focus()
@@ -238,7 +232,7 @@ class NewWindow(tk.Toplevel):
         photo = ImageTk.PhotoImage(self.password_icon)
         self.password_icon_label = Label(self.lgn_frame, image=photo, bg='#343434')
         self.password_icon_label.image = photo
-        self.password_icon_label.place(x=100, y=414)
+        self.password_icon_label.place(x=100, y=365)
 
         # ========= show/hide password ========
         self.show_image = ImageTk.PhotoImage \
@@ -263,7 +257,14 @@ class NewWindow(tk.Toplevel):
     
 
 
-
+    def center_window(self):
+        # Update window size info
+        self.update_idletasks()
+        width = self.winfo_width()
+        height = self.winfo_height()
+        x = (self.winfo_screenwidth() // 2) - (width // 2)
+        y = (self.winfo_screenheight() // 2) - (height // 2)
+        self.geometry(f'{width}x{height}+{x}+{y}')
     
     def register(self):
         username = self.username_entry.get()
@@ -378,11 +379,12 @@ class NewWindow(tk.Toplevel):
             self.withdraw()
             self.master.deiconify()
             self.master.username_entry.focus()
-            self.clear_on_focus()
+            
 
     def clear_on_focus(self, event):
         if self.username_entry.get() == "Type your username here...":
             event.widget.delete(0, tk.END)
+
 # new_window = NewWindow(master=None)
 # new_window.mainloop()
 

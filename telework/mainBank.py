@@ -43,6 +43,9 @@ class WelcomeWindow:
         self.logo_label.__reduce__()
         self.logo_label.place(x=70, y=0)
 
+        self.username_label = tk.Label(self.new_window, text=f"{username}: Signed in", bg='#3B3C36', fg="white")
+        self.username_label.place(x=130, y=6)
+
         # logo pic
         self.logoside = Image.open('ChangeCurve2.png')
         # self.logoside = self.logoside.resize((80, 80), resample=Image.LANCZOS)  # Resize the image to 50x50 pixels using Lanczos resampling
@@ -68,24 +71,33 @@ class WelcomeWindow:
         self.logo_label.__reduce__()
         self.logo_label.place(x=0, y=15)
 
-        self.logoside = Image.open('images2.png')
+        self.logoside = Image.open('images3.png')
         self.logoside = self.logoside.resize((80, 80), resample=Image.LANCZOS)  # Resize the image to 50x50 pixels using Lanczos resampling
         logos = ImageTk.PhotoImage(self.logoside)
         self.logo_label = tk.Label(self.lgn_frame, image=logos, width='300', height="300", bg='#3B3C36')
         self.logo_label.image = logos
         self.logo_label.__reduce__()
-        self.logo_label.place(x=1200, y=2)
+        self.logo_label.place(x=1200, y=15)
 
     
 
 
 
-        label = tk.Label(self.lgn_frame, text=f"Welcome {username}, to our simple and easy to use bank app!", font=('yu gothic ui', 16, 'bold'), bg='#FF4F00', fg='white')
-        label.place(x=900, y=36)
-        self.lgn_frame.after(5000, label.destroy)
+        label1 = tk.Label(self.lgn_frame, text=f"Welcome {username}, to our simple and easy to use bank app!", font=('yu gothic ui', 16, 'bold'), bg='#6CB4EE', fg='white')
+        # label1.place(x=900, y=36)
+        # self.lgn_frame.after(20000, label1.destroy)
         label = tk.Label(self.lgn_frame, text=f"Welcome {username}, to our simple and easy to use bank app!", font=('yu gothic ui', 16, 'bold'), bg='#0095B6', fg='white')
-        label.place(x=900, y=36)
-        self.lgn_frame.after(5000, label.destroy)
+        # self.lgn_frame.after(5000, label.place(x=900, y=36))
+        # self.lgn_frame.after(15000, label.destroy)
+        # self.lgn_frame.after(20000, label1.place(x=900, y=36))
+        label1.place(x=900, y=36)
+        self.lgn_frame.after(2000, label1.place_forget)
+        self.lgn_frame.after(2000, lambda: label.place(x=900, y=36))
+        self.lgn_frame.after(3000, label.place_forget)
+        self.lgn_frame.after(3000, lambda: label1.place(x=900, y=36))
+        self.lgn_frame.after(4000, label1.place_forget)
+        self.lgn_frame.after(4000, lambda: label.place(x=900, y=36))
+        self.lgn_frame.after(5000, label.place_forget)
 
         
 
@@ -518,6 +530,22 @@ your other PTP account""", style="Big.TButton", command=self.show_fund_account_d
         transfer_dialog.title("Transfer Money")
         transfer_dialog.grab_set()
 
+        # Set size of the fund account dialog
+        dialog_width = 400
+        dialog_height = 300
+
+        # Center the dialog relative to the parent window (self.new_window)
+        parent_x = self.new_window.winfo_x()
+        parent_y = self.new_window.winfo_y()
+        parent_width = self.new_window.winfo_width()
+        parent_height = self.new_window.winfo_height()
+
+        # Calculate the position
+        x = parent_x + (parent_width // 2) - (dialog_width // 2)
+        y = parent_y + (parent_height // 2) - (dialog_height // 2)
+
+        transfer_dialog.geometry(f"{dialog_width}x{dialog_height}+{x}+{y}")
+
 
         tk.Label(transfer_dialog, text="Recipient Account Number:").pack()
         recipient_entry = tk.Entry(transfer_dialog)
@@ -560,10 +588,11 @@ your other PTP account""", style="Big.TButton", command=self.show_fund_account_d
 
             transaction = self.transfer_money(self.username, recipient_account, amount, transaction_pin)
             
+            transfer_dialog.destroy()
 
-            if transaction:
-                self.print_receipt(transaction)
-                transfer_dialog.destroy()
+            
+            self.print_receipt(transaction)
+                
 
 
         transfer_button = tk.Button(transfer_dialog, text="Transfer", command=transfer_callback)
@@ -685,6 +714,22 @@ your other PTP account""", style="Big.TButton", command=self.show_fund_account_d
         fund_account_dialog.title("Fund Your Account")
         fund_account_dialog.grab_set()
 
+        # Set size of the fund account dialog
+        dialog_width = 400
+        dialog_height = 300
+
+        # Center the dialog relative to the parent window (self.new_window)
+        parent_x = self.new_window.winfo_x()
+        parent_y = self.new_window.winfo_y()
+        parent_width = self.new_window.winfo_width()
+        parent_height = self.new_window.winfo_height()
+
+        # Calculate the position
+        x = parent_x + (parent_width // 2) - (dialog_width // 2)
+        y = parent_y + (parent_height // 2) - (dialog_height // 2)
+
+        fund_account_dialog.geometry(f"{dialog_width}x{dialog_height}+{x}+{y}")
+
         tk.Label(fund_account_dialog, text="Other Account Number:").pack()
         other_account_entry = tk.Entry(fund_account_dialog)
         other_account_entry.pack()
@@ -722,7 +767,8 @@ your other PTP account""", style="Big.TButton", command=self.show_fund_account_d
         tk.Button(fund_account_dialog, text="Fund", command=fund_callback).pack()
 
 
-    def fund_account_from_other(self, current_username, other_account_number, other_username, other_bvn, other_password, amount, account_number):
+
+    def fund_account_from_other(self, current_username, other_account_number, other_username, other_bvn, other_password, amount):
         # Connect to MySQL database
         db = mysql.connector.connect(
             host="localhost",
@@ -740,17 +786,9 @@ your other PTP account""", style="Big.TButton", command=self.show_fund_account_d
                 WHERE account_number = %s
             """, (other_account_number,))
             other_account = cursor.fetchone()
-            cursor.execute("SELECT account_name FROM users WHERE account_number = %s", (account_number,))
-            row = cursor.fetchone()
 
-            
-            
             if not other_account:
                 messagebox.showerror("Error", "Other account not found.")
-                return
-            
-            if other_account_number == current_account_number:
-                messagebox.showerror("Error", "You cannot transfer money to your own account.")
                 return
 
             other_db_username, other_db_bvn, other_db_password, other_balance = other_account
@@ -772,12 +810,17 @@ your other PTP account""", style="Big.TButton", command=self.show_fund_account_d
                 WHERE username = %s
             """, (current_username,))
             current_account = cursor.fetchone()
-            
+
             if not current_account:
                 messagebox.showerror("Error", "Current account not found.")
                 return
 
             current_account_number, current_balance = current_account
+
+            # Prevent transferring to own account if desired
+            if other_account_number == current_account_number:
+                messagebox.showerror("Error", "You cannot transfer money to your own account.")
+                return
 
             # Update balances
             new_other_balance = other_balance - amount
@@ -790,19 +833,16 @@ your other PTP account""", style="Big.TButton", command=self.show_fund_account_d
             messagebox.showinfo("Success", "Funds transferred successfully!")
 
             # Update balance display if visible
-            if self.balance_label:
+            if hasattr(self, 'balance_label') and self.balance_label:
                 self.toggle_balance(current_username)
                 self.toggle_balance(current_username)
-            if row:
-                return row[0]
-            else:
-                return None
 
         except mysql.connector.Error as err:
             messagebox.showerror("Database Error", f"Error: {err}")
         finally:
             cursor.close()
             db.close()
+
 
 
 
