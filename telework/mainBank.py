@@ -117,7 +117,7 @@ class WelcomeWindow:
         self.fund_account_button = ttk.Button(self.new_window, text="""Fund your account 
 from your other 
 PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
-        self.fund_account_button.place(x=1342, y=230)
+        self.fund_account_button.place(x=1342, y=300)
 
         self.subscribe_button = ttk.Button(self.lgn_frame, text="Subscription", style="Big.TButton")
         self.subscribe_button.place(x=1020, y=120)
@@ -279,7 +279,7 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
 
         # Beneficiaries Frame
         self.beneficiaries_frame = tk.Frame(self.new_window, bg='#0095B6', width='300', height="350")
-        self.beneficiaries_frame.place(x=1040, y=300)
+        self.beneficiaries_frame.place(x=1025, y=300)
 
         # Label for Beneficiaries
         self.bene_label = tk.Label(self.beneficiaries_frame, text="Beneficiaries", font=('yu gothic ui', 20, 'bold'), bg='#0095B6', fg='white')
@@ -429,7 +429,7 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
             cursor.execute("UPDATE users SET account_balance = %s WHERE account_number = %s", (new_recipient_balance, recipient_account))
             db.commit()
 
-            
+            self.print_receipt()
 
             messagebox.showinfo("Success", "Transfer completed successfully!")
 
@@ -450,76 +450,6 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
             cursor.close()
             db.close()
 
-
-    def update_transaction_history(self):
-        # Clear the existing content
-        # for item in self.history_tree.get_children():
-        #     self.history_tree.delete(item)
-
-        # Display session transactions
-        for transaction in self.session_transactions:
-            self.history_tree.insert("", tk.END, values=transaction)
-
-    def load_transaction_history(self):
-        # Clear existing entries
-        # self.history_tree.insert("", tk.END, values=transaction)
-        for item in self.history_tree.get_children():
-            self.history_tree.delete(item)
-
-        # Connect to MySQL database to fetch transactions
-        db = mysql.connector.connect(
-            host="localhost",
-            user="tele",
-            password="telesql19",
-            database="new_database"
-        )
-        cursor = db.cursor()
-
-        try:
-            cursor.execute("SELECT date, trans_type, amount, balance, recipient_account, recipient_name FROM transactions WHERE username = %s ORDER BY date DESC", (self.username,))
-            transactions = cursor.fetchall()
-
-            if not transactions:
-                self.history_tree.insert("", tk.END, values=("No transaction history found.", "", "", "", "", ""))
-                return
-
-            for transaction in transactions:
-                self.history_tree.insert("", tk.END, values=transaction)
-
-        except mysql.connector.Error as err:
-            messagebox.showerror("Database Error", f"Error: {err}")
-        finally:
-            cursor.close()
-            db.close()
-
-
-    
-    
-
-    def print_receipt(self, transaction):
-        receipt_dialog = tk.Toplevel(self.new_window)
-        receipt_dialog.title("Transaction Receipt")
-
-        date, trans_type, amount, balance, recipient_account, recipient_name = transaction
-
-        receipt_text = f"""
-        Transaction Receipt
-        ===============================
-        Date           : {date}
-        Type           : {trans_type}
-        Amount         : ₦ {amount}
-        Balance        : ₦ {balance}
-        Recipient Acc. : {recipient_account}
-        Recipient Name : {recipient_name}
-        ===============================
-        """
-        tk.Label(receipt_dialog, text=receipt_text, justify="left", font=("Arial", 12)).pack(padx=10, pady=10)
-
-        tk.Button(receipt_dialog, text="Close", command=receipt_dialog.destroy).pack(pady=5)
-
-
-
-
     def show_transfer_dialog(self):
         transfer_dialog = tk.Toplevel(self.new_window)
         transfer_dialog.title("Transfer Money")
@@ -527,7 +457,7 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
 
         # Set size of the fund account dialog
         dialog_width = 400
-        dialog_height = 300
+        dialog_height = 250
 
         # Center the dialog relative to the parent window (self.new_window)
         parent_x = self.new_window.winfo_x()
@@ -581,13 +511,10 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
                 return
             transaction_pin = pin_entry.get()
 
-            transaction = self.transfer_money(self.username, recipient_account, amount, transaction_pin)
+            # transaction = self.transfer_money(self.username, recipient_account, amount, transaction_pin)
+            # self.print_receipt(transaction)
             
             transfer_dialog.destroy()
-
-            
-            self.print_receipt(transaction)
-                
 
 
         transfer_button = tk.Button(transfer_dialog, text="Transfer", command=transfer_callback)
@@ -607,6 +534,69 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
 
         # Bind Enter key to simulate clicking the Transfer button
         pin_entry.bind("<Return>", lambda event: transfer_button.invoke())
+
+    def print_receipt(self, transaction):
+        receipt_dialog = tk.Toplevel(self.new_window)
+        receipt_dialog.title("Transaction Receipt")
+
+        date, trans_type, amount, balance, recipient_account, recipient_name = transaction
+
+        receipt_text = f"""
+        Transaction Receipt
+        ===============================
+        Date           : {date}
+        Type           : {trans_type}
+        Amount         : ₦ {amount}
+        Balance        : ₦ {balance}
+        Recipient Acc. : {recipient_account}
+        Recipient Name : {recipient_name}
+        ===============================
+        """
+        tk.Label(receipt_dialog, text=receipt_text, justify="left", font=("Arial", 12)).pack(padx=10, pady=10)
+
+        tk.Button(receipt_dialog, text="Close", command=receipt_dialog.destroy).pack(pady=5)
+
+    def update_transaction_history(self):
+        # Clear the existing content
+        # for item in self.history_tree.get_children():
+        #     self.history_tree.delete(item)
+
+        # Display session transactions
+        for transaction in self.session_transactions:
+            self.history_tree.insert("", tk.END, values=transaction)
+
+    def load_transaction_history(self):
+        # Clear existing entries
+        # self.history_tree.insert("", tk.END, values=transaction)
+        for item in self.history_tree.get_children():
+            self.history_tree.delete(item)
+
+        # Connect to MySQL database to fetch transactions
+        db = mysql.connector.connect(
+            host="localhost",
+            user="tele",
+            password="telesql19",
+            database="new_database"
+        )
+        cursor = db.cursor()
+
+        try:
+            cursor.execute("SELECT date, trans_type, amount, balance, recipient_account, recipient_name FROM transactions WHERE username = %s ORDER BY date DESC", (self.username,))
+            transactions = cursor.fetchall()
+
+            if not transactions:
+                self.history_tree.insert("", tk.END, values=("No transaction history found.", "", "", "", "", ""))
+                return
+
+            for transaction in transactions:
+                self.history_tree.insert("", tk.END, values=transaction)
+
+        except mysql.connector.Error as err:
+            messagebox.showerror("Database Error", f"Error: {err}")
+        finally:
+            cursor.close()
+            db.close()
+
     
 
     def get_account_name_by_account_number(self, account_number):
@@ -687,17 +677,6 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
 
         # Bind Enter key to simulate clicking the Add button
         account_entry.bind("<Return>", lambda event: add_button.invoke())
-
-
-
-
-
-    
-
-
-
-    
-
 
 
 

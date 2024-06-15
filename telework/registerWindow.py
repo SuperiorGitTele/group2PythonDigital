@@ -156,9 +156,9 @@ type the question if no one is around you)""", bg="#4B3621", fg="white", font=("
         self.email_label.place(x=340, y=340)
 
         self.email_entry = Entry(self.lgn_frame, highlightthickness=0, relief=FLAT, bg="#414A4C", fg="#6082B6", font=("yu gothic ui ", 12, "bold"), insertbackground = '#6082B6')
-        self.email_entry.place(x=340, y=380, width=250)
+        self.email_entry.place(x=340, y=380, width=255)
 
-        self.email_line = Canvas(self.lgn_frame, width=250, height=2.0, bg="#bdb9b1", highlightthickness=0)
+        self.email_line = Canvas(self.lgn_frame, width=255, height=2.0, bg="#bdb9b1", highlightthickness=0)
         self.email_line.place(x=340, y=404)
         
 
@@ -237,16 +237,16 @@ type the question if no one is around you)""", bg="#4B3621", fg="white", font=("
             (file='show.png')
 
         self.show_button = Button(self.lgn_frame, image=self.show_image, command=self.show, relief=FLAT,activebackground='#343434', borderwidth=0, background="#343434", cursor="hand2")
-        self.show_button.place(x=291, y=380)
+        self.show_button.place(x=291, y=400)
 
     def show(self):
         self.hide_button = Button(self.lgn_frame, image=self.hide_image, command=self.hide, relief=FLAT, activebackground='#343434', borderwidth=0, background="#343434", cursor="hand2")
-        self.hide_button.place(x=291, y=420)
+        self.hide_button.place(x=291, y=400)
         self.password_entry.config(show='')
 
     def hide(self):
         self.show_button = Button(self.lgn_frame, image=self.show_image, command=self.show, relief=FLAT,activebackground='#343434', borderwidth=0, background="#343434", cursor="hand2")
-        self.show_button.place(x=291, y=420)
+        self.show_button.place(x=291, y=400)
         self.password_entry.config(show='*')
 
     
@@ -356,7 +356,7 @@ type the question if no one is around you)""", bg="#4B3621", fg="white", font=("
 
         else:
             account_balance = 0
-            self.register_user(username, password, dob, secret_question, secret_answer, transaction_pin, account_number, account_balance, None)
+            self.register_user(username, password, dob, secret_question, secret_answer, transaction_pin, account_number, account_balance, bvn, account_name, email, None)
                
 
     def register_user(self, username, password, dob, secret_question, secret_answer, transaction_pin, account_number, account_balance, reference_code, bvn, account_name, email):
