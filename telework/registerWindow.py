@@ -40,13 +40,6 @@ class NewWindow(tk.Toplevel):
         self.update_idletasks()
         self.configure(bg='#0047AB')
 
-        # # background image
-        # self.bg_image = Image.open('yellowSho2.png')
-        # self.bg_photo = ImageTk.PhotoImage(self.bg_image)
-        # self.bg_label = tk.Label(self, image=self.bg_photo)
-        # self.bg_label.image = self.bg_photo
-        # self.bg_label.pack(fill='both', expand='yes')
-
 
         # red frame at the center
         self.lgn_frame = tk.Frame(self, bg='#343434', width='950', height="600")
@@ -244,7 +237,7 @@ type the question if no one is around you)""", bg="#4B3621", fg="white", font=("
             (file='show.png')
 
         self.show_button = Button(self.lgn_frame, image=self.show_image, command=self.show, relief=FLAT,activebackground='#343434', borderwidth=0, background="#343434", cursor="hand2")
-        self.show_button.place(x=291, y=420)
+        self.show_button.place(x=291, y=380)
 
     def show(self):
         self.hide_button = Button(self.lgn_frame, image=self.hide_image, command=self.hide, relief=FLAT, activebackground='#343434', borderwidth=0, background="#343434", cursor="hand2")
@@ -324,33 +317,47 @@ type the question if no one is around you)""", bg="#4B3621", fg="white", font=("
         # Use the username as the account name
         account_name = username
 
+        
 
         # Initialize account balance
         if reference_code:
             # Ask for initial deposit amount
             initial_deposit_dialog = tk.Toplevel(self.window)
-            initial_deposit_dialog.title("Initial Deposit for Level 2 Account")
+            initial_deposit_dialog.title("Initial Deposit")
+            initial_deposit_dialog.grab_set()
 
-            tk.Label(initial_deposit_dialog, text="Enter initial deposit amount (between 500,000 and 1,000,000):").pack()
-            initial_deposit_entry = tk.Entry(initial_deposit_dialog)
-            initial_deposit_entry.pack()
+             # Set size of the fund account dialog
+            dialog_width = 250
+            dialog_height = 100
+
+            # Center the dialog relative to the parent window (self.new_window)
+            parent_x = self.winfo_x()
+            parent_y = self.winfo_y()
+            parent_width = self.winfo_width()
+            parent_height = self.winfo_height()
+
+            # Calculate the position
+            x = parent_x + (parent_width // 2) - (dialog_width // 2)
+            y = parent_y + (parent_height // 2) - (dialog_height // 2)
+
+            initial_deposit_dialog.geometry(f"{dialog_width}x{dialog_height}+{x}+{y}")
+
+            tk.Label(initial_deposit_dialog, text="The reference code has granted you ₦1500").pack()
 
             def ok_callback():
-                initial_deposit = int(initial_deposit_entry.get())
-                if 500000 <= initial_deposit <= 1000000:
-                    account_balance = initial_deposit
-                    initial_deposit_dialog.destroy()
-                    # Register user
-                    self.register_user(username, password, dob, secret_question, secret_answer, transaction_pin, account_number, account_balance, reference_code)
-                else:
-                    messagebox.showerror("Error", "Initial deposit amount must be between 500,000 and 1,000,000")
+                account_balance = 1500
+                initial_deposit_dialog.destroy()
+                # Register user
+                self.register_user(username, password, dob, secret_question, secret_answer, transaction_pin, account_number, account_balance, reference_code, bvn, account_name, email)
+                
 
-            tk.Button(initial_deposit_dialog, text="Level Up", command=ok_callback).pack()
+            ok = tk.Button(initial_deposit_dialog, text="OK", command=ok_callback).pack()
+            initial_deposit_dialog.bind("<Return>", ok)
 
-        # Initialize account balance
-        account_balance = 100000
-        # Register user
-        self.register_user(username, password, dob, secret_question, secret_answer, transaction_pin, account_number, account_balance, reference_code, bvn, account_name, email)
+        else:
+            account_balance = 0
+            self.register_user(username, password, dob, secret_question, secret_answer, transaction_pin, account_number, account_balance, None)
+               
 
     def register_user(self, username, password, dob, secret_question, secret_answer, transaction_pin, account_number, account_balance, reference_code, bvn, account_name, email):
         db = mysql.connector.connect(

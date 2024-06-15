@@ -111,15 +111,16 @@ class WelcomeWindow:
 
         # Create a Button to initiate money transfer
         self.transfer_button = ttk.Button(self.lgn_frame, text="Transfer", style="Big.TButton", command=self.show_transfer_dialog)
-        self.transfer_button.place(x=580, y=120)
+        self.transfer_button.place(x=665, y=120)
 
         # 
-        self.fund_account_button = ttk.Button(self.lgn_frame, text="""Fund your account from 
-your other PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
-        self.fund_account_button.place(x=820, y=120)
+        self.fund_account_button = ttk.Button(self.new_window, text="""Fund your account 
+from your other 
+PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
+        self.fund_account_button.place(x=1342, y=230)
 
         self.subscribe_button = ttk.Button(self.lgn_frame, text="Subscription", style="Big.TButton")
-        self.subscribe_button.place(x=1150, y=120)
+        self.subscribe_button.place(x=1020, y=120)
 
         # Create a Label to display the account balance
         self.balance_label = None
@@ -220,7 +221,7 @@ your other PTP account""", style="Big.TButton", command=self.show_fund_account_d
             style.configure("Big.TLabel", font=("Arial", 15), foreground="#0095B6", background="brown")
 
             # Create a Label to display the account balance
-            self.balance_label = ttk.Label(self.lgn_frame, text=f"Account Balance ₦: {account_balance}", style="Big.TLabel", width="23")
+            self.balance_label = ttk.Label(self.lgn_frame, text=f"Account Balance ₦: {account_balance}", style="Big.TLabel", width="35")
             self.balance_label.place(x=320, y=160)
         else:
             self.balance_label.place_forget()
@@ -855,7 +856,7 @@ your other PTP account""", style="Big.TButton", command=self.show_fund_account_d
     def clear_on_focus(self, event):
         event.widget.delete(0, tk.END)
 
-# root = tk.Tk()
-# welcome_window = WelcomeWindow(root, "username")
-# root.withdraw()  # Hide the root window
-# welcome_window.new_window.mainloop()
+root = tk.Tk()
+welcome_window = WelcomeWindow(root, "username")
+root.withdraw()  # Hide the root window
+welcome_window.new_window.mainloop()

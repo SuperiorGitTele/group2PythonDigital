@@ -19,11 +19,6 @@ import requests
 
 
 
-
-
-
-
-
 class LoginWindow(tk.Tk):
     def __init__(self):
         super().__init__()
@@ -40,9 +35,6 @@ class LoginWindow(tk.Tk):
         self.configure(bg='#003262')
         self.center_window()
         
-        # light frame at the center
-        self.lgn_frame = tk.Frame(self, bg='#3B3C36', width='950', height="600")
-        self.lgn_frame.place(x=300, y=100) 
 
         # Change Curve
         self.logoside = Image.open('ChangeCurve2.png')
@@ -59,6 +51,9 @@ class LoginWindow(tk.Tk):
         self.logo_label.__reduce__()
         self.logo_label.place(x=1210, y=550)
 
+        # light frame at the center
+        self.lgn_frame = tk.Frame(self, bg='#3B3C36', width='950', height="600")
+        self.lgn_frame.place(x=300, y=100) 
 
         self.logoside = Image.open('images2.png')
         self.logoside = self.logoside.resize((80, 80), resample=Image.LANCZOS)  # Resize the image to 50x50 pixels using Lanczos resampling
