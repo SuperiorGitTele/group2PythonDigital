@@ -13,7 +13,7 @@ class Sidebar(tk.Frame):
         # self.close_button.place(x=10, y=10)
 
         # Open the image file
-        image = Image.open("drop.png")
+        image = Image.open("bar12.png")
 
         # Resize the image
         image = image.resize((20, 30), resample=Image.LANCZOS)  # Replace (20, 20) with your desired size
