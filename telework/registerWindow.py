@@ -362,9 +362,9 @@ type the question if no one is around you)""", bg="#4B3621", fg="white", font=("
     def register_user(self, username, password, dob, secret_question, secret_answer, transaction_pin, account_number, account_balance, reference_code, bvn, account_name, email):
         db = mysql.connector.connect(
             host="localhost",
-            user="tele",
-            password="telesql19",
-            database="new_database"
+            user="tele2",
+            password="tele2sql12",
+            database="new_data"
         )
         cursor = db.cursor()
 
@@ -380,7 +380,7 @@ type the question if no one is around you)""", bg="#4B3621", fg="white", font=("
         cursor.close()
         db.close()
 
-
+        print("Hola")
         messagebox.showinfo("Registration Successful", "Your account has been created successfully!")
         self.username_entry.delete(0, tk.END)
         self.password_entry.delete(0, tk.END)

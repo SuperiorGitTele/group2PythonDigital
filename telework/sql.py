@@ -1,19 +1,50 @@
 import mysql.connector
 from mysql.connector import errorcode
 
+
+def create_mysql_user():
+    try:
+        db = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            password="root_password"  # Replace with your root password
+        )
+        cursor = db.cursor()
+
+        # Create new user and grant privileges
+        cursor.execute("CREATE USER 'bank'@'localhost' IDENTIFIED BY 'tele2sql12';")
+        cursor.execute("GRANT ALL PRIVILEGES ON new_data.* TO 'bank'@'localhost';")
+        cursor.execute("FLUSH PRIVILEGES;")
+        print("User 'tele2' created and granted privileges.")
+        
+    except mysql.connector.Error as err:
+        if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
+            print("Error: Access denied. Check your username and password.")
+        elif err.errno == errorcode.ER_BAD_DB_ERROR:
+            print("Error: Database does not exist.")
+        else:
+            print(err)
+    finally:
+        cursor.close()
+        db.close()
+
+
+
 def setup_database():
     try:
         # Connect to MySQL server
         db = mysql.connector.connect(
             host="localhost",
-            user="tele",
-            password="telesql19"
+            user="tele2",
+            password="tele2sql12",
+            database="new_data"
         )
         cursor = db.cursor()
 
+
         # Create database if it doesn't exist
-        cursor.execute("CREATE DATABASE IF NOT EXISTS new_database")
-        cursor.execute("USE new_database")
+        cursor.execute("CREATE DATABASE IF NOT EXISTS new_data")
+        cursor.execute("USE new_data")
 
         # Create table if it doesn't exist
         cursor.execute("""
@@ -33,6 +64,27 @@ def setup_database():
             email VARCHAR(255)
         )
         """)
+        cursor.execute("""
+        CREATE TABLE IF NOT EXISTS transactions (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            username TEXT NOT NULL,
+            date TIMESTAMP NOT NULL,
+            trans_type TEXT NOT NULL,
+            amount REAL NOT NULL,
+            balance REAL NOT NULL,
+            recipient_account TEXT NOT NULL,
+            recipient_name TEXT NOT NULL
+        );""")
+        cursor.execute("""
+        CREATE TABLE IF NOT EXISTS beneficiaries (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            username TEXT NOT NULL,
+            name TEXT NOT NULL,
+            account_number TEXT NOT NULL,
+            FOREIGN KEY (username) REFERENCES users(username),
+            UNIQUE (username, name, account_number)
+        );""")
+
 
         # Insert a sample user (if needed)
         cursor.execute("""
@@ -56,4 +108,7 @@ def setup_database():
         db.close()
 
 if __name__ == "__main__":
+    if create_mysql_user:
+            setup_database
     setup_database()
+    

@@ -190,9 +190,9 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
         # Connect to MySQL database
         db = mysql.connector.connect(
             host="localhost",
-            user="tele",
-            password="telesql19",
-            database="new_database"
+            user="tele2",
+            password="tele2sql12",
+            database="new_data"
         )
         cursor = db.cursor()
 
@@ -310,9 +310,9 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
         # Connect to MySQL database to fetch beneficiaries
         db = mysql.connector.connect(
             host="localhost",
-            user="tele",
-            password="telesql19",
-            database="new_database"
+            user="tele2",
+            password="tele2sql12",
+            database="new_data"
         )
         cursor = db.cursor()
 
@@ -381,9 +381,9 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
         # Connect to MySQL database
         db = mysql.connector.connect(
             host="localhost",
-            user="tele",
-            password="telesql19",
-            database="new_database"
+            user="tele2",
+            password="tele2sql12",
+            database="new_data"
         )
         cursor = db.cursor()
 
@@ -574,9 +574,9 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
         # Connect to MySQL database to fetch transactions
         db = mysql.connector.connect(
             host="localhost",
-            user="tele",
-            password="telesql19",
-            database="new_database"
+            user="tele2",
+            password="tele2sql12",
+            database="new_data"
         )
         cursor = db.cursor()
 
@@ -602,9 +602,9 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
     def get_account_name_by_account_number(self, account_number):
         db = mysql.connector.connect(
             host="localhost",
-            user="tele",
-            password="telesql19",
-            database="new_database"
+            user="tele2",
+            password="tele2sql12",
+            database="new_data"
         )
         cursor = db.cursor()
 
@@ -652,9 +652,9 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
             # Connect to MySQL database to add beneficiary
             db = mysql.connector.connect(
                 host="localhost",
-                user="tele",
-                password="telesql19",
-                database="new_database"
+                user="tele2",
+                password="tele2sql12",
+                database="new_data"
             )
             cursor = db.cursor()
 
@@ -746,9 +746,9 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
         # Connect to MySQL database
         db = mysql.connector.connect(
             host="localhost",
-            user="tele",
-            password="telesql19",
-            database="new_database"
+            user="tele2",
+            password="tele2sql12",
+            database="new_data"
         )
         cursor = db.cursor()
 

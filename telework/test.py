@@ -297,9 +297,9 @@ button below to create an account""", bg="#36454F", fg="white", font=("Georgia",
         # Connect to MySQL database
         db = mysql.connector.connect(
             host="localhost",
-            user="tele",
-            password="telesql19",
-            database="new_database"
+            user="tele2",
+            password="tele2sql12",
+            database="new_data"
         )
         cursor = db.cursor()
 

@@ -3,9 +3,9 @@ import mysql.connector
 # Connect to the database
 db = mysql.connector.connect(
     host="localhost",
-    user="tele",
-    password="telesql19",
-    database="new_database"
+    user="tele2",
+    password="tele2sql12",
+    database="new_data"
 )
 
 cursor = db.cursor()

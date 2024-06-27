@@ -246,9 +246,9 @@ class LoginWindow(tk.Tk):
                 try:
                     db = mysql.connector.connect(
                         host="localhost",
-                        user="tele",
-                        password="telesql19",
-                        database="new_database"
+                        user="tele2",
+                        password="tele2sql12",
+                        database="new_data"
                     )
                     cursor = db.cursor()
                     cursor.execute("SELECT * FROM users WHERE username = %s AND secret_question = %s AND secret_answer = %s", (username, secretQ, secretA))
@@ -312,9 +312,9 @@ class LoginWindow(tk.Tk):
         # Connect to MySQL database
         db = mysql.connector.connect(
             host="localhost",
-            user="tele",
-            password="telesql19",
-            database="new_database"
+            user="tele2",
+            password="tele2sql12",
+            database="new_data"
         )
         cursor = db.cursor()
 
@@ -332,6 +332,7 @@ class LoginWindow(tk.Tk):
                     # If there is an internet connection, use pygame
                     self.play_audio(username)
                     self.open_welcome_window(username)
+                    print("Hello")
                     self.withdraw()
 
                 else:
@@ -433,6 +434,8 @@ class LoginWindow(tk.Tk):
             return 'zoomed'
         else:
             return 'normal'
+    
+
 
 
 
