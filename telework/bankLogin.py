@@ -4,10 +4,11 @@ from PIL import ImageTk, Image
 from tkinter import messagebox
 import pyttsx3
 from PIL import Image, ImageTk
-import sqlite3
 from gtts import gTTS
 import pygame
 import os
+import re
+import platform
 import subprocess
 import time
 from registerWindow import NewWindow
@@ -432,8 +433,6 @@ class LoginWindow(tk.Tk):
             return 'zoomed'
         else:
             return 'normal'
-        
-
 
 
 

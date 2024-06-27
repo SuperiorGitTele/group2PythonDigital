@@ -129,12 +129,12 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
         loginpage.place(x=1400, y=700)
 
         # Open the image file
-        image = Image.open("drop.png")
+        image = Image.open("bar12.png")
         # Resize the image
         image = image.resize((40, 40), resample=Image.LANCZOS)  # Replace (20, 20) with your desired size
         # Convert the image to a PhotoImage
         dropdown_image = ImageTk.PhotoImage(image)
-        self.sidebar_button = tk.Button(self.lgn_frame, image=dropdown_image, compound="top", font=("yu gothic ui", 4, "bold"), width=70, bd=0, bg='#003262', cursor='hand2', activebackground='#3B3C36', fg='white', command=self.toggle_sidebar)
+        self.sidebar_button = tk.Button(self.lgn_frame, image=dropdown_image, compound="top", font=("yu gothic ui", 4, "bold"), width=70, bd=0, bg='#3B3C36', cursor='hand2', activebackground='#3B3C36', fg='white', command=self.toggle_sidebar)
         self.sidebar_button.image = dropdown_image
         self.sidebar_button.place(x=10, y=0)
 
@@ -835,7 +835,7 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
     def clear_on_focus(self, event):
         event.widget.delete(0, tk.END)
 
-root = tk.Tk()
-welcome_window = WelcomeWindow(root, "username")
-root.withdraw()  # Hide the root window
-welcome_window.new_window.mainloop()
+# root = tk.Tk()
+# welcome_window = WelcomeWindow(root, "username")
+# root.withdraw()  # Hide the root window
+# welcome_window.new_window.mainloop()
