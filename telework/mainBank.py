@@ -164,12 +164,13 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
         # self.username = self.username  # Dummy username; replace with the actual logged-in user's username.
         self.session_transactions = []  # Initialize to track transactions during the session
 
-        self.setup_ui()
-        self.bankHistory.place_forget()
+        self.setup_uiTRANS()
+        self.setup_uiBENE()
+    
         self.bankHistory1 = tk.Frame(self.new_window, bg='#6CB4EE', width='700', height="350")
         self.bankHistory1.place(x=310, y=300)
 
-        self.txt = "Transaction history"
+        self.txt = "Transaction History"
         self.heading = tk.Label(self.bankHistory1, text=self.txt, font=('yu gothic ui', 35, 'bold'), bg='#6CB4EE', fg='white')
         self.heading.place(x="0", y="7")
 
@@ -234,24 +235,21 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
             self.balance_label = None
 
     def toggle_balance1(self):
-        if self.bankHistory is None:
-            self.setup_ui()
-            self.load_transaction_history()
-            # self.bankHistory.place_forget()
-
-            
-            
+        if self.bankHistory1 is not None and self.bankHistory1.winfo_ismapped():
+            # Hide the label if it is currently visible
+            self.bankHistory1.place_forget()
         else:
-            self.bankHistory.place_forget()
-            
-            self.bankHistory = None
-            # self.lgn_frame.after(5000, label.destroy)
+            self.bankHistory1 = tk.Frame(self.new_window, bg='#6CB4EE', width='700', height="350")
+            self.bankHistory1.place(x=310, y=300)
+            self.txt = "Transaction history"
+            self.heading = tk.Label(self.bankHistory1, text=self.txt, font=('yu gothic ui', 35, 'bold'), bg='#6CB4EE', fg='white')
+            self.heading.place(x="0", y="7")
 
 
 
 
 
-    def setup_ui(self):
+    def setup_uiTRANS(self):
         # Bank History Frame
         self.bankHistory = tk.Frame(self.new_window, bg='#6CB4EE', width='700', height="350")
         self.bankHistory.place(x=310, y=300)
@@ -281,6 +279,14 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
 
         self.buttonHistory = tk.Button(self.new_window, text="Show history",bg='#0095B6', width="15", command=self.toggle_balance1)
         self.buttonHistory.place(x=895, y=670)
+
+    
+
+        self.load_transaction_history()
+
+       
+
+    def setup_uiBENE(self):
         
 
         # Beneficiaries Frame
@@ -304,14 +310,8 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
         self.quick_transfer_button = tk.Button(self.beneficiaries_frame, text="Quick Transfer", command=self.quick_transfer_action)
         self.quick_transfer_button.pack(pady=5)
 
-    
-
-        self.load_transaction_history()
-
         # Load initial beneficiaries
         self.load_beneficiaries()
-
-    
 
     def load_beneficiaries(self):
         # Clear existing entries
