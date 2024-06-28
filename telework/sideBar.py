@@ -21,12 +21,12 @@ class Sidebar(tk.Frame):
         # Convert the image to a PhotoImage
         dropdown_image = ImageTk.PhotoImage(image)
 
-        self.sidebar_button = tk.Button(self, image=dropdown_image, compound="top", font=("yu gothic ui", 4, "bold"), width=70, bd=0, bg='#003262', cursor='hand2', activebackground='#3B3C36', fg='white', command=self.close_sidebar)
+        self.sidebar_button = tk.Button(self, image=dropdown_image, compound="top", font=("yu gothic ui", 4, "bold"), width=70, bd=0, bg='#3B3C36', cursor='hand2', activebackground='#3B3C36', fg='white', command=self.close_sidebar)
         self.sidebar_button.image = dropdown_image
         self.sidebar_button.place(x=10, y=2)
 
         # Logo picture
-        self.logoside = Image.open('ps2.png')
+        self.logoside = Image.open('logopng.png')
         self.logoside = self.logoside.resize((80, 80), resample=Image.LANCZOS)  # Resize the image to 80x80 pixels using Lanczos resampling
         logos = ImageTk.PhotoImage(self.logoside)
         self.logo_label = tk.Label(self.master, image=logos, width=80, height=80, bg='#3B3C36')

@@ -7,8 +7,6 @@ from PIL import Image, ImageTk
 from gtts import gTTS
 import pygame
 import os
-import re
-import platform
 import subprocess
 import time
 from registerWindow import NewWindow
@@ -44,7 +42,6 @@ class LoginWindow(tk.Tk):
         self.logo_label.image = logos
         self.logo_label.__reduce__()
         self.logo_label.place(x=10, y=10)
-
         self.logoside = Image.open('ChangeCurve2.png')
         logos = ImageTk.PhotoImage(self.logoside)
         self.logo_label = tk.Label(self, image=logos, width='300', height="300", bg='#003262')
@@ -97,7 +94,7 @@ class LoginWindow(tk.Tk):
         
         
         # logo pic
-        self.logoside = Image.open('ps2.png')
+        self.logoside = Image.open('logopng.png')
         logos = ImageTk.PhotoImage(self.logoside)
         self.logo_label = Label(self.lgn_frame, image=logos, bg='#3B3C36')
         self.logo_label.image = logos
@@ -105,7 +102,7 @@ class LoginWindow(tk.Tk):
         self.logo_label.place(x=95, y=70)
         
         # face login
-        self.sign_in_image = Image.open('hyy.png')
+        self.sign_in_image = Image.open('userdisplay.png')
         photo = ImageTk.PhotoImage(self.sign_in_image)
         self.sign_in_image_label = Label(self.lgn_frame, image=photo, bg='#3B3C36')
         self.sign_in_image_label.image = photo
@@ -114,7 +111,6 @@ class LoginWindow(tk.Tk):
                 # ===== Username icon =========
         self.username_icon = Image.open('username_icon.png')
         photo = ImageTk.PhotoImage(self.username_icon)
-
         self.username_icon_label = Label(self.lgn_frame, image=photo, bg='#3B3C36')
         self.username_icon_label.image = photo
         self.username_icon_label.place(x=550, y=332)

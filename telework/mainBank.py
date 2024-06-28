@@ -39,7 +39,7 @@ class WelcomeWindow:
         self.lgn_frame.place(x=0, y=0)
 
         # logo pic
-        self.logoside = Image.open('ps2.png')
+        self.logoside = Image.open('logopng.png')
         self.logoside = self.logoside.resize((80, 80), resample=Image.LANCZOS)  # Resize the image to 50x50 pixels using Lanczos resampling
         logos = ImageTk.PhotoImage(self.logoside)
         self.logo_label = tk.Label(self.new_window, image=logos, width='80', height="80", bg='#3B3C36')
@@ -99,6 +99,12 @@ class WelcomeWindow:
         self.lgn_frame.after(5000, label.place_forget)
         self.lgn_frame.after(5000, lambda: label1.place(x=900, y=36))
         self.lgn_frame.after(6000, label1.place_forget)
+        self.lgn_frame.after(6000, lambda: label.place(x=900, y=36))
+        self.lgn_frame.after(7000, label.place_forget)
+        self.lgn_frame.after(7000, lambda: label1.place(x=900, y=36))
+        self.lgn_frame.after(8000, label1.place_forget)
+        self.lgn_frame.after(8000, lambda: label.place(x=900, y=36))
+        self.lgn_frame.after(9000, label.place_forget)
 
         
 
@@ -295,6 +301,11 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
 
         self.bene_tree.pack(fill="both", expand=True)
 
+        self.quick_transfer_button = tk.Button(self.beneficiaries_frame, text="Quick Transfer", command=self.quick_transfer_action)
+        self.quick_transfer_button.pack(pady=5)
+
+    
+
         self.load_transaction_history()
 
         # Load initial beneficiaries
@@ -328,13 +339,22 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
                 self.bene_tree.insert("", tk.END, values=beneficiary)
 
                 # Add quick transfer button
-                self.bene_tree.bind("<Double-1>", lambda event, item=beneficiary: self.quick_transfer_dialog(item))
+                # self.bene_tree.bind("<Double-1>", lambda event, item=beneficiary: self.quick_transfer_dialog(item))
 
         except mysql.connector.Error as err:
             messagebox.showerror("Database Error", f"Error: {err}")
         finally:
             cursor.close()
             db.close()
+
+    def quick_transfer_action(self):
+        selected_item = self.bene_tree.selection()
+        if not selected_item:
+            messagebox.showwarning("No Selection", "Please select a beneficiary to transfer money.")
+            return
+
+        beneficiary = self.bene_tree.item(selected_item, "values")
+        self.quick_transfer_dialog(beneficiary)
 
     def quick_transfer_dialog(self, beneficiary):
         name, account_number = beneficiary
@@ -359,6 +379,7 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
                 return
             transaction_pin = pin_entry.get()
 
+            # Placeholder for transfer function
             self.transfer_money(self.username, account_number, amount, transaction_pin)
             quick_transfer_dialog.destroy()
 
@@ -429,23 +450,80 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
             cursor.execute("UPDATE users SET account_balance = %s WHERE account_number = %s", (new_recipient_balance, recipient_account))
             db.commit()
 
-            self.print_receipt()
-
-            messagebox.showinfo("Success", "Transfer completed successfully!")
-
             # Log the transaction
-            now = datetime.now()
+            now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
             cursor.execute(
                 "INSERT INTO transactions (username, date, trans_type, amount, balance, recipient_account, recipient_name) VALUES (%s, %s, %s, %s, %s, %s, %s)",
                 (sender_username, now, 'Transfer', amount, new_sender_balance, recipient_account, recipient_name)
             )
             db.commit()
 
+            # Get the transaction ID
+            transaction_id = cursor.lastrowid
+
+            # Fetch the transaction details
+            cursor.execute("SELECT date, trans_type, amount, balance, recipient_account, recipient_name FROM transactions WHERE id = %s", (transaction_id,))
+            transaction = cursor.fetchone()
+
+            # Print the receipt
+            self.print_receipt(transaction)
+
             # Update transaction history
             self.load_transaction_history()
+            self.load_beneficiaries()
+
+            
 
         except mysql.connector.Error as err:
             messagebox.showerror("Database Error", f"Error: {err}")
+        finally:
+            cursor.close()
+            db.close()
+
+        
+
+    def print_receipt(self, transaction):
+        receipt_dialog = tk.Toplevel(self.new_window)
+        receipt_dialog.title("Transaction Receipt")
+        receipt_dialog.grab_set()
+
+        date, trans_type, amount, balance, recipient_account, recipient_name = transaction
+
+        receipt_text = f"""
+        TRANSFER COMPLETED SUCCESSFULLY!
+
+        Transaction Receipt
+        ===============================
+        Date           : {date}
+        Type           : {trans_type}
+        Amount         : ₦ {amount}
+        Balance        : ₦ {balance}
+        Recipient Acc. : {recipient_account}
+        Recipient Name : {recipient_name}
+        ===============================
+        """
+        tk.Label(receipt_dialog, text=receipt_text, justify="left", font=("Arial", 12)).pack(padx=10, pady=10)
+        tk.Button(receipt_dialog, text="Close", command=receipt_dialog.destroy).pack(pady=5)
+
+    def get_account_name_by_account_number(self, account_number):
+        db = mysql.connector.connect(
+            host="localhost",
+            user="tele2",
+            password="tele2sql12",
+            database="new_data"
+        )
+        cursor = db.cursor()
+
+        try:
+            cursor.execute("SELECT account_name FROM users WHERE account_number = %s", (account_number,))
+            row = cursor.fetchone()
+            if row:
+                return row[0]
+            else:
+                return None
+        except mysql.connector.Error as err:
+            messagebox.showerror("Database Error", f"Error: {err}")
+            return None
         finally:
             cursor.close()
             db.close()
@@ -478,6 +556,7 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
 
         name_label = tk.Label(transfer_dialog, text="Account Name: ")
         name_label.pack()
+
         
 
         # Update the name label dynamically as the user enters the account number
@@ -501,6 +580,13 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
         tk.Label(transfer_dialog, text="Transaction PIN:").pack()
         pin_entry = tk.Entry(transfer_dialog, show="*")
         pin_entry.pack()
+        
+        # Checkbox for adding recipient to beneficiaries
+        add_beneficiary_var = tk.BooleanVar()
+        add_beneficiary_checkbox = tk.Checkbutton(
+            transfer_dialog, text="Add Recipient to Beneficiaries", variable=add_beneficiary_var
+        )
+        add_beneficiary_checkbox.pack()
 
         def transfer_callback():
             recipient_account = recipient_entry.get()
@@ -511,10 +597,16 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
                 return
             transaction_pin = pin_entry.get()
 
-            # transaction = self.transfer_money(self.username, recipient_account, amount, transaction_pin)
-            # self.print_receipt(transaction)
-            
+            self.transfer_money(self.username, recipient_account, amount, transaction_pin)
+            if add_beneficiary_var.get():
+                self.add_beneficiary(self.username, recipient_account)
+
             transfer_dialog.destroy()
+
+
+        
+            
+            
 
 
         transfer_button = tk.Button(transfer_dialog, text="Transfer", command=transfer_callback)
@@ -535,26 +627,41 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
         # Bind Enter key to simulate clicking the Transfer button
         pin_entry.bind("<Return>", lambda event: transfer_button.invoke())
 
-    def print_receipt(self, transaction):
-        receipt_dialog = tk.Toplevel(self.new_window)
-        receipt_dialog.title("Transaction Receipt")
+    def add_beneficiary(self, username, recipient_account):
+        # Connect to MySQL database
+        db = mysql.connector.connect(
+            host="localhost",
+            user="tele2",
+            password="tele2sql12",
+            database="new_data"
+        )
+        cursor = db.cursor()
 
-        date, trans_type, amount, balance, recipient_account, recipient_name = transaction
+        try:
+            # Fetch recipient's name
+            cursor.execute("SELECT account_name FROM users WHERE account_number = %s", (recipient_account,))
+            recipient = cursor.fetchone()
+            if not recipient:
+                messagebox.showerror("Error", "Recipient account not found.")
+                return
 
-        receipt_text = f"""
-        Transaction Receipt
-        ===============================
-        Date           : {date}
-        Type           : {trans_type}
-        Amount         : ₦ {amount}
-        Balance        : ₦ {balance}
-        Recipient Acc. : {recipient_account}
-        Recipient Name : {recipient_name}
-        ===============================
-        """
-        tk.Label(receipt_dialog, text=receipt_text, justify="left", font=("Arial", 12)).pack(padx=10, pady=10)
+            recipient_name = recipient[0]
 
-        tk.Button(receipt_dialog, text="Close", command=receipt_dialog.destroy).pack(pady=5)
+            # Add to beneficiaries if not already present
+            cursor.execute("""
+            INSERT IGNORE INTO beneficiaries (username, name, account_number)
+            VALUES (%s, %s, %s)
+            """, (username, recipient_name, recipient_account))
+
+            db.commit()
+            # messagebox.showinfo("Success", "Recipient added to beneficiaries.")
+            self.load_beneficiaries()
+
+        except mysql.connector.Error as err:
+            messagebox.showerror("Database Error", f"Error: {err}")
+        finally:
+            cursor.close()
+            db.close()
 
     def update_transaction_history(self):
         # Clear the existing content
@@ -598,35 +705,6 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
             db.close()
 
     
-
-    def get_account_name_by_account_number(self, account_number):
-        db = mysql.connector.connect(
-            host="localhost",
-            user="tele2",
-            password="tele2sql12",
-            database="new_data"
-        )
-        cursor = db.cursor()
-
-        try:
-            cursor.execute("SELECT account_name FROM users WHERE account_number = %s", (account_number,))
-            row = cursor.fetchone()
-            if row:
-                return row[0]
-            else:
-                return None
-        except mysql.connector.Error as err:
-            messagebox.showerror("Database Error", f"Error: {err}")
-            return None
-        finally:
-            cursor.close()
-            db.close()
-
-
-
-
-
-
 
 
     def show_add_beneficiary_dialog(self):

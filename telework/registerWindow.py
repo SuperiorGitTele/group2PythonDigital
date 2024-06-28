@@ -4,12 +4,10 @@ from tkinter import *
 from PIL import ImageTk, Image
 from tkinter import messagebox
 from PIL import Image, ImageTk
-import sqlite3
 from tkinter import simpledialog
 import random
 import mysql.connector
 import random
-import bcrypt
 import re
 
 
@@ -64,7 +62,7 @@ class NewWindow(tk.Toplevel):
         
         
         # logo pic
-        self.logoside = Image.open('ps2.png')
+        self.logoside = Image.open('logopng.png')
         self.logoside = self.logoside.resize((80, 80), resample=Image.LANCZOS)  # Resize the image to 50x50 pixels using Lanczos resampling
         logos = ImageTk.PhotoImage(self.logoside)
         self.logo_label = Label(self.lgn_frame, image=logos, width='80', height="80", bg='#343434')
@@ -73,7 +71,7 @@ class NewWindow(tk.Toplevel):
         self.logo_label.place(x=750, y=5)
         
         # face login
-        self.sign_in_image = Image.open('hyy.png')
+        self.sign_in_image = Image.open('userdisplay.png')
         photo = ImageTk.PhotoImage(self.sign_in_image)
         self.sign_in_image_label = Label(self.lgn_frame, image=photo, bg='#343434')
         self.sign_in_image_label.image = photo
@@ -113,14 +111,15 @@ class NewWindow(tk.Toplevel):
         self.password_line.place(x=127, y=388)
 
         # Date of Birth Section
-        self.dob_label = Label(self.lgn_frame, text="Date of Birth", bg="#4B3621", fg="white", font=("yu gothic ui", 13, "bold"))
+        self.dob_label = Label(self.lgn_frame, text="""Date of Birth
+(DD/MM/YYYY)""", bg="#4B3621", fg="white", font=("yu gothic ui", 13, "bold"))
         self.dob_label.place(x=340, y=250)
 
         self.dob_entry = Entry(self.lgn_frame, highlightthickness=0, relief=FLAT, bg="#414A4C", fg="#6082B6", font=("yu gothic ui ", 12, "bold"), insertbackground = '#6082B6')
-        self.dob_entry.place(x=340, y=280, width=108)
+        self.dob_entry.place(x=340, y=304, width=108)
 
         self.dob_line = Canvas(self.lgn_frame, width=108, height=2.0, bg="#bdb9b1", highlightthickness=0)
-        self.dob_line.place(x=340, y=304)
+        self.dob_line.place(x=340, y=328)
 
 
 
@@ -129,10 +128,10 @@ type the question if no one is around you)""", bg="#4B3621", fg="white", font=("
         self.secret_question_label.place(x=580, y=249)
 
         self.secret_question_entry = Entry(self.lgn_frame, highlightthickness=0, relief=FLAT, bg="#414A4C", fg="#6082B6", font=("yu gothic ui ", 12, "bold"), insertbackground = '#6082B6')
-        self.secret_question_entry.place(x=600, y=297, width=240)
+        self.secret_question_entry.place(x=600, y=304, width=240)
 
         self.secret_question_line = Canvas(self.lgn_frame, width=240, height=2.0, bg="#bdb9b1", highlightthickness=0)
-        self.secret_question_line.place(x=600, y=322)
+        self.secret_question_line.place(x=600, y=328)
 
         self.secret_answer_label = Label(self.lgn_frame, text="Secret Answer", bg="#4B3621", fg="white", font=("yu gothic ui", 13, "bold"))
         self.secret_answer_label.place(x=600, y=340)
@@ -225,7 +224,7 @@ type the question if no one is around you)""", bg="#4B3621", fg="white", font=("
         # Password Icon
         self.password_icon = Image.open('password_icon.png')
         photo = ImageTk.PhotoImage(self.password_icon)
-        self.password_icon_label = Label(self.lgn_frame, image=photo, bg='#343434')
+        self.password_icon_label = Label(self.lgn_frame, image=photo, bg='#414A4C')
         self.password_icon_label.image = photo
         self.password_icon_label.place(x=100, y=365)
 
@@ -236,17 +235,17 @@ type the question if no one is around you)""", bg="#4B3621", fg="white", font=("
         self.hide_image = ImageTk.PhotoImage \
             (file='show.png')
 
-        self.show_button = Button(self.lgn_frame, image=self.show_image, command=self.show, relief=FLAT,activebackground='#343434', borderwidth=0, background="#343434", cursor="hand2")
-        self.show_button.place(x=291, y=400)
+        self.show_button = Button(self.lgn_frame, image=self.show_image, command=self.show, relief=FLAT,activebackground='#414A4C', borderwidth=0, background="#414A4C", cursor="hand2")
+        self.show_button.place(x=308, y=367)
 
     def show(self):
-        self.hide_button = Button(self.lgn_frame, image=self.hide_image, command=self.hide, relief=FLAT, activebackground='#343434', borderwidth=0, background="#343434", cursor="hand2")
-        self.hide_button.place(x=291, y=400)
+        self.hide_button = Button(self.lgn_frame, image=self.hide_image, command=self.hide, relief=FLAT, activebackground='#414A4C', borderwidth=0, background="#414A4C", cursor="hand2")
+        self.hide_button.place(x=308, y=367)
         self.password_entry.config(show='')
 
     def hide(self):
-        self.show_button = Button(self.lgn_frame, image=self.show_image, command=self.show, relief=FLAT,activebackground='#343434', borderwidth=0, background="#343434", cursor="hand2")
-        self.show_button.place(x=291, y=400)
+        self.show_button = Button(self.lgn_frame, image=self.show_image, command=self.show, relief=FLAT,activebackground='#414A4C', borderwidth=0, background="#414A4C", cursor="hand2")
+        self.show_button.place(x=308, y=367)
         self.password_entry.config(show='*')
 
     

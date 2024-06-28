@@ -34,7 +34,7 @@ class LoginWindow(tk.Tk):
          # Get the screen's width and height
         self.geometry("1450x760")
         
-        img = PhotoImage(file='ps2.png')
+        img = PhotoImage(file='logopng.png')
         self.iconphoto(False, img)
 
     
@@ -101,7 +101,7 @@ class LoginWindow(tk.Tk):
         
         
         # logo pic
-        self.logoside = Image.open('ps2.png')
+        self.logoside = Image.open('logopng.png')
         logos = ImageTk.PhotoImage(self.logoside)
         self.logo_label = Label(self.lgn_frame, image=logos, width='260', height="350", bg='#3B3C36')
         self.logo_label.image = logos
@@ -109,7 +109,7 @@ class LoginWindow(tk.Tk):
         self.logo_label.place(x=80, y=250)
         
         # face login
-        self.sign_in_image = Image.open('hyy.png')
+        self.sign_in_image = Image.open('userdisplay.png')
         photo = ImageTk.PhotoImage(self.sign_in_image)
         self.sign_in_image_label = Label(self.lgn_frame, image=photo, bg='#3B3C36')
         self.sign_in_image_label.image = photo
