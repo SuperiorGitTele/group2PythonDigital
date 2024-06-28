@@ -13,9 +13,10 @@ class WelcomeWindow:
         self.username = username
         self.new_window = tk.Toplevel(self.master)
         self.new_window.title("PROPATEES Bank App")
+        
 
-        # img = ImageTk.PhotoImage(file='logo.png')
-        # self.iconphoto(False, img)
+        img = ImageTk.PhotoImage(file='logo.png')
+        self.new_window.iconphoto(False, img)
         
 
         # Get the screen's width and height
@@ -29,7 +30,7 @@ class WelcomeWindow:
         self.new_window.geometry(f"{screen_width}x{screen_height - taskbar_height}")
 
         self.new_window.state('normal')  # Instead of 'zoomed', use 'normal' to allow the window to be resized
-        self.new_window.resizable(0, 0)  # But then disable resizing
+        self.new_window.resizable(True, True)  # But then disable resizing
         self.new_window.update_idletasks()
         self.new_window.configure(bg='#003262')
 

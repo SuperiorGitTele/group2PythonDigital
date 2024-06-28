@@ -3,7 +3,6 @@ from tkinter import *
 from PIL import ImageTk, Image
 from tkinter import messagebox
 import pyttsx3
-from PIL import Image, ImageTk
 from gtts import gTTS
 import pygame
 import os
