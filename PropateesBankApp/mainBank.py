@@ -241,7 +241,7 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
         else:
             self.bankHistory1 = tk.Frame(self.new_window, bg='#6CB4EE', width='700', height="350")
             self.bankHistory1.place(x=310, y=300)
-            self.txt = "Transaction history"
+            self.txt = "Transaction History"
             self.heading = tk.Label(self.bankHistory1, text=self.txt, font=('yu gothic ui', 35, 'bold'), bg='#6CB4EE', fg='white')
             self.heading.place(x="0", y="7")
 
