@@ -242,8 +242,8 @@ class LoginWindow(tk.Tk):
                 try:
                     db = mysql.connector.connect(
                         host="localhost",
-                        user="tele2",
-                        password="tele2sql12",
+                        user="pamela",
+                        password="Bankmysql",
                         database="new_data"
                     )
                     cursor = db.cursor()
@@ -308,8 +308,8 @@ class LoginWindow(tk.Tk):
         # Connect to MySQL database
         db = mysql.connector.connect(
             host="localhost",
-            user="tele2",
-            password="tele2sql12",
+            user="pamela",
+            password="Bankmysql",
             database="new_data"
         )
         cursor = db.cursor()

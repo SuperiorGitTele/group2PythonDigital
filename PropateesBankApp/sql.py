@@ -2,39 +2,14 @@ import mysql.connector
 from mysql.connector import errorcode
 
 
-def create_mysql_user():
-    try:
-        db = mysql.connector.connect(
-            host="localhost",
-            user="root",
-            password="root_password"  # Replace with your root password
-        )
-        cursor = db.cursor()
-
-        # Create new user and grant privileges
-        cursor.execute("CREATE USER 'bank'@'localhost' IDENTIFIED BY 'tele2sql12';")
-        cursor.execute("GRANT ALL PRIVILEGES ON new_data.* TO 'bank'@'localhost';")
-        cursor.execute("FLUSH PRIVILEGES;")
-        print("User 'tele2' created and granted privileges.")
-        
-    except mysql.connector.Error as err:
-        if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
-            print("Error: Access denied. Check your username and password.")
-        elif err.errno == errorcode.ER_BAD_DB_ERROR:
-            print("Error: Database does not exist.")
-        else:
-            print(err)
-    finally:
-        cursor.close()
-        db.close()
 
 def setup_database():
     try:
         # Connect to MySQL server
         db = mysql.connector.connect(
             host="localhost",
-            user="tele2",
-            password="tele2sql12",
+            user="pamela",
+            password="Bankmysql",
             database="new_data"
         )
         cursor = db.cursor()
@@ -124,9 +99,7 @@ def setup_database():
         db.close()
 
 if __name__ == "__main__":
-    create_mysql_user()
-    if create_mysql_user:
-        setup_database()
+    setup_database()
     
 
 
