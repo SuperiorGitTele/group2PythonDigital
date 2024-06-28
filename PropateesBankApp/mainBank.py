@@ -531,6 +531,7 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
     def show_transfer_dialog(self):
         transfer_dialog = tk.Toplevel(self.new_window)
         transfer_dialog.title("Transfer Money")
+        transfer_dialog.configure(bg='#003262')
         transfer_dialog.grab_set()
 
         # Set size of the fund account dialog
@@ -764,6 +765,7 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
     def show_fund_account_dialog(self):
         fund_account_dialog = tk.Toplevel(self.new_window)
         fund_account_dialog.title("Fund Your Account")
+        fund_account_dialog.configure(bg='#003262')
         fund_account_dialog.grab_set()
 
         # Set size of the fund account dialog

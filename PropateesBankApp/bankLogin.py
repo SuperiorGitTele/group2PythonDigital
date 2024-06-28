@@ -53,6 +53,8 @@ class LoginWindow(tk.Tk):
         self.lgn_frame = tk.Frame(self, bg='#3B3C36', width='950', height="600")
         self.lgn_frame.place(x=300, y=100) 
 
+        
+
         self.logoside = Image.open('images2.png')
         self.logoside = self.logoside.resize((80, 80), resample=Image.LANCZOS)  # Resize the image to 50x50 pixels using Lanczos resampling
         logos = ImageTk.PhotoImage(self.logoside)
@@ -67,7 +69,7 @@ class LoginWindow(tk.Tk):
         self.logo_label = tk.Label(self.lgn_frame, image=logos, bg='#3B3C36')
         self.logo_label.image = logos
         self.logo_label.__reduce__()
-        self.logo_label.place(x=310, y=350) 
+        self.logo_label.place(x=380, y=350) 
 
         #=================================================
 
@@ -75,6 +77,12 @@ class LoginWindow(tk.Tk):
         self.txt = """WELCOME TO PROPATEES BANK"""
         self.heading = Label(self.lgn_frame, text=self.txt, font=('Times New Roman', 25, 'bold'), bg='#3B3C36', fg='white')
         self.heading.place(x=0, y=5, width=550, height=100)
+
+        self.txt = """Financial Solution Tailored For Your Properties"""
+        self.heading = Label(self.lgn_frame, text=self.txt, font=('Times New Roman', 12, 'bold'), bg='#3B3C36', fg='white')
+        self.heading.place(x=100, y=400, width=320, height=55)
+
+        
         
         # Sign in text
         self.sign_in_label = Label(self.lgn_frame, text="Sign In Or Sign Up Below!", bg="#36454F", fg="white", font=("Georgia", 17, "bold"))
@@ -99,7 +107,7 @@ class LoginWindow(tk.Tk):
         self.logo_label = Label(self.lgn_frame, image=logos, bg='#3B3C36')
         self.logo_label.image = logos
         self.logo_label.__reduce__()
-        self.logo_label.place(x=95, y=70)
+        self.logo_label.place(x=120, y=70)
         
         # face login
         self.sign_in_image = Image.open('userdisplay.png')
