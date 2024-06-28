@@ -13,26 +13,20 @@ class WelcomeWindow:
         self.username = username
         self.new_window = tk.Toplevel(self.master)
         self.new_window.title("PROPATEES Bank App")
+        self.new_window.geometry("1450x760")
         
 
         img = ImageTk.PhotoImage(file='logo.png')
         self.new_window.iconphoto(False, img)
         
 
-        # Get the screen's width and height
-        screen_width = self.new_window.winfo_screenwidth()
-        screen_height = self.new_window.winfo_screenheight()
-
-        # Assuming the taskbar's height is 40 pixels (you may need to adjust this)
-        taskbar_height = 50
-
-        # Set the window's geometry to the screen's width and height, minus the taskbar's height
-        self.new_window.geometry(f"{screen_width}x{screen_height - taskbar_height}")
+        
 
         self.new_window.state('normal')  # Instead of 'zoomed', use 'normal' to allow the window to be resized
         self.new_window.resizable(True, True)  # But then disable resizing
-        self.new_window.update_idletasks()
+        # self.new_window.update_idletasks()
         self.new_window.configure(bg='#003262')
+        self.center_window()
 
         
 
@@ -178,12 +172,12 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
 
     def center_window(self):
         # Center the window on the screen
-        self.update_idletasks()
-        width = self.winfo_width()
-        height = self.winfo_height()
-        x = (self.winfo_screenwidth() // 2) - (width // 2)
-        y = (self.winfo_screenheight() // 2) - (height // 2)
-        self.geometry(f'{width}x{height}+{x}+{y}')
+        self.new_window.update_idletasks()
+        width = self.new_window.winfo_width()
+        height = self.new_window.winfo_height()
+        x = (self.new_window.winfo_screenwidth() // 2) - (width // 2)
+        y = (self.new_window.winfo_screenheight() // 2) - (height // 2)
+        self.new_window.geometry(f'{width}x{height}+{x}+{y}')
 
 
 
@@ -362,13 +356,13 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
         quick_transfer_dialog = tk.Toplevel(self.new_window)
         quick_transfer_dialog.title(f"Quick Transfer to {name}")
 
-        tk.Label(quick_transfer_dialog, text=f"Account: {account_number}").pack()
+        tk.Label(quick_transfer_dialog, text=f"Account: {account_number}", bg='#6CB4EE').pack()
 
-        tk.Label(quick_transfer_dialog, text="Amount to Transfer ₦ :").pack()
+        tk.Label(quick_transfer_dialog, text="Amount to Transfer ₦ :", bg='#6CB4EE').pack()
         amount_entry = tk.Entry(quick_transfer_dialog)
         amount_entry.pack()
 
-        tk.Label(quick_transfer_dialog, text="Transaction PIN:").pack()
+        tk.Label(quick_transfer_dialog, text="Transaction PIN:", bg='#6CB4EE').pack()
         pin_entry = tk.Entry(quick_transfer_dialog, show="*")
         pin_entry.pack()
 
@@ -533,6 +527,8 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
         transfer_dialog = tk.Toplevel(self.new_window)
         transfer_dialog.title("Transfer Money")
         transfer_dialog.configure(bg='#003262')
+        img = ImageTk.PhotoImage(file='logo.png')
+        transfer_dialog.iconphoto(False, img)
         transfer_dialog.grab_set()
 
         # Set size of the fund account dialog
@@ -552,11 +548,11 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
         transfer_dialog.geometry(f"{dialog_width}x{dialog_height}+{x}+{y}")
 
 
-        tk.Label(transfer_dialog, text="Recipient Account Number:").pack()
+        tk.Label(transfer_dialog, text="Recipient Account Number:", bg='#6CB4EE').pack()
         recipient_entry = tk.Entry(transfer_dialog)
         recipient_entry.pack()
 
-        name_label = tk.Label(transfer_dialog, text="Account Name: ")
+        name_label = tk.Label(transfer_dialog, text="Account Name: ", bg='#6CB4EE')
         name_label.pack()
 
         
@@ -575,18 +571,18 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
 
         recipient_entry.bind("<KeyRelease>", on_recipient_change)
 
-        tk.Label(transfer_dialog, text="Amount to Transfer ₦ :").pack()
+        tk.Label(transfer_dialog, text="Amount to Transfer ₦ :", bg='#6CB4EE').pack()
         amount_entry = tk.Entry(transfer_dialog)
         amount_entry.pack()
 
-        tk.Label(transfer_dialog, text="Transaction PIN:").pack()
+        tk.Label(transfer_dialog, text="Transaction PIN:", bg='#6CB4EE').pack()
         pin_entry = tk.Entry(transfer_dialog, show="*")
         pin_entry.pack()
         
         # Checkbox for adding recipient to beneficiaries
         add_beneficiary_var = tk.BooleanVar()
         add_beneficiary_checkbox = tk.Checkbutton(
-            transfer_dialog, text="Add Recipient to Beneficiaries", variable=add_beneficiary_var
+            transfer_dialog, text="Add Recipient to Beneficiaries", bg='#6CB4EE', variable=add_beneficiary_var
         )
         add_beneficiary_checkbox.pack()
 
@@ -611,7 +607,7 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
             
 
 
-        transfer_button = tk.Button(transfer_dialog, text="Transfer", command=transfer_callback)
+        transfer_button = tk.Button(transfer_dialog, text="Transfer", bg='#0095B6', command=transfer_callback)
         transfer_button.pack()
 
         def focus_password_entry6(self, event=None):
@@ -712,6 +708,10 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
     def show_add_beneficiary_dialog(self):
         add_beneficiary_dialog = tk.Toplevel(self.new_window)
         add_beneficiary_dialog.title("Add Beneficiary")
+        add_beneficiary_dialog.configure(bg='#003262')
+        img = ImageTk.PhotoImage(file='logo.png')
+        add_beneficiary_dialog.iconphoto(False, img)
+        add_beneficiary_dialog.grab_set()
 
         tk.Label(add_beneficiary_dialog, text="Beneficiary Name:").pack()
         name_entry = tk.Entry(add_beneficiary_dialog)
@@ -767,6 +767,8 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
         fund_account_dialog = tk.Toplevel(self.new_window)
         fund_account_dialog.title("Fund Your Account")
         fund_account_dialog.configure(bg='#003262')
+        img = ImageTk.PhotoImage(file='logo.png')
+        fund_account_dialog.iconphoto(False, img)
         fund_account_dialog.grab_set()
 
         # Set size of the fund account dialog
@@ -785,23 +787,23 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
 
         fund_account_dialog.geometry(f"{dialog_width}x{dialog_height}+{x}+{y}")
 
-        tk.Label(fund_account_dialog, text="Other Account Number:").pack()
+        tk.Label(fund_account_dialog, text="Other Account Number:", bg='#6CB4EE').pack()
         other_account_entry = tk.Entry(fund_account_dialog)
         other_account_entry.pack()
 
-        tk.Label(fund_account_dialog, text="Other Username:").pack()
+        tk.Label(fund_account_dialog, text="Other Username:", bg='#6CB4EE').pack()
         other_username_entry = tk.Entry(fund_account_dialog)
         other_username_entry.pack()
 
-        tk.Label(fund_account_dialog, text="Account BVN:").pack()
+        tk.Label(fund_account_dialog, text="Account BVN:", bg='#6CB4EE').pack()
         other_bvn_entry = tk.Entry(fund_account_dialog)
         other_bvn_entry.pack()
 
-        tk.Label(fund_account_dialog, text="Account Password:").pack()
+        tk.Label(fund_account_dialog, text="Account Password:", bg='#6CB4EE').pack()
         other_password_entry = tk.Entry(fund_account_dialog, show="*")
         other_password_entry.pack()
 
-        tk.Label(fund_account_dialog, text="Amount to Withdraw:").pack()
+        tk.Label(fund_account_dialog, text="Amount to Withdraw:", bg='#6CB4EE').pack()
         amount_entry = tk.Entry(fund_account_dialog)
         amount_entry.pack()
 
@@ -819,7 +821,7 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
             self.fund_account_from_other(self.username, other_account_number, other_username, other_bvn, other_password, amount)
             fund_account_dialog.destroy()
 
-        tk.Button(fund_account_dialog, text="Fund", command=fund_callback).pack()
+        tk.Button(fund_account_dialog, text="Fund", bg='#0095B6', command=fund_callback).pack()
 
 
 
@@ -916,7 +918,7 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
     def clear_on_focus(self, event):
         event.widget.delete(0, tk.END)
 
-# root = tk.Tk()
-# welcome_window = WelcomeWindow(root, "username")
-# root.withdraw()  # Hide the root window
-# welcome_window.new_window.mainloop()
+root = tk.Tk()
+welcome_window = WelcomeWindow(root, "username")
+root.withdraw()  # Hide the root window
+welcome_window.new_window.mainloop()
