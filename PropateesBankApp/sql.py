@@ -7,7 +7,7 @@ def create_mysql_user_and_database(new_username, new_password, new_database):
         db = mysql.connector.connect(
             host="localhost",
             user="root",
-            password="rootsql19"  # Replace with your root password
+            password=""  # Replace with your root password
         )
         cursor = db.cursor()
 
