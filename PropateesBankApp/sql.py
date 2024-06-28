@@ -1,52 +1,43 @@
 import mysql.connector
 from mysql.connector import errorcode
 
-
-def create_mysql_user():
+def create_mysql_user_and_database(new_username, new_password, new_database):
     try:
+        # Connect to MySQL server as root
         db = mysql.connector.connect(
             host="localhost",
             user="root",
-            password="root_password"  # Replace with your root password
+            password="rootsql19"  # Replace with your root password
         )
         cursor = db.cursor()
 
-        # Create new user and grant privileges
-        cursor.execute("CREATE USER 'bank'@'localhost' IDENTIFIED BY 'tele2sql12';")
-        cursor.execute("GRANT ALL PRIVILEGES ON new_data.* TO 'bank'@'localhost';")
-        cursor.execute("FLUSH PRIVILEGES;")
-        print("User 'tele2' created and granted privileges.")
+        # Check if the user already exists
+        cursor.execute(f"SELECT EXISTS(SELECT 1 FROM mysql.user WHERE user = '{new_username}')")
+        user_exists = cursor.fetchone()[0]
         
-    except mysql.connector.Error as err:
-        if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
-            print("Error: Access denied. Check your username and password.")
-        elif err.errno == errorcode.ER_BAD_DB_ERROR:
-            print("Error: Database does not exist.")
+        if user_exists:
+            print(f"User '{new_username}' already exists. Skipping user creation.")
         else:
-            print(err)
-    finally:
-        cursor.close()
-        db.close()
+            # Create new user
+            cursor.execute(f"CREATE USER '{new_username}'@'localhost' IDENTIFIED BY '{new_password}';")
+            print(f"User '{new_username}' created.")
 
-def setup_database():
-    try:
-        # Connect to MySQL server
-        db = mysql.connector.connect(
-            host="localhost",
-            user="tele2",
-            password="tele2sql12",
-            database="new_data"
-        )
-        cursor = db.cursor()
+        # Check if the database already exists
+        cursor.execute(f"SHOW DATABASES LIKE '{new_database}'")
+        database_exists = cursor.fetchone()
 
-        # Drop existing tables if they exist
-        cursor.execute("DROP TABLE IF EXISTS transactions")
-        cursor.execute("DROP TABLE IF EXISTS beneficiaries")
-        cursor.execute("DROP TABLE IF EXISTS users")
+        if database_exists:
+            print(f"Database '{new_database}' already exists. Skipping database creation.")
+        else:
+            # Create new database
+            cursor.execute(f"CREATE DATABASE {new_database}")
+            print(f"Database '{new_database}' created.")
 
-        # Create 'users' table
+        # Grant privileges to the new user on the new database
+        cursor.execute(f"GRANT ALL PRIVILEGES ON {new_database}.* TO '{new_username}'@'localhost';")
+        cursor.execute("FLUSH PRIVILEGES;")
         cursor.execute("""
-        CREATE TABLE users (
+        CREATE TABLE Bank_data.users (
             id INT AUTO_INCREMENT PRIMARY KEY,
             username VARCHAR(255) NOT NULL UNIQUE,
             password VARCHAR(255) NOT NULL,
@@ -60,13 +51,13 @@ def setup_database():
             bvn VARCHAR(255),
             account_name VARCHAR(255),
             email VARCHAR(255),
-            INDEX (username)  -- Add index for username to support foreign key references
+            INDEX (username)
         )
         """)
 
         # Create 'transactions' table
         cursor.execute("""
-        CREATE TABLE transactions (
+        CREATE TABLE Bank_data.transactions (
             id INT AUTO_INCREMENT PRIMARY KEY,
             username VARCHAR(255) NOT NULL,
             date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -81,7 +72,7 @@ def setup_database():
 
         # Create 'beneficiaries' table
         cursor.execute("""
-        CREATE TABLE beneficiaries (
+        CREATE TABLE Bank_data.beneficiaries (
             id INT AUTO_INCREMENT PRIMARY KEY,
             username VARCHAR(255) NOT NULL,
             name VARCHAR(255) NOT NULL,
@@ -90,27 +81,7 @@ def setup_database():
             UNIQUE (username, account_number)
         )
         """)
-
-        # Insert a sample user (if needed)
-        cursor.execute("""
-        INSERT INTO users (username, password, dob, secret_question, secret_answer, transaction_pin, account_number, account_balance, reference_code, bvn, account_name, email)
-        VALUES ('sample_user', 'sample_pass', '1990-01-01', 'Your favorite color?', 'Blue', '1234', 'ACC123', 1000.00, 'REF123', '12345678901', 'Sample Name', 'sample@example.com')
-        ON DUPLICATE KEY UPDATE
-            password = VALUES(password),
-            dob = VALUES(dob),
-            secret_question = VALUES(secret_question),
-            secret_answer = VALUES(secret_answer),
-            transaction_pin = VALUES(transaction_pin),
-            account_balance = VALUES(account_balance),
-            reference_code = VALUES(reference_code),
-            bvn = VALUES(bvn),
-            account_name = VALUES(account_name),
-            email = VALUES(email)
-        """)
-
-        db.commit()
-
-        print("Database setup complete. Sample user inserted.")
+        print(f"Privileges granted to user '{new_username}' on database '{new_database}'.")
 
     except mysql.connector.Error as err:
         if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
@@ -118,17 +89,13 @@ def setup_database():
         elif err.errno == errorcode.ER_BAD_DB_ERROR:
             print("Error: Database does not exist.")
         else:
-            print(err)
+            print(f"Error: {err}")
     finally:
-        cursor.close()
-        db.close()
+        if cursor:
+            cursor.close()
+        if db:
+            db.close()
 
+# Example usage
 if __name__ == "__main__":
-    create_mysql_user()
-    if create_mysql_user:
-        setup_database()
-    
-
-
-    
-
+    create_mysql_user_and_database("Bank", "Bankappsql", "Bank_data")
