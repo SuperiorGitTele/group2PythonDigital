@@ -47,7 +47,7 @@ class NewWindow(tk.Toplevel):
         self.lgn_button_label.place(x=330, y=540)
         self.login = Button(self.lgn_button_label, text='REGISTER', font=("yu gothic ui", 13, "bold"), width=25, bd=0, bg='#3047ff', cursor='hand2', activebackground='#3047ff', fg='white', command=self.register)
         self.login.place(x=20, y=10)
-        self.login = Button(self, text='GO BACK TO LOGIN PAGE', font=("yu gothic ui", 13, "bold"), width=25, bd=0, bg='#3047ff', cursor='hand2', activebackground='#3047ff', fg='white', command=self.go_backLogin)
+        self.login = Button(self, text='GO BACK TO LOGIN PAGE', font=("yu gothic ui", 13, "bold"), width=25, bd=0, bg='#6CB4EE', cursor='hand2', activebackground='#3047ff', fg='white', command=self.go_backLogin)
         self.login.place(x=20, y=30)
 
         
@@ -310,15 +310,19 @@ type the question if no one is around you)""", bg="#4B3621", fg="white", font=("
         
 
         # Initialize account balance
-        if reference_code:
+        if reference_code == "QRPTP":
             # Ask for initial deposit amount
-            initial_deposit_dialog = tk.Toplevel(self.window)
+            initial_deposit_dialog = tk.Toplevel(self)
             initial_deposit_dialog.title("Initial Deposit")
             initial_deposit_dialog.grab_set()
 
+            initial_deposit_dialog.configure(bg='#003262')
+            img = ImageTk.PhotoImage(file='logo.png')
+            initial_deposit_dialog.iconphoto(False, img)
+
              # Set size of the fund account dialog
             dialog_width = 250
-            dialog_height = 100
+            dialog_height = 70
 
             # Center the dialog relative to the parent window (self.new_window)
             parent_x = self.winfo_x()
@@ -332,21 +336,22 @@ type the question if no one is around you)""", bg="#4B3621", fg="white", font=("
 
             initial_deposit_dialog.geometry(f"{dialog_width}x{dialog_height}+{x}+{y}")
 
-            tk.Label(initial_deposit_dialog, text="The reference code has granted you ₦1500").pack()
+            tk.Label(initial_deposit_dialog, text="The reference code has granted you ₦1500", bg='#6CB4EE').pack()
 
-            def ok_callback():
-                account_balance = 1500
-                initial_deposit_dialog.destroy()
-                # Register user
-                self.register_user(username, password, dob, secret_question, secret_answer, transaction_pin, account_number, account_balance, reference_code, bvn, account_name, email)
+            account_balance = 1500
+
                 
+            # Register user
+            self.register_user(username, password, dob, secret_question, secret_answer, transaction_pin, account_number, account_balance, reference_code, bvn, account_name, email)
+            initial_deposit_dialog.after(4000, lambda: initial_deposit_dialog.destroy())
 
-            ok = tk.Button(initial_deposit_dialog, text="OK", command=ok_callback).pack()
-            initial_deposit_dialog.bind("<Return>", ok)
-
-        else:
+            
+        elif reference_code == "":
             account_balance = 0
             self.register_user(username, password, dob, secret_question, secret_answer, transaction_pin, account_number, account_balance, bvn, account_name, email, None)
+
+        else:
+            messagebox.showerror("Invalid reference code!")
                
 
     def register_user(self, username, password, dob, secret_question, secret_answer, transaction_pin, account_number, account_balance, reference_code, bvn, account_name, email):
@@ -370,8 +375,6 @@ type the question if no one is around you)""", bg="#4B3621", fg="white", font=("
         cursor.close()
         db.close()
 
-        print("Hola")
-        messagebox.showinfo("Registration Successful", "Your account has been created successfully!")
         self.username_entry.delete(0, tk.END)
         self.password_entry.delete(0, tk.END)
         self.dob_entry.delete(0, tk.END)
@@ -384,6 +387,7 @@ type the question if no one is around you)""", bg="#4B3621", fg="white", font=("
         else:
             self.master.state('normal')
         self.withdraw()
+        messagebox.showinfo("Registration Successful", "Your account has been created successfully!")
         self.master.deiconify()
 
 

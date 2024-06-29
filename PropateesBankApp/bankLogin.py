@@ -215,6 +215,11 @@ class LoginWindow(tk.Tk):
         dialog = tk.Toplevel(self.window)
         dialog.title("Forgot Password")
         dialog.grab_set()
+        dialog.configure(bg='#003262')
+        img = ImageTk.PhotoImage(file='logo.png')
+        dialog.iconphoto(False, img)
+        
+
 
         # Set size of the fund account dialog
         dialog_width = 400
@@ -232,15 +237,15 @@ class LoginWindow(tk.Tk):
 
         dialog.geometry(f"{dialog_width}x{dialog_height}+{x}+{y}")
 
-        tk.Label(dialog, text="Enter your username:").pack()
+        tk.Label(dialog, text="Enter your username:", bg='#6CB4EE').pack()
         username_entry = tk.Entry(dialog)
         username_entry.pack()
 
-        tk.Label(dialog, text="Enter your Secret Question:").pack()
+        tk.Label(dialog, text="Enter your Secret Question:", bg='#6CB4EE').pack()
         secret_entry = tk.Entry(dialog)
         secret_entry.pack()
 
-        tk.Label(dialog, text="Enter your Secret Answer:").pack()
+        tk.Label(dialog, text="Enter your Secret Answer:", bg='#6CB4EE').pack()
         answer_entry = tk.Entry(dialog)
         answer_entry.pack()
 
@@ -286,7 +291,7 @@ class LoginWindow(tk.Tk):
             else:
                 messagebox.showerror("Error", "Please enter username, secret question and answer")
 
-        tk.Button(dialog, text="Retrieve Account", command=ok_callback).pack()
+        tk.Button(dialog, text="Retrieve Account", bg='#3047ff', command=ok_callback).pack()
         answer_entry.bind("<Return>", ok_callback)
 
                    
