@@ -156,9 +156,6 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
 
         self.sidebar = None
 
-        # self.username = self.username  # Dummy username; replace with the actual logged-in user's username.
-        self.session_transactions = []  # Initialize to track transactions during the session
-
         self.setup_uiTRANS()
         self.setup_uiBENE()
     
@@ -228,6 +225,7 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
         else:
             self.balance_label.place_forget()
             self.balance_label = None
+            
 
     def toggle_balance1(self):
         if self.bankHistory1 is not None and self.bankHistory1.winfo_ismapped():
@@ -302,7 +300,7 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
 
         self.bene_tree.pack(fill="both", expand=True)
 
-        self.quick_transfer_button = tk.Button(self.beneficiaries_frame, text="Quick Transfer", command=self.quick_transfer_action)
+        self.quick_transfer_button = tk.Button(self.beneficiaries_frame, text="Quick Transfer", bg='#6CB4EE', command=self.quick_transfer_action)
         self.quick_transfer_button.pack(pady=5)
 
         # Load initial beneficiaries
@@ -355,6 +353,27 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
         name, account_number = beneficiary
         quick_transfer_dialog = tk.Toplevel(self.new_window)
         quick_transfer_dialog.title(f"Quick Transfer to {name}")
+        
+        quick_transfer_dialog.configure(bg='#003262')
+        img = ImageTk.PhotoImage(file='logo.png')
+        quick_transfer_dialog.iconphoto(False, img)
+        quick_transfer_dialog.grab_set()
+
+        # Set size of the fund account dialog
+        dialog_width = 400
+        dialog_height = 250
+
+        # Center the dialog relative to the parent window (self.new_window)
+        parent_x = self.new_window.winfo_x()
+        parent_y = self.new_window.winfo_y()
+        parent_width = self.new_window.winfo_width()
+        parent_height = self.new_window.winfo_height()
+
+        # Calculate the position
+        x = parent_x + (parent_width // 2) - (dialog_width // 2)
+        y = parent_y + (parent_height // 2) - (dialog_height // 2)
+
+        quick_transfer_dialog.geometry(f"{dialog_width}x{dialog_height}+{x}+{y}")
 
         tk.Label(quick_transfer_dialog, text=f"Account: {account_number}", bg='#6CB4EE').pack()
 
@@ -378,7 +397,7 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
             self.transfer_money(self.username, account_number, amount, transaction_pin)
             quick_transfer_dialog.destroy()
 
-        quick_transfer_button = tk.Button(quick_transfer_dialog, text="Transfer", command=quick_transfer_callback)
+        quick_transfer_button = tk.Button(quick_transfer_dialog, text="Transfer", bg='#0095B6', command=quick_transfer_callback)
         quick_transfer_button.pack()
 
         # Bind Enter key to simulate clicking the Transfer button
@@ -459,6 +478,18 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
             # Fetch the transaction details
             cursor.execute("SELECT date, trans_type, amount, balance, recipient_account, recipient_name FROM transactions WHERE id = %s", (transaction_id,))
             transaction = cursor.fetchone()
+            # if self.balance_label.winfo_ismapped():
+            #     # Get the account balance from the database or wherever it's stored
+            #     account_balance = self.get_account_balance(sender_username)  # Replace with your own function
+            #     style = ttk.Style()
+            #     style.configure("Big.TLabel", font=("Arial", 15), foreground="#0095B6", background="brown")
+
+            #     # Create a Label to display the account balance
+            #     self.balance_label = ttk.Label(self.lgn_frame, text=f"Account Balance ₦: {account_balance}", style="Big.TLabel", width="32")
+            #     self.balance_label.place(x=320, y=160)
+            # else:
+            #     self.balance_label.place_forget()
+                
 
             # Print the receipt
             self.print_receipt(transaction)
@@ -480,7 +511,26 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
     def print_receipt(self, transaction):
         receipt_dialog = tk.Toplevel(self.new_window)
         receipt_dialog.title("Transaction Receipt")
+        receipt_dialog.configure(bg='#0095B6')
+        img = ImageTk.PhotoImage(file='logo.png')
+        receipt_dialog.iconphoto(False, img)
         receipt_dialog.grab_set()
+
+        # Set size of the fund account dialog
+        dialog_width = 400
+        dialog_height = 300
+
+        # Center the dialog relative to the parent window (self.new_window)
+        parent_x = self.new_window.winfo_x()
+        parent_y = self.new_window.winfo_y()
+        parent_width = self.new_window.winfo_width()
+        parent_height = self.new_window.winfo_height()
+
+        # Calculate the position
+        x = parent_x + (parent_width // 2) - (dialog_width // 2)
+        y = parent_y + (parent_height // 2) - (dialog_height // 2)
+
+        receipt_dialog.geometry(f"{dialog_width}x{dialog_height}+{x}+{y}")
 
         date, trans_type, amount, balance, recipient_account, recipient_name = transaction
 
@@ -497,8 +547,8 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
         Recipient Name : {recipient_name}
         ===============================
         """
-        tk.Label(receipt_dialog, text=receipt_text, justify="left", font=("Arial", 12)).pack(padx=10, pady=10)
-        tk.Button(receipt_dialog, text="Close", command=receipt_dialog.destroy).pack(pady=5)
+        tk.Label(receipt_dialog, text=receipt_text, justify="left", bg='#0095B6', font=("Arial", 12)).pack(padx=10, pady=10)
+        tk.Button(receipt_dialog, text="Close", bg="#003262", command=receipt_dialog.destroy).pack(pady=5)
 
     def get_account_name_by_account_number(self, account_number):
         db = mysql.connector.connect(
@@ -600,13 +650,6 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
                 self.add_beneficiary(self.username, recipient_account)
 
             transfer_dialog.destroy()
-
-
-        
-            
-            
-
-
         transfer_button = tk.Button(transfer_dialog, text="Transfer", bg='#0095B6', command=transfer_callback)
         transfer_button.pack()
 
@@ -918,7 +961,4 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
     def clear_on_focus(self, event):
         event.widget.delete(0, tk.END)
 
-root = tk.Tk()
-welcome_window = WelcomeWindow(root, "username")
-root.withdraw()  # Hide the root window
-welcome_window.new_window.mainloop()
+# root = tk.Tk() 
