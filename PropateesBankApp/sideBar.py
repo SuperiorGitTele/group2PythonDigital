@@ -8,9 +8,6 @@ class Sidebar(tk.Frame):
         self.is_open = False
         self.configure(bg="#3B3C36")
 
-        # Close button
-        # self.close_button = tk.Button(self, text="X", font=('yu gothic ui', 16, 'bold'), bg='#3B3C36', fg='white', command=self.close_sidebar)
-        # self.close_button.place(x=10, y=10)
 
         # Open the image file
         image = Image.open("bar12.png")
@@ -34,14 +31,11 @@ class Sidebar(tk.Frame):
         self.logo_label.place(x=70, y=0)
 
         # Buttons
-        self.button1 = tk.Button(self, text="Dashboard", font=('yu gothic ui', 13, 'bold'), width=20, bd=0, bg='#3047ff', cursor='hand2', activebackground='#3047ff', fg='white')
-        self.button1.place(x=10, y=200)
+        self.button1 = tk.Button(self, text="Dashboard", font=('yu gothic ui', 13, 'bold'), width=20, bd=0, bg='#0095B6', cursor='hand2', activebackground='#3047ff', fg='white')
+        self.button1.place(x=20, y=200)
 
-        self.button2 = tk.Button(self, text="Transactions", font=('yu gothic ui', 13, 'bold'), width=20, bd=0, bg='#3047ff', cursor='hand2', activebackground='#3047ff', fg='white')
-        self.button2.place(x=10, y=300)
-
-        self.button3 = tk.Button(self, text="Account Settings", font=('yu gothic ui', 13, 'bold'), width=20, bd=0, bg='#3047ff', cursor='hand2', activebackground='#3047ff', fg='white')
-        self.button3.place(x=10, y=500)
+        self.button3 = tk.Button(self, text="Account Details", font=('yu gothic ui', 13, 'bold'), width=20, bd=0, bg='#0095B6', cursor='hand2', activebackground='#3047ff', fg='white')
+        self.button3.place(x=20, y=300)
 
     def toggle(self):
             self.animate_open()

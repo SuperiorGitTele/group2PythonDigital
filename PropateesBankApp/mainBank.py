@@ -1,11 +1,20 @@
 import tkinter as tk
 from tkinter import ttk
-import sqlite3
 from sideBar import Sidebar
 from tkinter import messagebox
 import mysql.connector
 from PIL import ImageTk, Image
+import smtplib
+import subprocess
+import time
+import re
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 from datetime import datetime
+import mysql.connector
+from tkinter import messagebox
+import requests
+
 
 class WelcomeWindow:
     def __init__(self, master, username):
@@ -18,8 +27,6 @@ class WelcomeWindow:
 
         img = ImageTk.PhotoImage(file='logo.png')
         self.new_window.iconphoto(False, img)
-        
-
         
 
         self.new_window.state('normal')  # Instead of 'zoomed', use 'normal' to allow the window to be resized
@@ -100,6 +107,22 @@ class WelcomeWindow:
         self.lgn_frame.after(8000, label1.place_forget)
         self.lgn_frame.after(8000, lambda: label.place(x=900, y=36))
         self.lgn_frame.after(9000, label.place_forget)
+        self.lgn_frame.after(9000, lambda: label1.place(x=900, y=36))
+        self.lgn_frame.after(10000, label1.place_forget)
+        self.lgn_frame.after(10000, lambda: label.place(x=900, y=36))
+        self.lgn_frame.after(11000, label.place_forget)
+        self.lgn_frame.after(11000, lambda: label1.place(x=900, y=36))
+        self.lgn_frame.after(12000, label1.place_forget)
+        self.lgn_frame.after(12000, lambda: label.place(x=900, y=36))
+        self.lgn_frame.after(13000, label.place_forget)
+        self.lgn_frame.after(13000, lambda: label1.place(x=900, y=36))
+        self.lgn_frame.after(14000, label1.place_forget)
+        self.lgn_frame.after(14000, lambda: label.place(x=900, y=36))
+        self.lgn_frame.after(15000, label.place_forget)
+        self.lgn_frame.after(15000, lambda: label1.place(x=900, y=36))
+        self.lgn_frame.after(16000, label1.place_forget)
+        self.lgn_frame.after(16000, lambda: label.place(x=900, y=36))
+        self.lgn_frame.after(17000, label.place_forget)
 
         
 
@@ -406,14 +429,66 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
     
 
 
-
-
-
-
-    
-
     def transfer_money(self, sender_username, recipient_account, amount, transaction_pin):
-        # Connect to MySQL database
+        # Check Wi-Fi and Internet Speed
+        def check_wifi_and_internet_speed():
+            try:
+                # Check Wi-Fi connection
+                output = subprocess.check_output(["netsh", "wlan", "show", "interfaces"])
+                output = output.decode("utf-8")
+                ssid = None
+                for line in output.split("\n"):
+                    if "SSID" in line and "BSSID" not in line:
+                        ssid = line.split(":")[1].strip()
+                        break
+
+                if not ssid:
+                    return False
+
+                # Perform a simple internet speed test
+                start_time = time.time()
+                response = requests.get("https://httpbin.org/bytes/1024", timeout=3)
+                end_time = time.time()
+
+                # Check if the response was successful and if the time taken is less than 3 seconds
+                if response.status_code == 200 and (end_time - start_time) < 3:
+                    return True
+                else:
+                    return False
+            except (subprocess.CalledProcessError, requests.RequestException):
+                return False
+
+        # Verify Email Format
+        def verify_email(email):
+            # Basic regex for email validation
+            email_regex = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+            return re.match(email_regex, email) is not None
+
+        # Send Email Notification
+        def send_email(to_email, subject, body):
+            smtp_server = "smtp.gmail.com"
+            smtp_port = 587
+            from_email = "propateesbank@gmail.com"  # Replace with your email
+            password = "proban24!"  # Replace with your app-specific password
+
+            message = MIMEMultipart()
+            message["From"] = from_email
+            message["To"] = to_email
+            message["Subject"] = subject
+            message.attach(MIMEText(body, "plain"))
+
+            try:
+                server = smtplib.SMTP(smtp_server, smtp_port)
+                server.starttls()  # Upgrade to secure connection
+                server.login(from_email, password)
+                server.sendmail(from_email, to_email, message.as_string())
+                server.quit()
+                print(f"Email sent to {to_email}")
+            except Exception as e:
+                print(f"Failed to send email to {to_email}: {e}")
+
+
+        # Connect to the database
         db = mysql.connector.connect(
             host="localhost",
             user="Bank",
@@ -424,13 +499,13 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
 
         try:
             # Fetch sender's details
-            cursor.execute("SELECT account_number, account_balance, transaction_pin FROM users WHERE username = %s", (sender_username,))
+            cursor.execute("SELECT account_number, account_balance, transaction_pin, email FROM users WHERE username = %s", (sender_username,))
             sender = cursor.fetchone()
             if not sender:
                 messagebox.showerror("Error", "Sender account not found.")
                 return
 
-            sender_account, sender_balance, stored_pin = sender
+            sender_account, sender_balance, stored_pin, sender_email = sender
 
             # Validate transaction PIN
             if transaction_pin != stored_pin:
@@ -443,13 +518,13 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
                 return
 
             # Fetch recipient's details
-            cursor.execute("SELECT account_balance, account_name FROM users WHERE account_number = %s", (recipient_account,))
+            cursor.execute("SELECT account_balance, account_name, email FROM users WHERE account_number = %s", (recipient_account,))
             recipient = cursor.fetchone()
             if not recipient:
                 messagebox.showerror("Error", "Recipient account not found.")
                 return
 
-            recipient_balance, recipient_name = recipient
+            recipient_balance, recipient_name, recipient_email = recipient
 
             # Ensure sufficient balance
             if sender_balance < amount:
@@ -478,18 +553,6 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
             # Fetch the transaction details
             cursor.execute("SELECT date, trans_type, amount, balance, recipient_account, recipient_name FROM transactions WHERE id = %s", (transaction_id,))
             transaction = cursor.fetchone()
-            # if self.balance_label.winfo_ismapped():
-            #     # Get the account balance from the database or wherever it's stored
-            #     account_balance = self.get_account_balance(sender_username)  # Replace with your own function
-            #     style = ttk.Style()
-            #     style.configure("Big.TLabel", font=("Arial", 15), foreground="#0095B6", background="brown")
-
-            #     # Create a Label to display the account balance
-            #     self.balance_label = ttk.Label(self.lgn_frame, text=f"Account Balance ₦: {account_balance}", style="Big.TLabel", width="32")
-            #     self.balance_label.place(x=320, y=160)
-            # else:
-            #     self.balance_label.place_forget()
-                
 
             # Print the receipt
             self.print_receipt(transaction)
@@ -498,7 +561,43 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
             self.load_transaction_history()
             self.load_beneficiaries()
 
-            
+            # Send debit email notification
+            if check_wifi_and_internet_speed() and sender_email and verify_email(sender_email):
+                subject = "Debit Alert: Funds Transfer"
+                body = f"""
+                Dear {sender_username},
+
+                You have successfully transferred ₦{amount:.2f} to account {recipient_account} ({recipient_name}).
+
+                Transaction ID: {transaction_id}
+                Date: {now}
+                Remaining Balance: ₦{new_sender_balance:.2f}
+
+                Thank you for using our service.
+
+                Best regards,
+                Your Bank Team
+                """
+                send_email(sender_email, subject, body)
+
+            # Verify and send credit email notification
+            if check_wifi_and_internet_speed() and recipient_email and verify_email(recipient_email):
+                subject = "Credit Alert: Funds Received"
+                body = f"""
+                Dear {recipient_name},
+
+                You have received ₦{amount:.2f} from {sender_username}.
+
+                Transaction ID: {transaction_id}
+                Date: {now}
+                New Balance: ₦{new_recipient_balance:.2f}
+
+                Thank you for using our service.
+
+                Best regards,
+                Your Bank Team
+                """
+                send_email(recipient_email, subject, body)
 
         except mysql.connector.Error as err:
             messagebox.showerror("Database Error", f"Error: {err}")
@@ -548,7 +647,7 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
         ===============================
         """
         tk.Label(receipt_dialog, text=receipt_text, justify="left", bg='#0095B6', font=("Arial", 12)).pack(padx=10, pady=10)
-        tk.Button(receipt_dialog, text="Close", bg="#003262", command=receipt_dialog.destroy).pack(pady=5)
+        tk.Button(receipt_dialog, text="Close", bg="#6CB4EE", command=receipt_dialog.destroy).pack(pady=5)
 
     def get_account_name_by_account_number(self, account_number):
         db = mysql.connector.connect(

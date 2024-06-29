@@ -15,6 +15,9 @@ import mysql.connector
 import requests
 
 
+# Run to install dependencies
+# pip install -r requirements.txt
+# run sql.py with your root password
 
 
 class LoginWindow(tk.Tk):
@@ -335,7 +338,6 @@ class LoginWindow(tk.Tk):
                     # If there is an internet connection, use pygame
                     self.play_audio(username)
                     self.open_welcome_window(username)
-                    print("Hello")
                     self.withdraw()
 
                 else:

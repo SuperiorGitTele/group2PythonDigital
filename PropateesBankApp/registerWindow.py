@@ -17,24 +17,16 @@ class NewWindow(tk.Toplevel):
     def __init__(self, master):
         super().__init__(master)
         self.title("Register with PROPATEES")
+        self.geometry("1450x760")
         self.master = master
         img = PhotoImage(file='logo.png')
         self.iconphoto(False, img)
-         # Get the screen's width and height
-        screen_width = self.winfo_screenwidth()
-        screen_height = self.winfo_screenheight()
-        # self.center_window()
-
-        # Assuming the taskbar's height is 40 pixels (you may need to adjust this)
-        taskbar_height = 40
-
-        # Set the window's geometry to the screen's width and height, minus the taskbar's height
-        self.geometry(f"{screen_width}x{screen_height - taskbar_height}")
+         
 
         self.state('normal')  # Instead of 'zoomed', use 'normal' to allow the window to be resized
-        self.resizable(0, 0)  # But then disable resizing
-        self.window = self
-        self.update_idletasks()
+        self.resizable(True, True)  # But then disable resizing
+        # self.new_window.update_idletasks()
+        self.center_window()
         self.configure(bg='#0047AB')
 
 
