@@ -718,7 +718,7 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
             else:
                 name_label.config(text="Account Name: ")
 
-        recipient_entry.bind("<KeyRelease>", on_recipient_change)
+        
 
         tk.Label(transfer_dialog, text="Amount to Transfer ₦ :", bg='#6CB4EE').pack()
         amount_entry = tk.Entry(transfer_dialog)
@@ -745,6 +745,8 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
             transaction_pin = pin_entry.get()
 
             self.transfer_money(self.username, recipient_account, amount, transaction_pin)
+            self.get_account_balance(self.username)
+
             if add_beneficiary_var.get():
                 self.add_beneficiary(self.username, recipient_account)
 
@@ -752,8 +754,12 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
         transfer_button = tk.Button(transfer_dialog, text="Transfer", bg='#0095B6', command=transfer_callback)
         transfer_button.pack()
 
+        if amount_entry.focus() is True:
+            on_recipient_change()
+
         def focus_password_entry6(self, event=None):
             amount_entry.focus()
+            on_recipient_change()
 
         # Bind the Enter key to focus on the password entry field
         recipient_entry.bind("<Return>", lambda event: focus_password_entry6(self))
