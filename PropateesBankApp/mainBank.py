@@ -138,6 +138,8 @@ class WelcomeWindow:
         self.transfer_button.place(x=665, y=120)
 
         # 
+        # style1 = ttk.Style()
+        # style1.configure("Big.TButton1", font=("Arial", 17), foreground="#013220", background="black")
         self.fund_account_button = ttk.Button(self.new_window, text="""Fund your account 
 from your other 
 PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
@@ -170,6 +172,19 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
         self.logo_label.image = logos
         self.logo_label.__reduce__()
         self.logo_label.place(x=25, y=520)
+
+        style = ttk.Style(self)
+        
+    
+        style.configure('TMenubutton', 
+                        background='#003262', 
+                        foreground='#FFFFFF',
+                        font=('Arial', 12),
+                        padding=5)
+        
+        style.map('TMenubutton', 
+                  background=[('active', '#0066CC'), ('!disabled', '#004A99')],
+                  foreground=[('active', '#FFFFFF'), ('!disabled', '#FFFFFF')])
 
         self.settings = tk.StringVar()
         self.settings.set("Settings")  # default value
@@ -1066,4 +1081,7 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
     def clear_on_focus(self, event):
         event.widget.delete(0, tk.END)
 
-# root = tk.Tk() 
+# root = tk.Tk()
+# welcome_window = WelcomeWindow(root, "username")
+# root.withdraw()  # Hide the root window
+# welcome_window.new_window.mainloop()

@@ -16,6 +16,8 @@ import requests
 
 
 # Run to install dependencies
+# (python -m venv myenv to avoid conflicts)not necessary
+# (myenv\Scripts\activate)not necessary
 # pip install -r requirements.txt
 # run sql.py with your root password
 
