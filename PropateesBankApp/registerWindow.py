@@ -357,7 +357,8 @@ type the question if no one is around you)""", bg="#4B3621", fg="white", font=("
             host="localhost",
             user="Bank",
             password="Bankappsql",
-            database="Bank_data"
+            database="Bank_data",
+            auth_plugin='mysql_native_password'
         )
         cursor = db.cursor()
 
