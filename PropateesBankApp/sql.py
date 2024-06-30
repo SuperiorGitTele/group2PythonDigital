@@ -36,7 +36,7 @@ def create_mysql_user_and_database(new_username, new_password, new_database):
         # Grant privileges to the new user on the new database
         cursor.execute(f"GRANT ALL PRIVILEGES ON {new_database}.* TO '{new_username}'@'localhost';")
         cursor.execute("FLUSH PRIVILEGES;")
-        cursor.execute(f"ALTER USER '{new_username}'@'localhost' IDENTIFIED WITH mysql_native_password BY '{new_password}';")
+        cursor.execute("ALTER USER 'Bank'@'localhost' IDENTIFIED WITH mysql_native_password BY 'Bankappsql';")
         cursor.execute("FLUSH PRIVILEGES;")
         
 
