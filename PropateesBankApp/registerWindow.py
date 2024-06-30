@@ -2,8 +2,6 @@ import tkinter as tk
 from tkinter import *
 from PIL import ImageTk, Image
 from tkinter import messagebox
-from PIL import Image, ImageTk
-from tkinter import simpledialog
 import random
 import mysql.connector
 import random
