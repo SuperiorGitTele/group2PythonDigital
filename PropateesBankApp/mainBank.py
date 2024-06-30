@@ -185,8 +185,8 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
         #           background=[('active', '#0066CC'), ('!disabled', '#004A99')],
         #           foreground=[('active', '#FFFFFF'), ('!disabled', '#FFFFFF')])
 
-        # self.settings = tk.StringVar()
-        # self.settings.set("Settings")  # default value
+        self.settings = tk.StringVar()
+        self.settings.set("Settings")  # default value
 
         self.sidebar_menu = ttk.OptionMenu(self.lgn_frame, self.settings, "Settings", "Edit Account Details", command=self.toggle_sidebar)
         self.sidebar_menu.place(x=1400, y=10)
