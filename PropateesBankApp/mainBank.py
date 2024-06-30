@@ -173,21 +173,20 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
         self.logo_label.__reduce__()
         self.logo_label.place(x=25, y=520)
 
-        style = ttk.Style(self)
+        # style = ttk.Style(self)
         
-    
-        style.configure('TMenubutton', 
-                        background='#003262', 
-                        foreground='#FFFFFF',
-                        font=('Arial', 12),
-                        padding=5)
+        # style.configure('TMenubutton', 
+        #                 background='#003262', 
+        #                 foreground='#FFFFFF',
+        #                 font=('Arial', 12),
+        #                 padding=5)
         
-        style.map('TMenubutton', 
-                  background=[('active', '#0066CC'), ('!disabled', '#004A99')],
-                  foreground=[('active', '#FFFFFF'), ('!disabled', '#FFFFFF')])
+        # style.map('TMenubutton', 
+        #           background=[('active', '#0066CC'), ('!disabled', '#004A99')],
+        #           foreground=[('active', '#FFFFFF'), ('!disabled', '#FFFFFF')])
 
-        self.settings = tk.StringVar()
-        self.settings.set("Settings")  # default value
+        # self.settings = tk.StringVar()
+        # self.settings.set("Settings")  # default value
 
         self.sidebar_menu = ttk.OptionMenu(self.lgn_frame, self.settings, "Settings", "Edit Account Details", command=self.toggle_sidebar)
         self.sidebar_menu.place(x=1400, y=10)
