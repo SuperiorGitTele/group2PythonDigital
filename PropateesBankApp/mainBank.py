@@ -1112,7 +1112,7 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
     def clear_on_focus(self, event):
         event.widget.delete(0, tk.END)
 
-root = tk.Tk()
-welcome_window = WelcomeWindow(root, "username")
-root.withdraw()  # Hide the root window
-welcome_window.new_window.mainloop()
+# root = tk.Tk()
+# welcome_window = WelcomeWindow(root, "username")
+# root.withdraw()  # Hide the root window
+# welcome_window.new_window.mainloop()
