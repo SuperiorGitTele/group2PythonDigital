@@ -95,9 +95,15 @@ class Sidebar(tk.Frame):
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 # if __name__ == "__main__":
 #     root = tk.Tk()
 #     root.geometry("1200x600")  # Set window size
+=======
+if __name__ == "__main__":
+    root = tk.Tk()
+    root.geometry("1200x600")  # Set window size
+>>>>>>> Stashed changes
 =======
 if __name__ == "__main__":
     root = tk.Tk()
