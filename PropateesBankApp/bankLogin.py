@@ -259,9 +259,9 @@ class LoginWindow(tk.Tk):
                 try:
                     db = mysql.connector.connect(
                         host="localhost",
-                        user="pamela",
+                        user="Bank",
                         password="Bankappsql",
-                        database="new_data"
+                        database="Bank_data"
                     )
                     cursor = db.cursor()
                     cursor.execute("SELECT * FROM users WHERE username = %s AND secret_question = %s AND secret_answer = %s", (username, secretQ, secretA))
