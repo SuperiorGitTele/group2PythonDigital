@@ -327,7 +327,8 @@ class LoginWindow(tk.Tk):
             host="localhost",
             user="Bank",
             password="Bankappsql",
-            database="Bank_data"
+            database="Bank_data",
+            auth_plugin='mysql_native_password'
         )
         cursor = db.cursor()
 

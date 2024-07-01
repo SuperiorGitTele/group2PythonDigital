@@ -228,7 +228,8 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
             host="localhost",
             user="Bank",
             password="Bankappsql",
-            database="Bank_data"
+            database="Bank_data",
+            auth_plugin='mysql_native_password'
         )
         cursor = db.cursor()
 
@@ -353,7 +354,8 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
             host="localhost",
             user="Bank",
             password="Bankappsql",
-            database="Bank_data"
+            database="Bank_data",
+            auth_plugin='mysql_native_password'
         )
         cursor = db.cursor()
 
@@ -507,7 +509,8 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
             host="localhost",
             user="Bank",
             password="Bankappsql",
-            database="Bank_data"
+            database="Bank_data",
+            auth_plugin='mysql_native_password'
         )
         cursor = db.cursor()
 
@@ -668,7 +671,8 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
             host="localhost",
             user="Bank",
             password="Bankappsql",
-            database="Bank_data"
+            database="Bank_data",
+            auth_plugin='mysql_native_password'
         )
         cursor = db.cursor()
 
@@ -793,7 +797,8 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
             host="localhost",
             user="Bank",
             password="Bankappsql",
-            database="Bank_data"
+            database="Bank_data",
+            auth_plugin='mysql_native_password'
         )
         cursor = db.cursor()
 
@@ -843,7 +848,8 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
             host="localhost",
             user="Bank",
             password="Bankappsql",
-            database="Bank_data"
+            database="Bank_data",
+            auth_plugin='mysql_native_password'
         )
         cursor = db.cursor()
 
@@ -896,7 +902,8 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
                 host="localhost",
             user="Bank",
             password="Bankappsql",
-            database="Bank_data"
+            database="Bank_data",
+            auth_plugin='mysql_native_password'
             )
             cursor = db.cursor()
 
@@ -993,7 +1000,8 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
             host="localhost",
             user="Bank",
             password="Bankappsql",
-            database="Bank_data"
+            database="Bank_data",
+            auth_plugin='mysql_native_password'
         )
         cursor = db.cursor()
 
