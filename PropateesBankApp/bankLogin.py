@@ -33,7 +33,7 @@ class LoginWindow(tk.Tk):
         self.iconphoto(False, img)
 
     
-        self.resizable(True, True)  #disable resizing
+        self.resizable(True, True) 
         self.window = self
         self.configure(bg='#003262')
         self.center_window()
@@ -134,7 +134,6 @@ class LoginWindow(tk.Tk):
 
         self.username_entry = Entry(self.lgn_frame, highlightthickness=0, relief=FLAT, bg="#353839", fg="#6082B6", font=("yu gothic ui ", 12, "bold"), insertbackground = '#6082B6')
         self.username_entry.place(x=580, y=335, width=270)
-        # self.username_entry.focus()
         self.username_entry.insert(0, "Type your username here...")
         self.username_entry.bind("<FocusIn>", self.clear_on_focus)
 
@@ -183,7 +182,7 @@ class LoginWindow(tk.Tk):
         self.hide_image = ImageTk.PhotoImage \
             (file='hide.png')
 
-        self.show_button = Button(self.lgn_frame, image=self.hide_image, command=self.show, relief=FLAT,activebackground="white", borderwidth=0, background="#3B3C36", cursor="hand2")
+        self.show_button = Button(self.lgn_frame, image=self.hide_image, command=self.show, relief=FLAT,activebackground="white", borderwidth=0, background="#353839", cursor="hand2")
         self.show_button.place(x=860, y=420)
 
         
@@ -298,12 +297,12 @@ class LoginWindow(tk.Tk):
 
                    
     def show(self):
-        self.hide_button = Button(self.lgn_frame, image=self.show_image, command=self.hide, relief=FLAT, activebackground="white", borderwidth=0, background="#3B3C36", cursor="hand2")
+        self.hide_button = Button(self.lgn_frame, image=self.show_image, command=self.hide, relief=FLAT, activebackground="white", borderwidth=0, background="#353839", cursor="hand2")
         self.hide_button.place(x=860, y=420)
         self.password_entry.config(show='')
 
     def hide(self):
-        self.show_button = Button(self.lgn_frame, image=self.hide_image, command=self.show, relief=FLAT,activebackground="white", borderwidth=0, background="#3B3C36", cursor="hand2")
+        self.show_button = Button(self.lgn_frame, image=self.hide_image, command=self.show, relief=FLAT,activebackground="white", borderwidth=0, background="#353839", cursor="hand2")
         self.show_button.place(x=860, y=420)
         self.password_entry.config(show='*')
 

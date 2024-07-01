@@ -31,11 +31,39 @@ class Sidebar(tk.Frame):
         self.logo_label.place(x=70, y=0)
 
         # Buttons
-        self.button1 = tk.Button(self, text="Dashboard", font=('yu gothic ui', 13, 'bold'), width=20, bd=0, bg='#0095B6', cursor='hand2', activebackground='#3047ff', fg='white')
+        self.button1 = tk.Button(self, text="Dashboard", font=('yu gothic ui', 13, 'bold'), width=20, bd=0, bg='#0095B6', cursor='hand2', activebackground='#3047ff', fg='white', command=self.dashboard)
         self.button1.place(x=20, y=200)
 
-        self.button3 = tk.Button(self, text="Account Details", font=('yu gothic ui', 13, 'bold'), width=20, bd=0, bg='#0095B6', cursor='hand2', activebackground='#3047ff', fg='white')
+        self.button3 = tk.Button(self, text="Account Details", font=('yu gothic ui', 13, 'bold'), width=20, bd=0, bg='#0095B6', cursor='hand2', activebackground='#3047ff', fg='white', command=self.AcctDetal)
         self.button3.place(x=20, y=300)
+
+    def dashboard(self):
+        transfer_dialog = tk.Toplevel(self.master)
+        transfer_dialog.title("Dashboard")
+        transfer_dialog.configure(bg='#003262')
+        img = ImageTk.PhotoImage(file='logo.png')
+        transfer_dialog.iconphoto(False, img)
+        transfer_dialog.grab_set()
+
+        # Set size of the fund account dialog
+        dialog_width = 600
+        dialog_height = 500
+
+        # Center the dialog relative to the parent window (self.new_window)
+        parent_x = self.master.winfo_x()
+        parent_y = self.master.winfo_y()
+        parent_width = self.master.winfo_width()
+        parent_height = self.master.winfo_height()
+
+        # Calculate the position
+        x = parent_x + (parent_width // 2) - (dialog_width // 2)
+        y = parent_y + (parent_height // 2) - (dialog_height // 2)
+
+        transfer_dialog.geometry(f"{dialog_width}x{dialog_height}+{x}+{y}")
+
+    def AcctDetal(self):
+        print("Hola")
+    
 
     def toggle(self):
             self.animate_open()
@@ -63,7 +91,7 @@ class Sidebar(tk.Frame):
             self.place_forget()
             self.is_open = False
 
-# # Example usage
+# Example usage
 # if __name__ == "__main__":
 #     root = tk.Tk()
 #     root.geometry("1200x600")  # Set window size

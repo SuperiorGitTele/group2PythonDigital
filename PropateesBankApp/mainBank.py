@@ -145,7 +145,7 @@ from your other
 PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
         self.fund_account_button.place(x=1342, y=300)
 
-        self.subscribe_button = ttk.Button(self.lgn_frame, text="Subscription", style="Big.TButton")
+        self.subscribe_button = ttk.Button(self.lgn_frame, text="Subscription", style="Big.TButton", command=self.Subscription)
         self.subscribe_button.place(x=1020, y=120)
 
         # Create a Label to display the account balance
@@ -821,6 +821,7 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
             db.commit()
             # messagebox.showinfo("Success", "Recipient added to beneficiaries.")
             self.load_beneficiaries()
+            self.get_account_balance(username)
 
         except mysql.connector.Error as err:
             messagebox.showerror("Database Error", f"Error: {err}")
@@ -929,6 +930,29 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
 
 
 
+    def Subscription(self):
+        Subscription = tk.Toplevel(self.new_window)
+        Subscription.title("Subscription")
+        Subscription.configure(bg='#003262')
+        img = ImageTk.PhotoImage(file='logo.png')
+        Subscription.iconphoto(False, img)
+        Subscription.grab_set()
+
+        # Set size of the fund account dialog
+        dialog_width = 400
+        dialog_height = 300
+
+        # Center the dialog relative to the parent window (self.new_window)
+        parent_x = self.new_window.winfo_x()
+        parent_y = self.new_window.winfo_y()
+        parent_width = self.new_window.winfo_width()
+        parent_height = self.new_window.winfo_height()
+
+        # Calculate the position
+        x = parent_x + (parent_width // 2) - (dialog_width // 2)
+        y = parent_y + (parent_height // 2) - (dialog_height // 2)
+
+        Subscription.geometry(f"{dialog_width}x{dialog_height}+{x}+{y}")
 
 
 
@@ -1088,7 +1112,7 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
     def clear_on_focus(self, event):
         event.widget.delete(0, tk.END)
 
-# root = tk.Tk()
-# welcome_window = WelcomeWindow(root, "username")
-# root.withdraw()  # Hide the root window
-# welcome_window.new_window.mainloop()
+root = tk.Tk()
+welcome_window = WelcomeWindow(root, "username")
+root.withdraw()  # Hide the root window
+welcome_window.new_window.mainloop()
