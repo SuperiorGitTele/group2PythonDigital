@@ -39,7 +39,7 @@ class Sidebar(tk.Frame):
 
     def dashboard(self):
         dashboard = tk.Toplevel(self.master)
-        dashboard.title("dashboard")
+        dashboard.title("Dashboard")
         dashboard.configure(bg='#003262')
         img = ImageTk.PhotoImage(file='logo.png')
         dashboard.iconphoto(False, img)
