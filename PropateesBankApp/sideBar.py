@@ -92,15 +92,27 @@ class Sidebar(tk.Frame):
             self.is_open = False
 
 # Example usage
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
 # if __name__ == "__main__":
 #     root = tk.Tk()
 #     root.geometry("1200x600")  # Set window size
+=======
+if __name__ == "__main__":
+    root = tk.Tk()
+    root.geometry("1200x600")  # Set window size
+>>>>>>> Stashed changes
+=======
+if __name__ == "__main__":
+    root = tk.Tk()
+    root.geometry("1200x600")  # Set window size
+>>>>>>> Stashed changes
 
-#     sidebar = Sidebar(root, bg='#3B3C36')
-#     sidebar.place(x=0, y=0, relwidth=0.2, relheight=1)  # Initially place it in view
+    sidebar = Sidebar(root, bg='#3B3C36')
+    sidebar.place(x=0, y=0, relwidth=0.2, relheight=1)  # Initially place it in view
 
-#     # Toggle button to show/hide sidebar
-#     # toggle_button = tk.Button(root, text="Toggle Sidebar", command=sidebar.toggle)
-#     # toggle_button.pack(pady=20)
+    # Toggle button to show/hide sidebar
+    # toggle_button = tk.Button(root, text="Toggle Sidebar", command=sidebar.toggle)
+    # toggle_button.pack(pady=20)
 
-#     root.mainloop()
+    root.mainloop()
