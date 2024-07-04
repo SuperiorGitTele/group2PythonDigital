@@ -34,17 +34,18 @@ class Sidebar(tk.Frame):
         self.button1 = tk.Button(self, text="Dashboard", font=('yu gothic ui', 13, 'bold'), width=20, bd=0, bg='#0095B6', cursor='hand2', activebackground='#3047ff', fg='white', command=self.dashboard)
         self.button1.place(x=20, y=200)
 
-        self.button3 = tk.Button(self, text="Account Details", font=('yu gothic ui', 13, 'bold'), width=20, bd=0, bg='#0095B6', cursor='hand2', activebackground='#3047ff', fg='white', command=self.AcctDetal)
+        self.button3 = tk.Button(self, text="Account Details", font=('yu gothic ui', 13, 'bold'), width=20, bd=0, bg='#0095B6', cursor='hand2', activebackground='#3047ff', fg='white', command=self.AccountDetail)
         self.button3.place(x=20, y=300)
 
     def dashboard(self):
-        transfer_dialog = tk.Toplevel(self.master)
-        transfer_dialog.title("Dashboard")
-        transfer_dialog.configure(bg='#003262')
+        dashboard_dialog = tk.Toplevel(self.master)
+        dashboard_dialog .title("Dashboard")
+        dashboard_dialog.configure(bg='#003262')
         img = ImageTk.PhotoImage(file='logo.png')
-        transfer_dialog.iconphoto(False, img)
-        transfer_dialog.grab_set()
+        dashboard_dialog.iconphoto(False, img)
+        dashboard_dialog.grab_set()
 
+        
         # Set size of the fund account dialog
         dialog_width = 600
         dialog_height = 500
@@ -59,10 +60,99 @@ class Sidebar(tk.Frame):
         x = parent_x + (parent_width // 2) - (dialog_width // 2)
         y = parent_y + (parent_height // 2) - (dialog_height // 2)
 
-        transfer_dialog.geometry(f"{dialog_width}x{dialog_height}+{x}+{y}")
+        dashboard_dialog.geometry(f"{dialog_width}x{dialog_height}+{x}+{y}")
 
-    def AcctDetal(self):
-        print("Hola")
+
+
+
+
+        # Create a button to open the dashboard
+        self.dashboard_button = tk.Button(self.master, text="Open Dashboard", command=self.dashboard)
+        self.dashboard_button.pack(pady=20)
+
+    def dashboard(self):
+        dashboard_dialog = tk.Toplevel(self.master)
+        dashboard_dialog.title("Dashboard")
+        dashboard_dialog.configure(bg='#003262')
+        img = ImageTk.PhotoImage(file='logo.png')
+        dashboard_dialog.iconphoto(False, img)
+        dashboard_dialog.grab_set()
+
+        # Set size of the fund account dialog
+        dialog_width = 600
+        dialog_height = 500
+
+        # Center the dialog relative to the parent window (self.master)
+        parent_x = self.master.winfo_x()
+        parent_y = self.master.winfo_y()
+        parent_width = self.master.winfo_width()
+        parent_height = self.master.winfo_height()
+
+        # Calculate the position
+        x = parent_x + (parent_width // 2) - (dialog_width // 2)
+        y = parent_y + (parent_height // 2) - (dialog_height // 2)
+
+        dashboard_dialog.geometry(f"{dialog_width}x{dialog_height}+{x}+{y}")
+
+        # Personal Information Section
+        tk.Label(dashboard_dialog, text="Update Personal Information", bg='#003262', fg='white', font=('Arial', 10)).pack(pady=5)
+
+        # Name Entry
+        tk.Label(dashboard_dialog, text="Acct Name:", bg='#003262', fg='white', font=('Arial', 12)).pack(anchor='w', padx=20)
+        name_entry = tk.Entry(dashboard_dialog, width=40)
+        name_entry.pack(pady=5, padx=20)
+
+        # Account number Entry
+        tk.Label(dashboard_dialog, text="Account number:", bg='#003262', fg='white', font=('Arial', 12)).pack(anchor='w', padx=20)
+        email_entry = tk.Entry(dashboard_dialog, width=40)
+        email_entry.pack(pady=5, padx=20)
+
+
+        # Email Entry
+        tk.Label(dashboard_dialog, text="Email:", bg='#003262', fg='white', font=('Arial', 12)).pack(anchor='w', padx=20)
+        email_entry = tk.Entry(dashboard_dialog, width=40)
+        email_entry.pack(pady=5, padx=20)
+
+        # Phone Number Entry
+        tk.Label(dashboard_dialog, text="Phone Number:", bg='#003262', fg='white', font=('Arial', 12)).pack(anchor='w', padx=20)
+        phone_entry = tk.Entry(dashboard_dialog, width=40)
+        phone_entry.pack(pady=5, padx=20)
+
+        # Save Button
+        save_button = tk.Button(dashboard_dialog, text="Save", command=lambda: self.save_information(name_entry.get(), email_entry.get(), phone_entry.get()))
+        save_button.pack(pady=20)
+
+    # def save_information(self, name, email, phone):
+    #     # Here you would typically save this information to a database or a file
+    #     messagebox.showinfo("Information Saved", f"Name: {name}\nEmail: {email}\nPhone: {phone}")
+
+
+
+
+    def AccountDetail(self):
+        AccountDetail_dialog = tk.Toplevel(self.master)
+        AccountDetail_dialog.title("Account Details")
+        AccountDetail_dialog.configure(bg='#003262')
+        img = ImageTk.PhotoImage(file='logo.png')
+        AccountDetail_dialog.iconphoto(False, img)
+        AccountDetail_dialog.grab_set()
+
+        # Set size of the fund account dialog
+        dialog_width = 600
+        dialog_height = 500
+
+        # Center the dialog relative to the parent window (self.master)
+        parent_x = self.master.winfo_x()
+        parent_y = self.master.winfo_y()
+        parent_width = self.master.winfo_width()
+        parent_height = self.master.winfo_height()
+
+        # Calculate the position
+        x = parent_x + (parent_width // 2) - (dialog_width // 2)
+        y = parent_y + (parent_height // 2) - (dialog_height // 2)
+
+        AccountDetail_dialog.geometry(f"{dialog_width}x{dialog_height}+{x}+{y}")
+
     
 
     def toggle(self):
@@ -91,7 +181,7 @@ class Sidebar(tk.Frame):
             self.place_forget()
             self.is_open = False
 
-# Example usage
+# # Example usage
 # if __name__ == "__main__":
 #     root = tk.Tk()
 #     root.geometry("1200x600")  # Set window size
