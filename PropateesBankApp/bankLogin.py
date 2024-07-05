@@ -434,12 +434,12 @@ class LoginWindow(tk.Tk):
         self.geometry_string = self.geometry()
         self.state_string = self.state()
 
-        # Create and show the new window
-        new_window = NewWindow(self)
-        self.center_window( )
-
         # Hide the main window
         self.withdraw()
+
+        # Create and show the new window
+        new_window = NewWindow(self)
+        self.center_window()
 
     def window_state(self):
         if self.wm_state() == 'zoomed':

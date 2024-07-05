@@ -85,6 +85,13 @@ def create_mysql_user_and_database(new_username, new_password, new_database):
             UNIQUE (username, account_number)
         )
         """)
+        cursor.execute("""
+        CREATE TABLE Bank_data.Admin (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            Admin VARCHAR(255) NOT NULL UNIQUE,
+            password VARCHAR(255) NOT NULL,
+        )
+        """)
         print(f"Privileges granted to user '{new_username}' on database '{new_database}'.")
 
     except mysql.connector.Error as err:

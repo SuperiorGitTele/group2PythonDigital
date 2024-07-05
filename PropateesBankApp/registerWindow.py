@@ -21,9 +21,8 @@ class NewWindow(tk.Toplevel):
         self.iconphoto(False, img)
          
 
-        self.state('normal')  # Instead of 'zoomed', use 'normal' to allow the window to be resized
-        self.resizable(True, True)  # But then disable resizing
-        # self.new_window.update_idletasks()
+        self.state('normal')  
+        self.resizable(True, True)  
         self.center_window()
         self.configure(bg='#0047AB')
 
