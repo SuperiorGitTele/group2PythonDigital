@@ -34,8 +34,11 @@ class Sidebar(tk.Frame):
         self.button1 = tk.Button(self, text="Dashboard", font=('yu gothic ui', 13, 'bold'), width=20, bd=0, bg='#0095B6', cursor='hand2', activebackground='#3047ff', fg='white', command=self.dashboard)
         self.button1.place(x=20, y=200)
 
-        self.button3 = tk.Button(self, text="Account Details", font=('yu gothic ui', 13, 'bold'), width=20, bd=0, bg='#0095B6', cursor='hand2', activebackground='#3047ff', fg='white')
-        self.button3.place(x=20, y=300)
+        self.button2 = tk.Button(self, text="Account Details", font=('yu gothic ui', 13, 'bold'), width=20, bd=0, bg='#0095B6', cursor='hand2', activebackground='#3047ff', fg='white')
+        self.button2.place(x=20, y=300)
+
+        self.button3 = tk.Button(self, text="Turn off the welcome audio", font=('yu gothic ui', 11, 'bold'), width=22, bd=0, bg='#0095B6', cursor='hand2', activebackground='#3047ff', fg='white')
+        self.button3.place(x=20, y=400)
 
     def dashboard(self):
         dashboard = tk.Toplevel(self.master)
@@ -46,8 +49,8 @@ class Sidebar(tk.Frame):
         dashboard.grab_set()
 
         # Set size of the fund account dialog
-        dialog_width = 400
-        dialog_height = 250
+        dialog_width = 600
+        dialog_height = 600
 
         # Center the dialog relative to the parent window (self.master)
         parent_x = self.master.winfo_x()
