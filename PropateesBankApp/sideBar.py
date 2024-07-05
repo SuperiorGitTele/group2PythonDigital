@@ -37,38 +37,7 @@ class Sidebar(tk.Frame):
         self.button3 = tk.Button(self, text="Account Details", font=('yu gothic ui', 13, 'bold'), width=20, bd=0, bg='#0095B6', cursor='hand2', activebackground='#3047ff', fg='white', command=self.AccountDetail)
         self.button3.place(x=20, y=300)
 
-    def dashboard(self):
-        dashboard_dialog = tk.Toplevel(self.master)
-        dashboard_dialog .title("Dashboard")
-        dashboard_dialog.configure(bg='#003262')
-        img = ImageTk.PhotoImage(file='logo.png')
-        dashboard_dialog.iconphoto(False, img)
-        dashboard_dialog.grab_set()
 
-        
-        # Set size of the fund account dialog
-        dialog_width = 600
-        dialog_height = 500
-
-        # Center the dialog relative to the parent window (self.new_window)
-        parent_x = self.master.winfo_x()
-        parent_y = self.master.winfo_y()
-        parent_width = self.master.winfo_width()
-        parent_height = self.master.winfo_height()
-
-        # Calculate the position
-        x = parent_x + (parent_width // 2) - (dialog_width // 2)
-        y = parent_y + (parent_height // 2) - (dialog_height // 2)
-
-        dashboard_dialog.geometry(f"{dialog_width}x{dialog_height}+{x}+{y}")
-
-
-
-
-
-        # Create a button to open the dashboard
-        self.dashboard_button = tk.Button(self.master, text="Open Dashboard", command=self.dashboard)
-        self.dashboard_button.pack(pady=20)
 
     def dashboard(self):
         dashboard_dialog = tk.Toplevel(self.master)
