@@ -173,23 +173,13 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
         self.logo_label.__reduce__()
         self.logo_label.place(x=25, y=520)
 
-        # style = ttk.Style(self)
-        
-        # style.configure('TMenubutton', 
-        #                 background='#003262', 
-        #                 foreground='#FFFFFF',
-        #                 font=('Arial', 12),
-        #                 padding=5)
-        
-        # style.map('TMenubutton', 
-        #           background=[('active', '#0066CC'), ('!disabled', '#004A99')],
-        #           foreground=[('active', '#FFFFFF'), ('!disabled', '#FFFFFF')])
-
         self.settings = tk.StringVar()
         self.settings.set("Settings")  # default value
 
-        self.sidebar_menu = ttk.OptionMenu(self.lgn_frame, self.settings, "Settings", "Edit Account Details", command=self.toggle_sidebar)
-        self.sidebar_menu.place(x=1400, y=10)
+        self.settings_menu = tk.OptionMenu(self.lgn_frame, self.settings, "Settings", "Edit Account Details", "Preferences", "About", command=self.handle_settings)
+        self.settings_menu.place(x=1400, y=10)
+
+        self.settings_menu.configure(bg="Blue", width=20)
 
         self.sidebar = None
 
@@ -213,7 +203,19 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
         y = (self.new_window.winfo_screenheight() // 2) - (height // 2)
         self.new_window.geometry(f'{width}x{height}+{x}+{y}')
 
-
+    def handle_settings(self, selected_option):
+        # Handle the selection from the settings menu
+        if selected_option == "Edit Account Details":
+            messagebox.showinfo("Edit Account Details", "Editing Account Details...")
+            # Replace this with your actual functionality
+        elif selected_option == "Preferences":
+            messagebox.showinfo("Preferences", "Opening Preferences...")
+            # Replace this with your actual functionality
+        elif selected_option == "About":
+            messagebox.showinfo("About", "About the Application...")
+            # Replace this with your actual functionality
+        else:
+            messagebox.showwarning("Unknown Option", "This option is not recognized.")
 
 
     def toggle_sidebar(self):
