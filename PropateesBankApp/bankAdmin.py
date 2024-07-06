@@ -7,7 +7,7 @@ def create_toplevel():
     # Create a Toplevel window
     adminBank.withdraw()
     toplevel = tk.Toplevel(adminBank)
-    toplevel.title("Admin Changes")
+    toplevel.title("Admin Deposit")
     toplevel.geometry("350x250")
     toplevel.configure(bg='#003262')
     img = ImageTk.PhotoImage(file='logo.png')
@@ -21,25 +21,85 @@ def create_toplevel():
     label.image = photo 
     label.place(x=130, y=0)
 
-    UserAcctLabel = tk.Label(toplevel, text=f"User Account Name", bg='#0095B6')
+    UserAcctLabel = tk.Label(toplevel, text=f"User Account Bvn", bg='#0095B6')
     UserAcctLabel.place(x=50, y=40)
-    Username_entry = tk.Entry(toplevel)
-    Username_entry.place(x=50, y=63)
+    Userbvn_entry = tk.Entry(toplevel)
+    Userbvn_entry.place(x=50, y=63)
 
     acctNumLabel = tk.Label(toplevel, text=f"Account Number", bg='#0095B6')
     acctNumLabel.place(x=50, y=85)
     acctNum_entry = tk.Entry(toplevel)
     acctNum_entry.place(x=50, y=108)
 
-    ammountLabel = tk.Label(toplevel, text=f"Amount To Deposit:", bg='#0095B6')
+    ammountLabel = tk.Label(toplevel, text=f"Amount To Deposit ₦:", bg='#0095B6')
     ammountLabel.place(x=50, y=135)
     num_entry = tk.Entry(toplevel)
     num_entry.place(x=50, y=160)
 
-    def deposit():
-        print("Holaaa")
+    passwordLabel = tk.Label(toplevel, text=f"Password", bg='#0095B6')
+    passwordLabel.place(x=50, y=180)
+    password_entry = tk.Entry(toplevel)
+    password_entry.config(show='*')
+    password_entry.place(x=50, y=200)
+    password_entry.bind("<Return>", lambda event: deposit())
 
-    tk.Button(toplevel, text="Deposit", bg="Purple", command=deposit).place(x=50, y=180)
+    def deposit():
+        userbvn = Userbvn_entry.get()
+        recipient_account = acctNum_entry.get()
+        password = password_entry.get()
+        amount = int(num_entry.get())
+
+        if not userbvn or not recipient_account or not amount:
+            messagebox.showerror("Error", "Please fill in all fields")
+            return
+
+        db = mysql.connector.connect(
+            host="localhost",
+            user="Bank",
+            password="Bankappsql",
+            database="Bank_data",
+            auth_plugin='mysql_native_password'
+        )
+        cursor = db.cursor()
+        
+        try:
+            
+
+            cursor.execute("SELECT * FROM admin WHERE password = %s", (password,))
+            row = cursor.fetchone()
+            db.commit()
+
+            if row:
+                cursor.execute("SELECT bvn, account_balance FROM users WHERE account_number = %s", (recipient_account,))
+                recipient = cursor.fetchone()
+                if not recipient:
+                    messagebox.showerror("Error", "Recipient account not found.")
+                    return
+
+                username1, recipient_balance = recipient
+                if username1 != userbvn:
+                    messagebox.showerror("Error", "Recipient account not found.")
+                    return
+            
+                if isinstance(recipient_balance, tuple):
+                    recipient_balance = recipient_balance[0]
+
+                new_recipient_balance = recipient_balance + amount
+
+                
+                cursor.execute("UPDATE users SET account_balance = %s WHERE account_number = %s", (new_recipient_balance, recipient_account))
+                db.commit()
+               
+
+
+        except mysql.connector.Error as err:
+            messagebox.showerror("Database Error", f"Error: {err}")
+        finally:
+            cursor.close()
+            db.close()
+        
+
+    tk.Button(toplevel, text="Deposit", bg="Purple", command=deposit).place(x=50, y=220)
     num_entry.bind("<Return>", lambda event: deposit())
     
     def Admin_window():
@@ -58,7 +118,7 @@ def create_toplevel():
         toplevel.withdraw()
         adminBank.deiconify()
     tk.Button(toplevel, text="Log Out", bg="#0095B6",command=backLogin).place(x=280, y=222)
-    password_entry.bind("<Return>", lambda event: adminLogin())
+    
 
 def center_window():
     # Update window size info
@@ -94,7 +154,7 @@ def adminLogin():
 
         if row:
                 # Show a message box with a welcome message
-                messagebox.showinfo("Login Success", f"Welcome, {username}! Login successful!")
+                messagebox.showinfo("Login Success", f"Welcome Admin {username}! Login successful!")
                 adminBank.withdraw()
                 create_toplevel()
 
@@ -141,8 +201,9 @@ passwordLabel.place(x=50, y=85)
 password_entry = tk.Entry(adminBank)
 password_entry.config(show='*')
 password_entry.place(x=50, y=108)
+password_entry.bind("<Return>", lambda event: adminLogin())
 
-button = tk.Button(adminBank, text="Login", bg='#0095B6', command=create_toplevel)
+button = tk.Button(adminBank, text="Login", bg='#0095B6', command=adminLogin)
 button.place(x=50, y=150)
 
 
