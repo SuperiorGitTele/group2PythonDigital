@@ -26,7 +26,6 @@ class LoginWindow(tk.Tk):
     def __init__(self):
         super().__init__()
         self.title("PROPATEES Bank log in") 
-         # Get the screen's width and height
         self.geometry("1450x760")
         
         img = PhotoImage(file='logo.png')
@@ -412,7 +411,7 @@ class LoginWindow(tk.Tk):
             if not ssid:
                 return False
 
-            # Perform a simple internet speed test
+            # Perform a internet speed test
             start_time = time.time()
             response = requests.get("https://httpbin.org/bytes/1024", timeout=3)
             end_time = time.time()

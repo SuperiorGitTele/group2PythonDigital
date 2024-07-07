@@ -31,22 +31,22 @@ class Sidebar(tk.Frame):
         self.logo_label.place(x=70, y=0)
 
         # Buttons
-        self.button1 = tk.Button(self, text="Dashboard", font=('yu gothic ui', 13, 'bold'), width=20, bd=0, bg='#0095B6', cursor='hand2', activebackground='#3047ff', fg='white', command=self.dashboard)
+        self.button1 = tk.Button(self, text="Activities", font=('yu gothic ui', 13, 'bold'), width=20, bd=0, bg='#0095B6', cursor='hand2', activebackground='#3047ff', fg='white', command=self.activities)
         self.button1.place(x=20, y=200)
 
-        self.button2 = tk.Button(self, text="Account Details", font=('yu gothic ui', 13, 'bold'), width=20, bd=0, bg='#0095B6', cursor='hand2', activebackground='#3047ff', fg='white')
+        self.button2 = tk.Button(self, text="Account Details", font=('yu gothic ui', 13, 'bold'), width=20, bd=0, bg='#0095B6', cursor='hand2', activebackground='#3047ff', fg='white', command=self.AcctDetail)
         self.button2.place(x=20, y=300)
 
-        self.button3 = tk.Button(self, text="Turn off the welcome audio", font=('yu gothic ui', 11, 'bold'), width=22, bd=0, bg='#0095B6', cursor='hand2', activebackground='#3047ff', fg='white')
+        self.button3 = tk.Button(self, text="Settings", font=('yu gothic ui', 11, 'bold'), width=22, bd=0, bg='#0095B6', cursor='hand2', activebackground='#3047ff', fg='white', command=self.setting)
         self.button3.place(x=20, y=400)
 
-    def dashboard(self):
-        dashboard = tk.Toplevel(self.master)
-        dashboard.title("Dashboard")
-        dashboard.configure(bg='#003262')
+    def activities(self):
+        activities = tk.Toplevel(self.master)
+        activities.title("Activities")
+        activities.configure(bg='#003262')
         img = ImageTk.PhotoImage(file='logo.png')
-        dashboard.iconphoto(False, img)
-        dashboard.grab_set()
+        activities.iconphoto(False, img)
+        activities.grab_set()
 
         # Set size of the fund account dialog
         dialog_width = 600
@@ -62,7 +62,56 @@ class Sidebar(tk.Frame):
         x = parent_x + (parent_width // 2) - (dialog_width // 2)
         y = parent_y + (parent_height // 2) - (dialog_height // 2)
 
-        dashboard.geometry(f"{dialog_width}x{dialog_height}+{x}+{y}")
+        activities.geometry(f"{dialog_width}x{dialog_height}+{x}+{y}")
+
+
+    def AcctDetail(self):
+        AcctDetail = tk.Toplevel(self.master)
+        AcctDetail.title("Activities")
+        AcctDetail.configure(bg='#0095B6')
+        img = ImageTk.PhotoImage(file='logo.png')
+        AcctDetail.iconphoto(False, img)
+        AcctDetail.grab_set()
+
+        # Set size of the fund account dialog
+        dialog_width = 600
+        dialog_height = 600
+
+        # Center the dialog relative to the parent window (self.master)
+        parent_x = self.master.winfo_x()
+        parent_y = self.master.winfo_y()
+        parent_width = self.master.winfo_width()
+        parent_height = self.master.winfo_height()
+
+        # Calculate the position
+        x = parent_x + (parent_width // 2) - (dialog_width // 2)
+        y = parent_y + (parent_height // 2) - (dialog_height // 2)
+
+        AcctDetail.geometry(f"{dialog_width}x{dialog_height}+{x}+{y}")
+
+    def setting(self):
+        setting = tk.Toplevel(self.master)
+        setting.title("Activities")
+        setting.configure(bg='#003262')
+        img = ImageTk.PhotoImage(file='logo.png')
+        setting.iconphoto(False, img)
+        setting.grab_set()
+
+        # Set size of the fund account dialog
+        dialog_width = 600
+        dialog_height = 600
+
+        # Center the dialog relative to the parent window (self.master)
+        parent_x = self.master.winfo_x()
+        parent_y = self.master.winfo_y()
+        parent_width = self.master.winfo_width()
+        parent_height = self.master.winfo_height()
+
+        # Calculate the position
+        x = parent_x + (parent_width // 2) - (dialog_width // 2)
+        y = parent_y + (parent_height // 2) - (dialog_height // 2)
+
+        setting.geometry(f"{dialog_width}x{dialog_height}+{x}+{y}")
 
 
 
@@ -93,16 +142,12 @@ class Sidebar(tk.Frame):
             self.place_forget()
             self.is_open = False
 
-# # Example usage
-# if __name__ == "__main__":
-#     root = tk.Tk()
-#     root.geometry("1200x600")  # Set window size
+# Example usage
+if __name__ == "__main__":
+    root = tk.Tk()
+    root.geometry("1200x600")  # Set window size
 
-#     sidebar = Sidebar(root, bg='#3B3C36')
-#     sidebar.place(x=0, y=0, relwidth=0.2, relheight=1)  # Initially place it in view
+    sidebar = Sidebar(root, bg='#3B3C36')
+    sidebar.place(x=0, y=0, relwidth=0.2, relheight=1)  
 
-#     # Toggle button to show/hide sidebar
-#     # toggle_button = tk.Button(root, text="Toggle Sidebar", command=sidebar.toggle)
-#     # toggle_button.pack(pady=20)
-
-#     root.mainloop()
+    root.mainloop()

@@ -29,9 +29,8 @@ class WelcomeWindow:
         self.new_window.iconphoto(False, img)
         
 
-        self.new_window.state('normal')  # Instead of 'zoomed', use 'normal' to allow the window to be resized
-        self.new_window.resizable(True, True)  # But then disable resizing
-        # self.new_window.update_idletasks()
+        self.new_window.state('normal')  
+        self.new_window.resizable(True, True)  
         self.new_window.configure(bg='#003262')
         self.center_window()
 
@@ -42,7 +41,7 @@ class WelcomeWindow:
 
         # logo pic
         self.logoside = Image.open('logopng.png')
-        self.logoside = self.logoside.resize((80, 80), resample=Image.LANCZOS)  # Resize the image to 50x50 pixels using Lanczos resampling
+        self.logoside = self.logoside.resize((80, 80), resample=Image.LANCZOS)  
         logos = ImageTk.PhotoImage(self.logoside)
         self.logo_label = tk.Label(self.new_window, image=logos, width='80', height="80", bg='#3B3C36')
         self.logo_label.image = logos
@@ -52,9 +51,8 @@ class WelcomeWindow:
         self.username_label = tk.Label(self.new_window, text=f"{username}: Signed in", bg='#3B3C36', fg="white")
         self.username_label.place(x=180, y=6)
 
-        # logo pic
+      
         self.logoside = Image.open('ChangeCurve2.png')
-        # self.logoside = self.logoside.resize((80, 80), resample=Image.LANCZOS)  # Resize the image to 50x50 pixels using Lanczos resampling
         logos = ImageTk.PhotoImage(self.logoside)
         self.logo_label = tk.Label(self.new_window, image=logos, width='300', height="300", bg='#003262')
         self.logo_label.image = logos
@@ -62,7 +60,6 @@ class WelcomeWindow:
         self.logo_label.place(x=10, y=220)
 
         self.logoside = Image.open('ChangeCurve2.png')
-        # self.logoside = self.logoside.resize((80, 80), resample=Image.LANCZOS)  # Resize the image to 50x50 pixels using Lanczos resampling
         logos = ImageTk.PhotoImage(self.logoside)
         self.logo_label = tk.Label(self.new_window, image=logos, width='300', height="300", bg='#003262')
         self.logo_label.image = logos
@@ -70,7 +67,7 @@ class WelcomeWindow:
         self.logo_label.place(x=1050, y=550)
 
         self.logoside = Image.open('images2.png')
-        self.logoside = self.logoside.resize((80, 80), resample=Image.LANCZOS)  # Resize the image to 50x50 pixels using Lanczos resampling
+        self.logoside = self.logoside.resize((80, 80), resample=Image.LANCZOS)
         logos = ImageTk.PhotoImage(self.logoside)
         self.logo_label = tk.Label(self.lgn_frame, image=logos, width='300', height="300", bg='#3B3C36')
         self.logo_label.image = logos
@@ -78,7 +75,7 @@ class WelcomeWindow:
         self.logo_label.place(x=0, y=15)
 
         self.logoside = Image.open('images3.png')
-        self.logoside = self.logoside.resize((80, 80), resample=Image.LANCZOS)  # Resize the image to 50x50 pixels using Lanczos resampling
+        self.logoside = self.logoside.resize((80, 80), resample=Image.LANCZOS)
         logos = ImageTk.PhotoImage(self.logoside)
         self.logo_label = tk.Label(self.lgn_frame, image=logos, width='300', height="300", bg='#3B3C36')
         self.logo_label.image = logos
@@ -129,17 +126,15 @@ class WelcomeWindow:
         style = ttk.Style()
         style.configure("Big.TButton", font=("Arial", 17), foreground="#013220", background="black")
 
-        # Create a Button to check the account balance
+        #Button for account balance
         self.check_balance_button = ttk.Button(self.lgn_frame, text="Check Balance", style="Big.TButton", command=lambda: self.toggle_balance(username))
         self.check_balance_button.place(x=320, y=120)
 
-        # Create a Button to initiate money transfer
+        # Button to initiate money transfer
         self.transfer_button = ttk.Button(self.lgn_frame, text="Transfer", style="Big.TButton", command=self.show_transfer_dialog)
         self.transfer_button.place(x=665, y=120)
 
-        # 
-        # style1 = ttk.Style()
-        # style1.configure("Big.TButton1", font=("Arial", 17), foreground="#013220", background="black")
+        
         self.fund_account_button = ttk.Button(self.new_window, text="""Fund your account 
 from your other 
 PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
@@ -154,11 +149,9 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
         loginpage = tk.Button(self.new_window, text='LOG OUT', font=("yu gothic ui", 13, "bold"), width=10, bd=0, bg='#3047ff', cursor='hand2', activebackground='#3047ff', fg='white', command=self.go_backLogin1)
         loginpage.place(x=1400, y=700)
 
-        # Open the image file
+        
         image = Image.open("bar12.png")
-        # Resize the image
-        image = image.resize((40, 40), resample=Image.LANCZOS)  # Replace (20, 20) with your desired size
-        # Convert the image to a PhotoImage
+        image = image.resize((40, 40), resample=Image.LANCZOS)  
         dropdown_image = ImageTk.PhotoImage(image)
         self.sidebar_button = tk.Button(self.lgn_frame, image=dropdown_image, compound="top", font=("yu gothic ui", 4, "bold"), width=70, bd=0, bg='#3B3C36', cursor='hand2', activebackground='#3B3C36', fg='white', command=self.toggle_sidebar)
         self.sidebar_button.image = dropdown_image
@@ -166,20 +159,14 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
 
         # logo pic
         self.logoside = Image.open('vector.png')
-        self.logoside = self.logoside.resize((350, 350), resample=Image.LANCZOS)  # Resize the image to 50x50 pixels using Lanczos resampling
+        self.logoside = self.logoside.resize((350, 350), resample=Image.LANCZOS)
         logos = ImageTk.PhotoImage(self.logoside)
         self.logo_label = tk.Label(self.new_window, image=logos, bg='#003262')
         self.logo_label.image = logos
         self.logo_label.__reduce__()
         self.logo_label.place(x=25, y=520)
 
-        self.settings = tk.StringVar()
-        self.settings.set("Settings")  # default value
-
-        self.settings_menu = tk.OptionMenu(self.lgn_frame, self.settings, "Settings", "Edit Account Details", "Preferences", "About", command=self.handle_settings)
-        self.settings_menu.place(x=1400, y=10)
-
-        self.settings_menu.configure(bg="Blue", width=20)
+        
 
         self.sidebar = None
 
@@ -207,13 +194,10 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
         # Handle the selection from the settings menu
         if selected_option == "Edit Account Details":
             messagebox.showinfo("Edit Account Details", "Editing Account Details...")
-            # Replace this with your actual functionality
         elif selected_option == "Preferences":
             messagebox.showinfo("Preferences", "Opening Preferences...")
-            # Replace this with your actual functionality
         elif selected_option == "About":
             messagebox.showinfo("About", "About the Application...")
-            # Replace this with your actual functionality
         else:
             messagebox.showwarning("Unknown Option", "This option is not recognized.")
 
@@ -254,12 +238,12 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
 
     def toggle_balance(self, username):
         if self.balance_label is None:
-            # Get the account balance from the database or wherever it's stored
-            account_balance = self.get_account_balance(username)  # Replace with your own function
+            # Getting the account balance from the database 
+            account_balance = self.get_account_balance(username)  
             style = ttk.Style()
             style.configure("Big.TLabel", font=("Arial", 15), foreground="#0095B6", background="brown")
 
-            # Create a Label to display the account balance
+            # Label to display the account balance
             self.balance_label = ttk.Label(self.lgn_frame, text=f"Account Balance ₦: {account_balance}", style="Big.TLabel", width="35")
             self.balance_label.place(x=320, y=160)
         else:
@@ -320,8 +304,6 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
        
 
     def setup_uiBENE(self):
-        
-
         # Beneficiaries Frame
         self.beneficiaries_frame = tk.Frame(self.new_window, bg='#0095B6', width='300', height="350")
         self.beneficiaries_frame.place(x=1025, y=300)
@@ -404,7 +386,7 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
         dialog_width = 400
         dialog_height = 250
 
-        # Center the dialog relative to the parent window (self.new_window)
+        # Center the dialog relative to the parent window
         parent_x = self.new_window.winfo_x()
         parent_y = self.new_window.winfo_y()
         parent_width = self.new_window.winfo_width()
@@ -442,7 +424,7 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
         quick_transfer_button.pack()
 
         # Bind Enter key to simulate clicking the Transfer button
-        pin_entry.bind("<Return>", lambda event: quick_transfer_button.invoke())
+        pin_entry.bind("<Return>", lambda event: self.transfer_money())
 
     
 
@@ -497,7 +479,7 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
 
             try:
                 server = smtplib.SMTP(smtp_server, smtp_port)
-                server.starttls()  # Upgrade to secure connection
+                server.starttls()
                 server.login(from_email, password)
                 server.sendmail(from_email, to_email, message.as_string())
                 server.quit()
@@ -726,7 +708,7 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
 
         
 
-        # Update the name label dynamically as the user enters the account number
+        # This update the name label dynamically as the user enters the account number
         def on_recipient_change(*args):
             recipient_account = recipient_entry.get()
             if recipient_account:
@@ -831,18 +813,9 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
             cursor.close()
             db.close()
 
-    def update_transaction_history(self):
-        # Clear the existing content
-        # for item in self.history_tree.get_children():
-        #     self.history_tree.delete(item)
-
-        # Display session transactions
-        for transaction in self.session_transactions:
-            self.history_tree.insert("", tk.END, values=transaction)
 
     def load_transaction_history(self):
         # Clear existing entries
-        # self.history_tree.insert("", tk.END, values=transaction)
         for item in self.history_tree.get_children():
             self.history_tree.delete(item)
 
@@ -928,7 +901,7 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
         add_button.pack()
 
         # Bind Enter key to simulate clicking the Add button
-        account_entry.bind("<Return>", lambda event: add_button.invoke())
+        account_entry.bind("<Return>", lambda event: add_beneficiary_callback())
 
 
 
@@ -1070,7 +1043,7 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
 
             current_account_number, current_balance = current_account
 
-            # Prevent transferring to own account if desired
+            # Prevent transferring to own account 
             if other_account_number == current_account_number:
                 messagebox.showerror("Error", "You cannot transfer money to your own account.")
                 return

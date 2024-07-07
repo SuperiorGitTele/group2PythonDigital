@@ -27,7 +27,7 @@ class NewWindow(tk.Toplevel):
         self.configure(bg='#0047AB')
 
 
-        # red frame at the center
+        #frame at the center
         self.lgn_frame = tk.Frame(self, bg='#343434', width='950', height="600")
         self.lgn_frame.place(x=300, y=100)
 
@@ -173,37 +173,37 @@ type the question if no one is around you)""", bg="#4B3621", fg="white", font=("
         def focus_password_entry1(self, event=None):
             self.dob_entry.focus()
 
-        # Bind the Enter key to focus on the password entry field
+        # Bind the Enter key to focus on the dob entry field
         self.password_entry.bind("<Return>", lambda event: focus_password_entry1(self))
 
         def focus_password_entry2(self, event=None):
             self.secret_question_entry.focus()
 
-        # Bind the Enter key to focus on the password entry field
+        # Bind the Enter key to focus on the question entry field
         self.dob_entry.bind("<Return>", lambda event: focus_password_entry2(self))
 
         def focus_password_entry3(self, event=None):
             self.secret_answer_entry.focus()
 
-        # Bind the Enter key to focus on the password entry field
+        # Bind the Enter key to focus on the answer entry field
         self.secret_question_entry.bind("<Return>", lambda event: focus_password_entry3(self))
 
         def focus_password_entry4(self, event=None):
             self.transaction_pin_entry.focus()
 
-        # Bind the Enter key to focus on the password entry field
+        # Bind the Enter key to focus on the pin entry field
         self.secret_answer_entry.bind("<Return>", lambda event: focus_password_entry4(self))
 
         def focus_password_entry5(self, event=None):
             self.email_entry.focus()
 
-        # Bind the Enter key to focus on the password entry field
+        # Bind the Enter key to focus on the email entry field
         self.transaction_pin_entry.bind("<Return>", lambda event: focus_password_entry5(self))
 
         def focus_password_entry6(self, event=None):
             self.reference_code_entry.focus()
 
-        # Bind the Enter key to focus on the password entry field
+        # Bind the Enter key to focus on the ref code entry field
         self.email_entry.bind("<Return>", lambda event: focus_password_entry6(self))
 
         
@@ -256,7 +256,7 @@ type the question if no one is around you)""", bg="#4B3621", fg="white", font=("
         secret_answer = self.secret_answer_entry.get()
         transaction_pin = self.transaction_pin_entry.get()
         reference_code = self.reference_code_entry.get()
-        email = self.email_entry.get()  # Assume you have an email entry field
+        email = self.email_entry.get()  
 
         if not username or not password or not dob or not secret_question or not secret_answer or not transaction_pin:
             messagebox.showerror("Error", "Please fill in all mandatory fields")
@@ -308,7 +308,6 @@ type the question if no one is around you)""", bg="#4B3621", fg="white", font=("
 
         # Initialize account balance
         if reference_code == "QRPTP":
-            # Ask for initial deposit amount
             initial_deposit_dialog = tk.Toplevel(self)
             initial_deposit_dialog.title("Initial Deposit")
             initial_deposit_dialog.grab_set()
