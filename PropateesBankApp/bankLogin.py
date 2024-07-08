@@ -59,7 +59,7 @@ class LoginWindow(tk.Tk):
         
 
         self.logoside = Image.open('images2.png')
-        self.logoside = self.logoside.resize((80, 80), resample=Image.LANCZOS)  # Resize the image to 50x50 pixels using Lanczos resampling
+        self.logoside = self.logoside.resize((80, 80), resample=Image.LANCZOS)
         logos = ImageTk.PhotoImage(self.logoside)
         self.logo_label = tk.Label(self.lgn_frame, image=logos, bg='#3B3C36')
         self.logo_label.image = logos

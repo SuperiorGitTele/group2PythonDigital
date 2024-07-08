@@ -17,6 +17,14 @@ class Sidebar(tk.Frame):
         self.sidebar_button.image = dropdown_image
         self.sidebar_button.place(x=10, y=2)
 
+        logoside = Image.open('femalelogo.png')
+        logoside = logoside.resize((80, 80), resample=Image.LANCZOS)
+        logos = ImageTk.PhotoImage(logoside)
+        logo_label = tk.Label(self.master, image=logos, bg='#3B3C36')
+        logo_label.image = logos
+        logo_label.__reduce__()
+        logo_label.place(x=70, y=85)
+
         # Logo picture
         self.logoside = Image.open('logopng.png')
         self.logoside = self.logoside.resize((80, 80), resample=Image.LANCZOS)  # Resize the image to 80x80 pixels using Lanczos resampling
@@ -27,13 +35,13 @@ class Sidebar(tk.Frame):
 
         # Buttons
         self.button1 = tk.Button(self, text="Activities", font=('yu gothic ui', 13, 'bold'), width=20, bd=0, bg='#0095B6', cursor='hand2', activebackground='#3047ff', fg='white', command=self.activities)
-        self.button1.place(x=20, y=200)
+        self.button1.place(x=20, y=250)
 
         self.button2 = tk.Button(self, text="Account Details", font=('yu gothic ui', 13, 'bold'), width=20, bd=0, bg='#0095B6', cursor='hand2', activebackground='#3047ff', fg='white', command=self.AcctDetail)
-        self.button2.place(x=20, y=300)
+        self.button2.place(x=20, y=350)
 
         self.button3 = tk.Button(self, text="Settings", font=('yu gothic ui', 11, 'bold'), width=22, bd=0, bg='#0095B6', cursor='hand2', activebackground='#3047ff', fg='white', command=self.setting)
-        self.button3.place(x=20, y=400)
+        self.button3.place(x=20, y=450)
 
     def activities(self):
         activities = tk.Toplevel(self.master)
@@ -59,8 +67,16 @@ class Sidebar(tk.Frame):
 
         activities.geometry(f"{dialog_width}x{dialog_height}+{x}+{y}")
 
-        label = tk.Label(activities, text="Text", bg="#0095B6")
-        label.place(x=50, y=50)
+        # label = tk.Label(activities, text="Text", bg="#0095B6", font=('Arial', 12))
+        # label.place(x=50, y=50)
+
+        logoside = Image.open('femalelogo.png')
+        logoside = logoside.resize((80, 80), resample=Image.LANCZOS)
+        logos = ImageTk.PhotoImage(logoside)
+        logo_label = tk.Label(activities, image=logos, bg='#003262')
+        logo_label.image = logos
+        logo_label.__reduce__()
+        logo_label.place(x=60, y=50)
  
 
 
