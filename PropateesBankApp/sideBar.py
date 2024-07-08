@@ -11,13 +11,8 @@ class Sidebar(tk.Frame):
 
         # Open the image file
         image = Image.open("bar12.png")
-
-        # Resize the image
-        image = image.resize((20, 30), resample=Image.LANCZOS)  # Replace (20, 20) with your desired size
-
-        # Convert the image to a PhotoImage
+        image = image.resize((20, 30), resample=Image.LANCZOS)
         dropdown_image = ImageTk.PhotoImage(image)
-
         self.sidebar_button = tk.Button(self, image=dropdown_image, compound="top", font=("yu gothic ui", 4, "bold"), width=70, bd=0, bg='#3B3C36', cursor='hand2', activebackground='#3B3C36', fg='white', command=self.close_sidebar)
         self.sidebar_button.image = dropdown_image
         self.sidebar_button.place(x=10, y=2)
@@ -42,7 +37,7 @@ class Sidebar(tk.Frame):
 
     def activities(self):
         activities = tk.Toplevel(self.master)
-        activities.title("Activities")
+        activities.title("Login Activities")
         activities.configure(bg='#003262')
         img = ImageTk.PhotoImage(file='logo.png')
         activities.iconphoto(False, img)
@@ -63,6 +58,10 @@ class Sidebar(tk.Frame):
         y = parent_y + (parent_height // 2) - (dialog_height // 2)
 
         activities.geometry(f"{dialog_width}x{dialog_height}+{x}+{y}")
+
+        label = tk.Label(activities, text="Text", bg="#0095B6")
+        label.place(x=50, y=50)
+ 
 
 
     def AcctDetail(self):
@@ -112,9 +111,6 @@ class Sidebar(tk.Frame):
         y = parent_y + (parent_height // 2) - (dialog_height // 2)
 
         setting.geometry(f"{dialog_width}x{dialog_height}+{x}+{y}")
-
-
-
 
     def toggle(self):
             self.animate_open()
