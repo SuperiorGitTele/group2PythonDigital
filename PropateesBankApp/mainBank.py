@@ -11,7 +11,6 @@ import re
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from datetime import datetime
-import mysql.connector
 from tkinter import messagebox
 import requests
 
@@ -240,7 +239,7 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
             # Getting the account balance from the database 
             account_balance = self.get_account_balance(username)  
             style = ttk.Style()
-            style.configure("Big.TLabel", font=("Arial", 15), foreground="#0095B6", background="brown")
+            style.configure("Big.TLabel", font=("Arial", 15), foreground="#003262", background="#0095B6")
 
             # Label to display the account balance
             self.balance_label = ttk.Label(self.lgn_frame, text=f"Account Balance ₦: {account_balance}", style="Big.TLabel", width="35")

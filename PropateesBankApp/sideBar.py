@@ -2,12 +2,14 @@ import tkinter as tk
 from PIL import Image, ImageTk
 from tkinter import ttk, filedialog
 import os
+import mysql.connector
 from tkinter import messagebox
 
 class Sidebar(tk.Frame):
     def __init__(self, master, username,**kwargs):
         tk.Frame.__init__(self, master, **kwargs)
         self.master = master
+        self.username = username
         self.is_open = False
         self.image_path = None
         self.load_image_path()
@@ -86,7 +88,7 @@ class Sidebar(tk.Frame):
         dashboard.geometry(f"{dialog_width}x{dialog_height}+{x}+{y}")
 
         # Add welcome message
-        tk.Label(dashboard, text="Welcome to Your Dashboard", bg="#003262", fg="white", font=('Arial', 20, 'bold')).place(x=60, y=20)
+        tk.Label(dashboard, text="Welcome to Your Dashboard", bg="#003262", fg="white", font=('Arial', 20, 'bold')).place(x=110, y=20)
 
         
 
@@ -98,6 +100,26 @@ class Sidebar(tk.Frame):
 
         # label = tk.Label(activities, text="Text", bg="#0095B6", font=('Arial', 12))
         # label.place(x=50, y=50)
+        self.username_label = tk.Label(dashboard, text=f"{self.username}", font=('yu gothic ui', 35, 'bold'),bg='#003262', fg="white")
+        self.username_label.place(x=135, y=70)
+
+        account_balance = self.get_account_balance(self.username)  
+        style = ttk.Style()
+        style.configure("Big.TLabel", font=("Arial", 15), foreground="#003262", background="#0095B6")
+        # Label to display the account balance
+        self.balance_label = ttk.Label(dashboard, text=f"Account Balance ₦: {account_balance}", style="Big.TLabel", width="24")
+        self.balance_label.place(x=130, y=160)
+
+        tk.Label(dashboard, text="Recent Activities", bg="#003262", fg="white", font=('Arial', 14, 'bold')).place(x=40, y=170)
+        tk.Label(dashboard, text="1. Deposited $500", bg="#003262", fg="white", font=('Arial', 12)).place(x=40, y=190)
+        tk.Label(dashboard, text="2. Transferred $200", bg="#003262", fg="white", font=('Arial', 12)).place(x=40, y=210)
+        tk.Label(dashboard, text="3. Checked Balance", bg="#003262", fg="white", font=('Arial', 12)).place(x=40, y=230)
+
+
+        tk.Label(dashboard, text="Quick Actions", bg="#003262", fg="white", font=('Arial', 14, 'bold')).place(x=40, y=260)
+        tk.Button(dashboard, text="Transfer Funds", font=('Arial', 12), bg='#0095B6', fg='white', cursor='hand2').place(x=40, y=280)
+        tk.Button(dashboard, text="Pay Bills", font=('Arial', 12), bg='#0095B6', fg='white', cursor='hand2').place(x=40, y=300)
+        tk.Button(dashboard, text="Deposit Checks", font=('Arial', 12), bg='#0095B6', fg='white', cursor='hand2').place(x=40, y=320)
 
         self.logo_label = tk.Label(dashboard, bg='#003262')
         self.logo_label.place(x=40, y=70)
@@ -181,6 +203,34 @@ class Sidebar(tk.Frame):
 
         setting.geometry(f"{dialog_width}x{dialog_height}+{x}+{y}")
 
+    def get_account_balance(self, username):
+        # Connect to MySQL database
+        db = mysql.connector.connect(
+            host="localhost",
+            user="Bank",
+            password="Bankappsql",
+            database="Bank_data",
+            auth_plugin='mysql_native_password'
+        )
+        cursor = db.cursor()
+
+        try:
+            # Get account balance from database
+            cursor.execute("SELECT account_balance FROM users WHERE username = %s", (username,))
+            row = cursor.fetchone()
+
+            if row:
+                return row[0]
+            else:
+                return None
+        except mysql.connector.Error as err:
+            messagebox.showerror("Database Error", f"Error: {err}")
+            return None
+        finally:
+            cursor.close()
+            db.close()
+
+
     def toggle(self):
             self.animate_open()
             if self.is_open:
@@ -214,7 +264,7 @@ if __name__ == "__main__":
     root = tk.Tk()
     root.geometry("1200x600")  # Set window size
 
-    sidebar = Sidebar(root, bg='#3B3C36')
+    sidebar = Sidebar(root, username=None,bg='#3B3C36')
     sidebar.place(x=0, y=0, relwidth=0.2, relheight=1)  
 
     root.mainloop()
