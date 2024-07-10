@@ -15,6 +15,7 @@ import mysql.connector
 import requests
 
 
+
 # Run to install dependencies
 # (python -m venv myenv to avoid conflicts)not necessary
 # (myenv\Scripts\activate)not necessary

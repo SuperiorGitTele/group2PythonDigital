@@ -23,7 +23,6 @@ class WelcomeWindow:
         self.new_window = tk.Toplevel(self.master)
         self.new_window.title("PROPATEES Bank App")
         self.new_window.geometry("1450x760")
-        print(username)
 
         img = ImageTk.PhotoImage(file='logo.png')
         self.new_window.iconphoto(False, img)
@@ -204,7 +203,7 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
 
     def toggle_sidebar(self):
         if self.sidebar is None:
-            self.sidebar = Sidebar(self.new_window)
+            self.sidebar = Sidebar(self.new_window, username=self.username)
             self.sidebar.place(x=1528, y=0, relwidth=0.2, relheight=1)
         self.sidebar.toggle()
 
