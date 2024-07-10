@@ -170,7 +170,7 @@ class Sidebar(tk.Frame):
                 cursor.execute("SELECT amount FROM transactions WHERE username = %s", (self.username,))
                 transactions = cursor.fetchall()
 
-                amount = transactions
+                # amount = transactions
 
                 if not transactions:
                     recieved = tk.Label(dashboard, text="No Money Recieved", bg="#003262", fg="white", font=('Arial', 12))
@@ -180,7 +180,7 @@ class Sidebar(tk.Frame):
                     trans.place(x=40, y=230)
                     return
                 else:
-                    trans = tk.Label(dashboard, text=f"Last amount: {amount}", bg="#003262", fg="white", font=('Arial', 12))
+                    trans = tk.Label(dashboard, text=f"Update coming soon", bg="#003262", fg="white", font=('Arial', 20))
                     trans.place(x=40, y=230)
 
             except mysql.connector.Error as err:

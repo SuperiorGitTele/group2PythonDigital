@@ -68,7 +68,7 @@ class NewWindow(tk.Toplevel):
         self.sign_in_image_label.place(x=400, y=92)
 
         upload_button = tk.Button(self.lgn_frame, text="Change Photo", command=self.upload_photo)
-        upload_button.place(x=400, y=160)
+        upload_button.place(x=520, y=170)
         
         # Sign in text
         self.sign_in_label = Label(self.lgn_frame, text="Register and Join us😎!", bg="#011F5B", fg="white", font=("yu gothic ui", 17, "bold"))
