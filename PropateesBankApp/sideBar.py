@@ -1,8 +1,9 @@
 import tkinter as tk
 from PIL import Image, ImageTk
+# from bankLogin import username
 
 class Sidebar(tk.Frame):
-    def __init__(self, master, **kwargs):
+    def __init__(self, master,**kwargs):
         tk.Frame.__init__(self, master, **kwargs)
         self.master = master
         self.is_open = False
@@ -25,13 +26,9 @@ class Sidebar(tk.Frame):
         logo_label.__reduce__()
         logo_label.place(x=70, y=85)
 
-        # Logo picture
-        self.logoside = Image.open('logopng.png')
-        self.logoside = self.logoside.resize((80, 80), resample=Image.LANCZOS)  # Resize the image to 80x80 pixels using Lanczos resampling
-        logos = ImageTk.PhotoImage(self.logoside)
-        self.logo_label = tk.Label(self.master, image=logos, width=80, height=80, bg='#3B3C36')
-        self.logo_label.image = logos  # Keep a reference to the image
-        self.logo_label.place(x=70, y=0)
+        self.username_label = tk.Label(self.master, text=f": Signed in", bg='#3B3C36', fg="white")
+        self.username_label.place(x=70, y=180)
+
 
         # Buttons
         self.button1 = tk.Button(self, text="Activities", font=('yu gothic ui', 13, 'bold'), width=20, bd=0, bg='#0095B6', cursor='hand2', activebackground='#3047ff', fg='white', command=self.activities)

@@ -23,7 +23,7 @@ class WelcomeWindow:
         self.new_window = tk.Toplevel(self.master)
         self.new_window.title("PROPATEES Bank App")
         self.new_window.geometry("1450x760")
-        
+        print(username)
 
         img = ImageTk.PhotoImage(file='logo.png')
         self.new_window.iconphoto(False, img)
@@ -41,12 +41,12 @@ class WelcomeWindow:
 
         # logo pic
         self.logoside = Image.open('logopng.png')
-        self.logoside = self.logoside.resize((80, 80), resample=Image.LANCZOS)  
+        self.logoside = self.logoside.resize((130, 130), resample=Image.LANCZOS)  
         logos = ImageTk.PhotoImage(self.logoside)
-        self.logo_label = tk.Label(self.new_window, image=logos, width='80', height="80", bg='#3B3C36')
-        self.logo_label.image = logos
-        self.logo_label.__reduce__()
-        self.logo_label.place(x=70, y=0)
+        self.logo_label3 = tk.Label(self.new_window, image=logos, width='80', height="80", bg='#3B3C36')
+        self.logo_label3.image = logos
+        self.logo_label3.__reduce__()
+        self.lgn_frame.after(17000, lambda: self.logo_label3.place(x=1400, y=0))
 
         self.username_label = tk.Label(self.new_window, text=f"{username}: Signed in", bg='#3B3C36', fg="white")
         self.username_label.place(x=180, y=6)
@@ -161,10 +161,10 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
         self.logoside = Image.open('vector.png')
         self.logoside = self.logoside.resize((350, 350), resample=Image.LANCZOS)
         logos = ImageTk.PhotoImage(self.logoside)
-        self.logo_label = tk.Label(self.new_window, image=logos, bg='#003262')
-        self.logo_label.image = logos
-        self.logo_label.__reduce__()
-        self.logo_label.place(x=25, y=520)
+        self.logo_label1 = tk.Label(self.new_window, image=logos, bg='#003262')
+        self.logo_label1.image = logos
+        self.logo_label1.__reduce__()
+        self.logo_label1.place(x=25, y=520)
 
         
 

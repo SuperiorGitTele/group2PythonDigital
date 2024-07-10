@@ -25,7 +25,7 @@ import requests
 class LoginWindow(tk.Tk):
     def __init__(self):
         super().__init__()
-        self.title("PROPATEES Bank log in") 
+        self.title("PROPATEES Bank Log in") 
         self.geometry("1450x760")
         
         img = PhotoImage(file='logo.png')
@@ -337,7 +337,10 @@ class LoginWindow(tk.Tk):
 
             if row:
                 # Show a message box with a welcome message
+                self.username_entry.delete(0, tk.END)
+                self.password_entry.delete(0, tk.END)
                 messagebox.showinfo("Login Success", f"Welcome, {username}! Login successful!")
+                
 
                 # Play a welcome audio
                 if self.check_wifi_and_internet_speed():
