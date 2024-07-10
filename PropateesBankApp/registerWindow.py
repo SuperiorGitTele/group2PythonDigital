@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import *
 from PIL import ImageTk, Image
 from tkinter import messagebox
+from tkinter import ttk, filedialog
 import random
 import mysql.connector
 import random
@@ -17,6 +18,7 @@ class NewWindow(tk.Toplevel):
         self.title("Register with PROPATEES")
         self.geometry("1450x760")
         self.master = master
+        self.image_path = None
         img = PhotoImage(file='logo.png')
         self.iconphoto(False, img)
          
@@ -64,6 +66,9 @@ class NewWindow(tk.Toplevel):
         self.sign_in_image_label = Label(self.lgn_frame, image=photo, bg='#343434')
         self.sign_in_image_label.image = photo
         self.sign_in_image_label.place(x=400, y=92)
+
+        upload_button = tk.Button(self.lgn_frame, text="Change Photo", command=self.upload_photo)
+        upload_button.place(x=400, y=160)
         
         # Sign in text
         self.sign_in_label = Label(self.lgn_frame, text="Register and Join us😎!", bg="#011F5B", fg="white", font=("yu gothic ui", 17, "bold"))
@@ -236,7 +241,17 @@ type the question if no one is around you)""", bg="#4B3621", fg="white", font=("
         self.show_button.place(x=308, y=367)
         self.password_entry.config(show='*')
 
-    
+    def upload_photo(self):
+            file_path = filedialog.askopenfilename()
+            if file_path:
+                self.image_path = file_path
+                # Save image path to a configuration file or database for persistence
+                with open('image_path.txt', 'w') as f:
+                    f.write(self.image_path)
+                image = Image.open(self.image_path)
+                image = image.resize((80, 80), resample=Image.LANCZOS)
+                self.logos = ImageTk.PhotoImage(image)
+                self.sign_in_image_label.config(image=self.logos)
 
 
     def center_window(self):

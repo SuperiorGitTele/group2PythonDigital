@@ -1,13 +1,16 @@
 import tkinter as tk
 from PIL import Image, ImageTk
 from tkinter import ttk, filedialog
+import os
+from tkinter import messagebox
 
 class Sidebar(tk.Frame):
-    def __init__(self, master,**kwargs):
+    def __init__(self, master, username,**kwargs):
         tk.Frame.__init__(self, master, **kwargs)
         self.master = master
         self.is_open = False
         self.image_path = None
+        self.load_image_path()
         self.configure(bg="#3B3C36")
 
 
@@ -19,22 +22,19 @@ class Sidebar(tk.Frame):
         self.sidebar_button.image = dropdown_image
         self.sidebar_button.place(x=10, y=0)
 
-        logoside2 = Image.open('femalelogo.png')
-        logoside2 = logoside2.resize((80, 80), resample=Image.LANCZOS)
-        logos = ImageTk.PhotoImage(logoside2)
-        logo_label3 = tk.Label(self, image=logos, bg='#3B3C36')
-        logo_label3.image = logos
-        logo_label3.__reduce__()
-        logo_label3.place(x=70, y=85)
+        self.logo_label3 = tk.Label(self, bg='#3B3C36')
+        self.logo_label3.place(x=70, y=85)
+
+        self.load_image_from_path3()
         
         
 
-        self.username_label = tk.Label(self, text=f": Signed in", bg='#3B3C36', fg="white")
+        self.username_label = tk.Label(self, text=f"{username}: Signed in", bg='#3B3C36', fg="white")
         self.username_label.place(x=70, y=180)
 
 
         # Buttons
-        self.button1 = tk.Button(self, text="Activities", font=('yu gothic ui', 13, 'bold'), width=20, bd=0, bg='#0095B6', cursor='hand2', activebackground='#3047ff', fg='white', command=self.dashboard)
+        self.button1 = tk.Button(self, text="Dashboard", font=('yu gothic ui', 13, 'bold'), width=20, bd=0, bg='#0095B6', cursor='hand2', activebackground='#3047ff', fg='white', command=self.dashboard)
         self.button1.place(x=20, y=250)
 
         self.button2 = tk.Button(self, text="Account Details", font=('yu gothic ui', 13, 'bold'), width=20, bd=0, bg='#0095B6', cursor='hand2', activebackground='#3047ff', fg='white', command=self.AcctDetail)
@@ -42,6 +42,24 @@ class Sidebar(tk.Frame):
 
         self.button3 = tk.Button(self, text="Settings", font=('yu gothic ui', 11, 'bold'), width=22, bd=0, bg='#0095B6', cursor='hand2', activebackground='#3047ff', fg='white', command=self.setting)
         self.button3.place(x=20, y=450)
+    
+    def load_image_from_path3(self):
+            if self.image_path and os.path.exists(self.image_path):
+                try:
+                    image = Image.open(self.image_path)
+                    image = image.resize((80, 80), resample=Image.LANCZOS)
+                    self.logo = ImageTk.PhotoImage(image)
+                    self.logo_label3.config(image=self.logo)
+                except Exception as e:
+                    print(f"Error loading image1: {e}")
+
+    def load_image_path(self):
+        # Load the image path from a file
+        if os.path.exists('image_path.txt'):
+            with open('image_path.txt', 'r') as f:
+                self.image_path = f.read().strip()
+        else:
+            self.image_path = None
 
     def dashboard(self):
         dashboard = tk.Toplevel(self.master)
@@ -81,25 +99,19 @@ class Sidebar(tk.Frame):
         # label = tk.Label(activities, text="Text", bg="#0095B6", font=('Arial', 12))
         # label.place(x=50, y=50)
 
-        logoside = Image.open('femalelogo.png')
-        logoside = logoside.resize((80, 80), resample=Image.LANCZOS)
-        logos = ImageTk.PhotoImage(logoside)
-        logo_labe = tk.Label(dashboard, image=logos, bg='#003262')
-        logo_labe.image = logos
-        logo_labe.__reduce__()
-        logo_labe.place(x=40, y=70)
-
         self.logo_label = tk.Label(dashboard, bg='#003262')
         self.logo_label.place(x=40, y=70)
 
         def load_image_from_path():
-            if self.image_path:
-                image = Image.open(self.image_path)
-                image = image.resize((80, 80), resample=Image.LANCZOS)
-                self.logos = ImageTk.PhotoImage(image)
-                self.logo_label.config(image=self.logos)
-                logo_labe.place_forget()
-
+            if self.image_path and os.path.exists(self.image_path):
+                try:
+                    image = Image.open(self.image_path)
+                    image = image.resize((80, 80), resample=Image.LANCZOS)
+                    self.logos = ImageTk.PhotoImage(image)
+                    self.logo_label.config(image=self.logos)
+                except Exception as e:
+                    print(f"Error loading image: {e}")
+            
         
         def upload_photo():
             file_path = filedialog.askopenfilename()
@@ -109,9 +121,11 @@ class Sidebar(tk.Frame):
                 with open('image_path.txt', 'w') as f:
                     f.write(self.image_path)
                 load_image_from_path()
+                messagebox.showinfo("Photo change Successful", "Photo Change Successful!, full changes will take place when the app is reopened")
+                
                 
         
-        upload_button = tk.Button(dashboard, text="Upload Photo", command=upload_photo)
+        upload_button = tk.Button(dashboard, text="Change Photo", command=upload_photo)
         upload_button.place(x=40, y=160)
 
         load_image_from_path()
