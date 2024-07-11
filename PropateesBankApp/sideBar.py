@@ -5,14 +5,7 @@ import os
 import mysql.connector
 from tkinter import messagebox
 import tkinter as tk
-import smtplib
-import subprocess
-import time
-import re
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
-from datetime import datetime
-import requests
+
 
 class Sidebar(tk.Frame):
     def __init__(self, master, username,**kwargs):

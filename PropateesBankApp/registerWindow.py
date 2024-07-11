@@ -67,7 +67,7 @@ class NewWindow(tk.Toplevel):
         self.sign_in_image_label.image = photo
         self.sign_in_image_label.place(x=400, y=92)
 
-        upload_button = tk.Button(self.lgn_frame, text="Change Photo", command=self.upload_photo)
+        upload_button = tk.Button(self.lgn_frame, text="Upload Photo", command=self.upload_photo)
         upload_button.place(x=520, y=170)
         
         # Sign in text
@@ -75,7 +75,7 @@ class NewWindow(tk.Toplevel):
         self.sign_in_label.place(x=350, y=201)
 
         # Username Section
-        self.username_label = Label(self.lgn_frame, text="Username", bg="#4B3621", fg="white", font=("yu gothic ui", 13, "bold"))
+        self.username_label = Label(self.lgn_frame, text="Username", bg="#0095B6", fg="white", font=("yu gothic ui", 13, "bold"))
         self.username_label.place(x=100, y=250)
 
         self.username_entry = Entry(self.lgn_frame, highlightthickness=0, relief=FLAT, bg="#414A4C", fg="#6082B6", font=("yu gothic ui ", 12, "bold"), insertbackground = '#6082B6')
@@ -94,18 +94,18 @@ class NewWindow(tk.Toplevel):
         self.username_icon_label.place(x=100, y=280)
 
         # Password Section
-        self.password_label = Label(self.lgn_frame, text="Password", bg="#4B3621", fg="white", font=("yu gothic ui", 13, "bold"))
+        self.password_label = Label(self.lgn_frame, text="Password", bg="#0095B6", fg="white", font=("yu gothic ui", 13, "bold"))
         self.password_label.place(x=100, y=340)
 
         self.password_entry = Entry(self.lgn_frame, highlightthickness=0, relief=FLAT, bg="#414A4C", fg="#6082B6", font=("yu gothic ui", 12, "bold"), show="*", insertbackground = '#6082B6')
-        self.password_entry.place(x=127, y=366, width=200)
+        self.password_entry.place(x=127, y=369, width=200)
 
         self.password_line = Canvas(self.lgn_frame, width=200, height=2.0, bg="#bdb9b1", highlightthickness=0)
-        self.password_line.place(x=127, y=388)
+        self.password_line.place(x=127, y=391)
 
         # Date of Birth Section
         self.dob_label = Label(self.lgn_frame, text="""Date of Birth
-(DD/MM/YYYY)""", bg="#4B3621", fg="white", font=("yu gothic ui", 13, "bold"))
+(DD/MM/YYYY)""", bg="#0095B6", fg="white", font=("yu gothic ui", 13, "bold"))
         self.dob_label.place(x=340, y=250)
 
         self.dob_entry = Entry(self.lgn_frame, highlightthickness=0, relief=FLAT, bg="#414A4C", fg="#6082B6", font=("yu gothic ui ", 12, "bold"), insertbackground = '#6082B6')
@@ -117,7 +117,7 @@ class NewWindow(tk.Toplevel):
 
 
         self.secret_question_label = Label(self.lgn_frame, text="""Secret Question(Windows + H, to quickly voice 
-type the question if no one is around you)""", bg="#4B3621", fg="white", font=("yu gothic ui", 13, "bold"))
+type the question if no one is around you)""", bg="#0095B6", fg="white", font=("yu gothic ui", 13, "bold"))
         self.secret_question_label.place(x=580, y=249)
 
         self.secret_question_entry = Entry(self.lgn_frame, highlightthickness=0, relief=FLAT, bg="#414A4C", fg="#6082B6", font=("yu gothic ui ", 12, "bold"), insertbackground = '#6082B6')
@@ -126,7 +126,7 @@ type the question if no one is around you)""", bg="#4B3621", fg="white", font=("
         self.secret_question_line = Canvas(self.lgn_frame, width=240, height=2.0, bg="#bdb9b1", highlightthickness=0)
         self.secret_question_line.place(x=600, y=328)
 
-        self.secret_answer_label = Label(self.lgn_frame, text="Secret Answer", bg="#4B3621", fg="white", font=("yu gothic ui", 13, "bold"))
+        self.secret_answer_label = Label(self.lgn_frame, text="Secret Answer", bg="#0095B6", fg="white", font=("yu gothic ui", 13, "bold"))
         self.secret_answer_label.place(x=600, y=340)
 
         self.secret_answer_entry = Entry(self.lgn_frame, highlightthickness=0, relief=FLAT, bg="#414A4C", fg="#6082B6", font=("yu gothic ui ", 12, "bold"), insertbackground = '#6082B6')
@@ -135,7 +135,7 @@ type the question if no one is around you)""", bg="#4B3621", fg="white", font=("
         self.secret_answer_line = Canvas(self.lgn_frame, width=240, height=2.0, bg="#bdb9b1", highlightthickness=0)
         self.secret_answer_line.place(x=600, y=404)
 
-        self.transaction_pin_label = Label(self.lgn_frame, text="Create transaction Pin", bg="#4B3621", fg="white", font=("yu gothic ui", 13, "bold"))
+        self.transaction_pin_label = Label(self.lgn_frame, text="Create transaction Pin", bg="#0095B6", fg="white", font=("yu gothic ui", 13, "bold"))
         self.transaction_pin_label.place(x=600, y=450)
 
         self.transaction_pin_entry = Entry(self.lgn_frame, highlightthickness=0, relief=FLAT, bg="#414A4C", fg="#6082B6", font=("yu gothic ui ", 12, "bold"), insertbackground = '#6082B6', show="*")
@@ -144,7 +144,7 @@ type the question if no one is around you)""", bg="#4B3621", fg="white", font=("
         self.transaction_pin_line = Canvas(self.lgn_frame, width=100, height=2.0, bg="#bdb9b1", highlightthickness=0)
         self.transaction_pin_line.place(x=600, y=515)
 
-        self.email_label = Label(self.lgn_frame, text="Enter Email(Optional)", bg="#4B3621", fg="white", font=("yu gothic ui", 13, "bold"))
+        self.email_label = Label(self.lgn_frame, text="Enter Email(Optional)", bg="#0095B6", fg="white", font=("yu gothic ui", 13, "bold"))
         self.email_label.place(x=340, y=340)
 
         self.email_entry = Entry(self.lgn_frame, highlightthickness=0, relief=FLAT, bg="#414A4C", fg="#6082B6", font=("yu gothic ui ", 12, "bold"), insertbackground = '#6082B6')
@@ -152,10 +152,23 @@ type the question if no one is around you)""", bg="#4B3621", fg="white", font=("
 
         self.email_line = Canvas(self.lgn_frame, width=255, height=2.0, bg="#bdb9b1", highlightthickness=0)
         self.email_line.place(x=340, y=404)
+
+        self.add_beneficiary_var = tk.BooleanVar()
+        add_beneficiary_checkbox = tk.Checkbutton(
+            self.lgn_frame, text="Male", bg='#6CB4EE', variable=self.add_beneficiary_var
+        )
+        add_beneficiary_checkbox.place(x=380,y=450)
+        tk.Label(self.lgn_frame, text="OR", bg='#343434', fg='white').place(x=460, y=455)
+
+        self.add_beneficiary_var2 = tk.BooleanVar()
+        add_beneficiary_checkbox2 = tk.Checkbutton(
+            self.lgn_frame, text="Female", bg='#6CB4EE', variable=self.add_beneficiary_var2
+        )
+        add_beneficiary_checkbox2.place(x=510,y=450)
         
 
         self.reference_code_label = Label(self.lgn_frame, text="""PROPATEES Reference Code
-(To start with a Level 2 Account)""", bg="#4B3621", fg="white", font=("yu gothic ui", 13, "bold"))
+(To start with a Level 2 Account)""", bg="#0095B6", fg="white", font=("yu gothic ui", 13, "bold"))
         self.reference_code_label.place(x=105, y=450)
 
         self.reference_code_entry = Entry(self.lgn_frame, highlightthickness=0, relief=FLAT, bg="#414A4C", fg="#6082B6", font=("yu gothic ui ", 12, "bold"), insertbackground = '#6082B6')
@@ -217,9 +230,9 @@ type the question if no one is around you)""", bg="#4B3621", fg="white", font=("
         # Password Icon
         self.password_icon = Image.open('password_icon.png')
         photo = ImageTk.PhotoImage(self.password_icon)
-        self.password_icon_label = Label(self.lgn_frame, image=photo, bg='#414A4C')
+        self.password_icon_label = Label(self.lgn_frame, image=photo, bg='#343434')
         self.password_icon_label.image = photo
-        self.password_icon_label.place(x=100, y=365)
+        self.password_icon_label.place(x=101, y=369)
 
         # ========= show/hide password ========
         self.show_image = ImageTk.PhotoImage \
@@ -229,22 +242,22 @@ type the question if no one is around you)""", bg="#4B3621", fg="white", font=("
             (file='show.png')
 
         self.show_button = Button(self.lgn_frame, image=self.show_image, command=self.show, relief=FLAT,activebackground='#414A4C', borderwidth=0, background="#414A4C", cursor="hand2")
-        self.show_button.place(x=308, y=367)
+        self.show_button.place(x=308, y=369)
 
     def show(self):
         self.hide_button = Button(self.lgn_frame, image=self.hide_image, command=self.hide, relief=FLAT, activebackground='#414A4C', borderwidth=0, background="#414A4C", cursor="hand2")
-        self.hide_button.place(x=308, y=367)
+        self.hide_button.place(x=308, y=369)
         self.password_entry.config(show='')
 
     def hide(self):
         self.show_button = Button(self.lgn_frame, image=self.show_image, command=self.show, relief=FLAT,activebackground='#414A4C', borderwidth=0, background="#414A4C", cursor="hand2")
-        self.show_button.place(x=308, y=367)
+        self.show_button.place(x=308, y=369)
         self.password_entry.config(show='*')
 
     def upload_photo(self):
-            file_path = filedialog.askopenfilename()
-            if file_path:
-                self.image_path = file_path
+            self.file_path = filedialog.askopenfilename()
+            if self.file_path:
+                self.image_path = self.file_path
                 # Save image path to a configuration file or database for persistence
                 with open('image_path.txt', 'w') as f:
                     f.write(self.image_path)
@@ -272,6 +285,8 @@ type the question if no one is around you)""", bg="#4B3621", fg="white", font=("
         transaction_pin = self.transaction_pin_entry.get()
         reference_code = self.reference_code_entry.get()
         email = self.email_entry.get()  
+        
+                
 
         if not username or not password or not dob or not secret_question or not secret_answer or not transaction_pin:
             messagebox.showerror("Error", "Please fill in all mandatory fields")
@@ -323,38 +338,13 @@ type the question if no one is around you)""", bg="#4B3621", fg="white", font=("
 
         # Initialize account balance
         if reference_code == "QRPTP":
-            initial_deposit_dialog = tk.Toplevel(self)
-            initial_deposit_dialog.title("Initial Deposit")
-            initial_deposit_dialog.grab_set()
-
-            initial_deposit_dialog.configure(bg='#003262')
-            img = ImageTk.PhotoImage(file='logo.png')
-            initial_deposit_dialog.iconphoto(False, img)
-
-             # Set size of the fund account dialog
-            dialog_width = 250
-            dialog_height = 70
-
-            # Center the dialog relative to the parent window (self.new_window)
-            parent_x = self.winfo_x()
-            parent_y = self.winfo_y()
-            parent_width = self.winfo_width()
-            parent_height = self.winfo_height()
-
-            # Calculate the position
-            x = parent_x + (parent_width // 2) - (dialog_width // 2)
-            y = parent_y + (parent_height // 2) - (dialog_height // 2)
-
-            initial_deposit_dialog.geometry(f"{dialog_width}x{dialog_height}+{x}+{y}")
-
-            tk.Label(initial_deposit_dialog, text="The reference code has granted you ₦1500", bg='#6CB4EE').pack()
+            messagebox.showinfo("Reference Granted", "The reference code has granted you ₦1500")
 
             account_balance = 1500
 
                 
             # Register user
             self.register_user(username, password, dob, secret_question, secret_answer, transaction_pin, account_number, account_balance, reference_code, bvn, account_name, email)
-            initial_deposit_dialog.after(4000, lambda: initial_deposit_dialog.destroy())
 
             
         elif reference_code == "":
@@ -394,6 +384,44 @@ type the question if no one is around you)""", bg="#4B3621", fg="white", font=("
         self.secret_answer_entry.delete(0, tk.END)
         self.transaction_pin_entry.delete(0, tk.END)
         self.reference_code_entry.delete(0, tk.END)
+        if self.add_beneficiary_var.get():
+            self.sign_in_image = Image.open('userdisplay.png')
+            photo = ImageTk.PhotoImage(self.sign_in_image)
+            self.sign_in_image_label = Label(self.master.lgn_frame, image=photo, bg='#343434')
+            self.sign_in_image_label.image = photo
+            self.sign_in_image_label.place(x=620, y=110)
+        elif self.file_path:
+                self.image_path = self.file_path
+                # Save image path to a configuration file or database for persistence
+                with open('image_path.txt', 'w') as f:
+                    f.write(self.image_path)
+                image = Image.open(self.image_path)
+                image = image.resize((80, 80), resample=Image.LANCZOS)
+                self.logos = ImageTk.PhotoImage(image)
+                self.sign_in_image_label = Label(self.master.lgn_frame, image=photo, bg='#343434')
+                self.sign_in_image_label.image = photo
+                self.sign_in_image_label.place(x=620, y=110)
+
+        if self.add_beneficiary_var2.get():
+            self.sign_in_image = Image.open('femalelogo.png')
+            self.sign_in_image = self.sign_in_image.resize((80, 80), resample=Image.LANCZOS)
+            photo = ImageTk.PhotoImage(self.sign_in_image)
+            self.sign_in_image_label = Label(self.master.lgn_frame, image=photo, bg='#3B3C36')
+            self.sign_in_image_label.image = photo
+            self.master.sign_in_image_label.place_forget()
+            self.sign_in_image_label.place(x=640, y=130)
+        elif self.file_path:
+                self.image_path = self.file_path
+                # Save image path to a configuration file or database for persistence
+                with open('image_path.txt', 'w') as f:
+                    f.write(self.image_path)
+                image = Image.open(self.image_path)
+                image = image.resize((80, 80), resample=Image.LANCZOS)
+                self.logos = ImageTk.PhotoImage(image)
+                self.sign_in_image_label = Label(self.master.lgn_frame, image=photo, bg='#343434')
+                self.sign_in_image_label.image = photo
+                self.sign_in_image_label.place(x=620, y=110)
+            
         if self.master.state_string == 'zoomed':
             self.master.state('zoomed')
         else:
