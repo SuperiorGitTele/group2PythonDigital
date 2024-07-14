@@ -242,7 +242,7 @@ PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
             style.configure("Big.TLabel", font=("Arial", 15), foreground="#003262", background="#0095B6")
 
             # Label to display the account balance
-            self.balance_label = ttk.Label(self.lgn_frame, text=f"Account Balance ₦: {account_balance}", style="Big.TLabel", width="35")
+            self.balance_label = ttk.Label(self.lgn_frame, text=f"Account Balance ₦: {account_balance}", style="Big.TLabel", width="24")
             self.balance_label.place(x=320, y=160)
         else:
             self.balance_label.place_forget()

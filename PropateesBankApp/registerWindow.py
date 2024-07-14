@@ -18,7 +18,6 @@ class NewWindow(tk.Toplevel):
         self.title("Register with PROPATEES")
         self.geometry("1450x760")
         self.master = master
-        self.image_path = None
         img = PhotoImage(file='logo.png')
         self.iconphoto(False, img)
          
@@ -53,20 +52,21 @@ class NewWindow(tk.Toplevel):
         
         # logo pic
         self.logoside = Image.open('logopng.png')
-        self.logoside = self.logoside.resize((80, 80), resample=Image.LANCZOS)  # Resize the image to 50x50 pixels using Lanczos resampling
+        self.logoside = self.logoside.resize((80, 80), resample=Image.LANCZOS) 
         logos = ImageTk.PhotoImage(self.logoside)
-        self.logo_label = Label(self.lgn_frame, image=logos, width='80', height="80", bg='#343434')
-        self.logo_label.image = logos
-        self.logo_label.__reduce__()
-        self.logo_label.place(x=750, y=5)
+        self.logo_label1 = Label(self.lgn_frame, image=logos, width='80', height="80", bg='#343434')
+        self.logo_label1.image = logos
+        self.logo_label1.__reduce__()
+        self.logo_label1.place(x=750, y=5)
         
         # face login
         self.sign_in_image = Image.open('userdisplay.png')
         photo = ImageTk.PhotoImage(self.sign_in_image)
-        self.sign_in_image_label = Label(self.lgn_frame, image=photo, bg='#343434')
-        self.sign_in_image_label.image = photo
-        self.sign_in_image_label.place(x=400, y=92)
-
+        self.sign_in_image_labelreg = Label(self.lgn_frame, image=photo, bg='#343434')
+        self.sign_in_image_labelreg.image = photo
+        self.sign_in_image_labelreg.place(x=400, y=92)
+        self.sign_in_image_labellgn = tk.Label(self.master.lgn_frame, bg='#3B3C36')
+        
         upload_button = tk.Button(self.lgn_frame, text="Upload Photo", command=self.upload_photo)
         upload_button.place(x=520, y=170)
         
@@ -244,6 +244,9 @@ type the question if no one is around you)""", bg="#0095B6", fg="white", font=("
         self.show_button = Button(self.lgn_frame, image=self.show_image, command=self.show, relief=FLAT,activebackground='#414A4C', borderwidth=0, background="#414A4C", cursor="hand2")
         self.show_button.place(x=308, y=369)
 
+        self.logo_label = tk.Label(self.lgn_frame, bg='#343434')
+        self.logo_label.place(x=40, y=70)
+
     def show(self):
         self.hide_button = Button(self.lgn_frame, image=self.hide_image, command=self.hide, relief=FLAT, activebackground='#414A4C', borderwidth=0, background="#414A4C", cursor="hand2")
         self.hide_button.place(x=308, y=369)
@@ -255,16 +258,18 @@ type the question if no one is around you)""", bg="#0095B6", fg="white", font=("
         self.password_entry.config(show='*')
 
     def upload_photo(self):
-            self.file_path = filedialog.askopenfilename()
-            if self.file_path:
-                self.image_path = self.file_path
+            file_path = filedialog.askopenfilename()
+            if file_path:
+                self.image_path = file_path
                 # Save image path to a configuration file or database for persistence
                 with open('image_path.txt', 'w') as f:
                     f.write(self.image_path)
                 image = Image.open(self.image_path)
                 image = image.resize((80, 80), resample=Image.LANCZOS)
                 self.logos = ImageTk.PhotoImage(image)
-                self.sign_in_image_label.config(image=self.logos)
+                self.sign_in_image_labelreg.place_forget()
+                self.logo_label.config(image=self.logos)
+                self.logo_label.place(x=400, y=92)
 
 
     def center_window(self):
@@ -275,6 +280,36 @@ type the question if no one is around you)""", bg="#0095B6", fg="white", font=("
         x = (self.winfo_screenwidth() // 2) - (width // 2)
         y = (self.winfo_screenheight() // 2) - (height // 2)
         self.geometry(f'{width}x{height}+{x}+{y}')
+
+
+    def load_image_from_path(self):
+        try:
+            # Read the image path from image_path.txt
+            with open('image_path.txt', 'r') as f:
+                path = f.read().strip()
+                # Call the load_image method to display the image
+                self.load_image(path)
+        except FileNotFoundError:
+            print("image_path.txt not found")
+        except Exception as e:
+            print(f"An error occurred: {e}")
+
+    def load_image(self, image_file):
+        try:
+            # Open and resize the image
+            image = Image.open(image_file)
+            image = image.resize((80, 80), resample=Image.LANCZOS)
+            self.logos = ImageTk.PhotoImage(image)
+            
+            # Update the image label
+            self.sign_in_image_labellgn.config(image=self.logos)
+            self.sign_in_image_labellgn.image = self.logos  # Keep a reference to the image
+            self.master.sign_in_image_label.place_forget()
+            self.sign_in_image_labellgn.place(x=640, y=130)  # Adjust the position as needed
+        except FileNotFoundError:
+            print(f"File not found: {image_file}")
+        except Exception as e:
+            print(f"An error occurred while loading the image: {e}")
     
     def register(self):
         username = self.username_entry.get()
@@ -387,40 +422,25 @@ type the question if no one is around you)""", bg="#0095B6", fg="white", font=("
         if self.add_beneficiary_var.get():
             self.sign_in_image = Image.open('userdisplay.png')
             photo = ImageTk.PhotoImage(self.sign_in_image)
-            self.sign_in_image_label = Label(self.master.lgn_frame, image=photo, bg='#343434')
-            self.sign_in_image_label.image = photo
-            self.sign_in_image_label.place(x=620, y=110)
-        elif self.file_path:
-                self.image_path = self.file_path
-                # Save image path to a configuration file or database for persistence
-                with open('image_path.txt', 'w') as f:
-                    f.write(self.image_path)
-                image = Image.open(self.image_path)
-                image = image.resize((80, 80), resample=Image.LANCZOS)
-                self.logos = ImageTk.PhotoImage(image)
-                self.sign_in_image_label = Label(self.master.lgn_frame, image=photo, bg='#343434')
-                self.sign_in_image_label.image = photo
-                self.sign_in_image_label.place(x=620, y=110)
-
-        if self.add_beneficiary_var2.get():
+            self.sign_in_image_labe = Label(self.master.lgn_frame, image=photo, bg='#3B3C36')
+            self.sign_in_image_labe.image = photo
+            self.master.sign_in_image_label.place_forget()
+            self.sign_in_image_labe.place(x=620, y=110)
+            self.sign_in_image_labe.after(45000, self.sign_in_image_labe.place_forget)
+            print("Added1")
+        elif self.add_beneficiary_var2.get():
             self.sign_in_image = Image.open('femalelogo.png')
             self.sign_in_image = self.sign_in_image.resize((80, 80), resample=Image.LANCZOS)
             photo = ImageTk.PhotoImage(self.sign_in_image)
-            self.sign_in_image_label = Label(self.master.lgn_frame, image=photo, bg='#3B3C36')
-            self.sign_in_image_label.image = photo
+            self.sign_in_image_labelfe = Label(self.master.lgn_frame, image=photo, bg='#3B3C36')
+            self.sign_in_image_labelfe.image = photo
             self.master.sign_in_image_label.place_forget()
-            self.sign_in_image_label.place(x=640, y=130)
-        elif self.file_path:
-                self.image_path = self.file_path
-                # Save image path to a configuration file or database for persistence
-                with open('image_path.txt', 'w') as f:
-                    f.write(self.image_path)
-                image = Image.open(self.image_path)
-                image = image.resize((80, 80), resample=Image.LANCZOS)
-                self.logos = ImageTk.PhotoImage(image)
-                self.sign_in_image_label = Label(self.master.lgn_frame, image=photo, bg='#343434')
-                self.sign_in_image_label.image = photo
-                self.sign_in_image_label.place(x=620, y=110)
+            self.sign_in_image_labelfe.place(x=640, y=130)
+            self.sign_in_image_labelfe.after(45000, self.sign_in_image_labelfe.place_forget)
+            print("Added2")
+        else:
+            print("NotAdded")
+            self.load_image_from_path()
             
         if self.master.state_string == 'zoomed':
             self.master.state('zoomed')
