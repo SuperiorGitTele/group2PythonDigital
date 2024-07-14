@@ -55,7 +55,7 @@ def create_mysql_user_and_database(new_username, new_password, new_database):
             bvn VARCHAR(255),
             account_name VARCHAR(255),
             email VARCHAR(255),
-            last_login DATETIME,
+            file_path VARCHAR(255)
             INDEX (username)
         )
         """)
