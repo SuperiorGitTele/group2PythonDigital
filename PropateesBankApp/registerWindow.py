@@ -284,7 +284,7 @@ type the question if no one is around you)""", bg="#0095B6", fg="white", font=("
 
     def load_image_from_path(self):
         try:
-            # Read the image path from image_path.txt
+            # Reads the image path from image_path.txt
             with open('image_path.txt', 'r') as f:
                 path = f.read().strip()
                 # Call the load_image method to display the image
@@ -387,7 +387,7 @@ type the question if no one is around you)""", bg="#0095B6", fg="white", font=("
             self.register_user(username, password, dob, secret_question, secret_answer, transaction_pin, account_number, account_balance, bvn, account_name, email, None)
 
         else:
-            messagebox.showerror("Invalid reference code!")
+            messagebox.showerror("Invalid reference code!", "Invalid reference code!")
                
 
     def register_user(self, username, password, dob, secret_question, secret_answer, transaction_pin, account_number, account_balance, reference_code, bvn, account_name, email):
@@ -412,23 +412,33 @@ type the question if no one is around you)""", bg="#0095B6", fg="white", font=("
         cursor.close()
         db.close()
 
-        self.username_entry.delete(0, tk.END)
-        self.password_entry.delete(0, tk.END)
-        self.dob_entry.delete(0, tk.END)
-        self.secret_question_entry.delete(0, tk.END)
-        self.secret_answer_entry.delete(0, tk.END)
-        self.transaction_pin_entry.delete(0, tk.END)
-        self.reference_code_entry.delete(0, tk.END)
-        if self.add_beneficiary_var.get():
+        
+        if self.add_beneficiary_var.get() and self.add_beneficiary_var2.get() is False:
             self.sign_in_image = Image.open('userdisplay.png')
             photo = ImageTk.PhotoImage(self.sign_in_image)
             self.sign_in_image_labe = Label(self.master.lgn_frame, image=photo, bg='#3B3C36')
             self.sign_in_image_labe.image = photo
             self.master.sign_in_image_label.place_forget()
             self.sign_in_image_labe.place(x=620, y=110)
-            self.sign_in_image_labe.after(45000, self.sign_in_image_labe.place_forget)
-            print("Added1")
-        elif self.add_beneficiary_var2.get():
+            self.sign_in_image_labe.after(60000, self.sign_in_image_labe.place_forget)
+            self.reg_path = "C:/Users/oruko/OneDrive/Desktop/telepython/group2PythonDigital/PropateesBankApp/userdisplay.png"
+            with open('image_path.txt', 'w') as f:
+                    f.write(self.reg_path)
+            if self.master.state_string == 'zoomed':
+                self.master.state('zoomed')
+            else:
+                self.master.state('normal')
+            self.withdraw()
+            messagebox.showinfo("Registration Successful", "Your account has been created successfully, SIGN IN NOW!")
+            self.master.deiconify()
+            self.username_entry.delete(0, tk.END)
+            self.password_entry.delete(0, tk.END)
+            self.dob_entry.delete(0, tk.END)
+            self.secret_question_entry.delete(0, tk.END)
+            self.secret_answer_entry.delete(0, tk.END)
+            self.transaction_pin_entry.delete(0, tk.END)
+            self.reference_code_entry.delete(0, tk.END)
+        elif self.add_beneficiary_var2.get() and self.add_beneficiary_var.get() is False:
             self.sign_in_image = Image.open('femalelogo.png')
             self.sign_in_image = self.sign_in_image.resize((80, 80), resample=Image.LANCZOS)
             photo = ImageTk.PhotoImage(self.sign_in_image)
@@ -436,21 +446,29 @@ type the question if no one is around you)""", bg="#0095B6", fg="white", font=("
             self.sign_in_image_labelfe.image = photo
             self.master.sign_in_image_label.place_forget()
             self.sign_in_image_labelfe.place(x=640, y=130)
-            self.sign_in_image_labelfe.after(45000, self.sign_in_image_labelfe.place_forget)
-            print("Added2")
+            self.sign_in_image_labelfe.after(60000, self.sign_in_image_labelfe.place_forget)
+            self.reg_path = "C:/Users/oruko/OneDrive/Desktop/telepython/group2PythonDigital/PropateesBankApp/femalelogo.png"
+            with open('image_path.txt', 'w') as f:
+                    f.write(self.reg_path)
+            if self.master.state_string == 'zoomed':
+                self.master.state('zoomed')
+            else:
+                self.master.state('normal')
+            self.withdraw()
+            messagebox.showinfo("Registration Successful", "Your account has been created successfully, SIGN IN NOW!")
+            self.master.deiconify()
+            self.username_entry.delete(0, tk.END)
+            self.password_entry.delete(0, tk.END)
+            self.dob_entry.delete(0, tk.END)
+            self.secret_question_entry.delete(0, tk.END)
+            self.secret_answer_entry.delete(0, tk.END)
+            self.transaction_pin_entry.delete(0, tk.END)
+            self.reference_code_entry.delete(0, tk.END)
+        elif self.add_beneficiary_var2.get() is True and self.add_beneficiary_var.get() is True:
+            messagebox.showinfo("Pick one gender","Please pick one gender")
         else:
-            print("NotAdded")
             self.load_image_from_path()
             
-        if self.master.state_string == 'zoomed':
-            self.master.state('zoomed')
-        else:
-            self.master.state('normal')
-        self.withdraw()
-        messagebox.showinfo("Registration Successful", "Your account has been created successfully!")
-        self.master.deiconify()
-
-
     
 
     def go_backLogin(self):
