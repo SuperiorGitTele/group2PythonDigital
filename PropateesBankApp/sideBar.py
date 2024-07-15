@@ -194,7 +194,7 @@ class Sidebar(tk.Frame):
 
     def AcctDetail(self):
         AcctDetail = tk.Toplevel(self.master)
-        AcctDetail.title("Settings")
+        AcctDetail.title("Account Details")
         AcctDetail.configure(bg='#0095B6')
         img = ImageTk.PhotoImage(file='logo.png')
         AcctDetail.iconphoto(False, img)
