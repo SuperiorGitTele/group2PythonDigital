@@ -381,7 +381,7 @@ class LoginWindow(tk.Tk):
                 pygame.mixer.music.load("welcome.mp3")
                 pygame.mixer.music.play()
                 while pygame.mixer.music.get_busy() == True:
-                    time.sleep(0.1)  # wait for the audio to finish playing
+                    time.sleep(0.1) #audio time play
                 pygame.mixer.quit()  # quit Pygame to release the file
                 os.remove("welcome.mp3")
 
