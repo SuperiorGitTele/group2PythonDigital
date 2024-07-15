@@ -319,7 +319,7 @@ type the question if no one is around you)""", bg="#0095B6", fg="white", font=("
         secret_answer = self.secret_answer_entry.get()
         transaction_pin = self.transaction_pin_entry.get()
         reference_code = self.reference_code_entry.get()
-        email = self.email_entry.get()  
+        email = self.email_entry.get() 
         
                 
 

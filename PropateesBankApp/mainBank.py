@@ -136,7 +136,7 @@ class WelcomeWindow:
         self.fund_account_button = ttk.Button(self.new_window, text="""Fund your account 
 from your other 
 PTP account""", style="Big.TButton", command=self.show_fund_account_dialog)
-        self.fund_account_button.place(x=1342, y=300)
+        self.fund_account_button.place(x=0, y=300)
 
         self.subscribe_button = ttk.Button(self.lgn_frame, text="Subscription", style="Big.TButton", command=self.Subscription)
         self.subscribe_button.place(x=1020, y=120)
