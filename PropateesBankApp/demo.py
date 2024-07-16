@@ -39,7 +39,7 @@ class SubscriptionWindow:
         # For demonstration, we just show a success message
         messagebox.showinfo("Subscription Successful", f"Subscribed to {subscription_type} for phone number {phone_number}.")
 
-if __name__ == "__main__":
-    root = tk.Tk()
-    app = SubscriptionWindow(root)
-    root.mainloop()
+# if __name__ == "__main__":
+#     root = tk.Tk()
+#     app = SubscriptionWindow(root)
+#     root.mainloop()

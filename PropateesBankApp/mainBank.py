@@ -10,6 +10,7 @@ import time
 import re
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
+from sub import SubscripWindow
 from datetime import datetime
 from tkinter import messagebox
 import requests
@@ -899,63 +900,9 @@ class WelcomeWindow:
 
 
     def Subscription(self):
-        Subscription = tk.Toplevel(self.new_window)
-        Subscription.title("Subscription")
-        Subscription.configure(bg='#003262')
-        img = ImageTk.PhotoImage(file='logo.png')
-        Subscription.iconphoto(False, img)
-        Subscription.grab_set()
-
-        # Set size of the fund account dialog
-        dialog_width = 400
-        dialog_height = 300
-
-        # Center the dialog relative to the parent window (self.new_window)
-        parent_x = self.new_window.winfo_x()
-        parent_y = self.new_window.winfo_y()
-        parent_width = self.new_window.winfo_width()
-        parent_height = self.new_window.winfo_height()
-
-        # Calculate the position
-        x = parent_x + (parent_width // 2) - (dialog_width // 2)
-        y = parent_y + (parent_height // 2) - (dialog_height // 2)
-
-        Subscription.geometry(f"{dialog_width}x{dialog_height}+{x}+{y}")
-
-        tk.Button(Subscription, text="Buy Airtime", command=self.open_airtime_window).grid(row=0, column=0, padx=10, pady=10)
-
-        tk.Button(Subscription, text="Buy Data", command=self.open_data_window).grid(row=0, column=1, padx=10, pady=10)
-
-
-    def open_airtime_window(self):
-        self.new_window1("Airtime")
-
-    def open_data_window(self):
-        self.new_window1("Data")
-
-    def new_window1(self, subscription_type):
-        new_win = tk.Toplevel(self.Subscription)
-        new_win.title(f"Buy {subscription_type}")
-        img = ImageTk.PhotoImage(file='logo.png')
-        new_win.iconphoto(False, img)
-        new_win.grab_set()
+        SubscripWindow(self.master, username=self.username)
         
-        tk.Label(new_win, text=f"Enter your phone number to buy {subscription_type}").grid(row=0, column=0, padx=10, pady=10)
-        self.phone_var = tk.StringVar()
-        tk.Entry(new_win, textvariable=self.phone_var).grid(row=1, column=0, padx=10, pady=10)
         
-        tk.Button(new_win, text="Submit", command=lambda: self.submit(subscription_type)).grid(row=2, column=0, pady=10)
-
-    def submit(self, subscription_type):
-        phone_number = self.phone_var.get()
-        
-        if not phone_number:
-            messagebox.showwarning("Input Error", "Please enter your phone number.")
-            return
-        
-        # Here you can add the logic to handle the Subscription
-        # For demonstration, we just show a success message
-        messagebox.showinfo("Subscription Successful", f"Subscribed to {subscription_type} for phone number {phone_number}.")
 
     def fund_account_from_other(self, current_username, other_account_number, other_username, other_bvn, other_password, amount):
         # Connect to MySQL database
@@ -1032,10 +979,6 @@ class WelcomeWindow:
         finally:
             cursor.close()
             db.close()
-
-
-
-
 
     def go_backLogin1(self):
         self.new_window.withdraw()
