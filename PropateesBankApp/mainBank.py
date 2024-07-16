@@ -922,8 +922,40 @@ class WelcomeWindow:
 
         Subscription.geometry(f"{dialog_width}x{dialog_height}+{x}+{y}")
 
+        tk.Button(Subscription, text="Buy Airtime", command=self.open_airtime_window).grid(row=0, column=0, padx=10, pady=10)
+
+        tk.Button(Subscription, text="Buy Data", command=self.open_data_window).grid(row=0, column=1, padx=10, pady=10)
 
 
+    def open_airtime_window(self):
+        self.new_window1("Airtime")
+
+    def open_data_window(self):
+        self.new_window1("Data")
+
+    def new_window1(self, subscription_type):
+        new_win = tk.Toplevel(self.Subscription)
+        new_win.title(f"Buy {subscription_type}")
+        img = ImageTk.PhotoImage(file='logo.png')
+        new_win.iconphoto(False, img)
+        new_win.grab_set()
+        
+        tk.Label(new_win, text=f"Enter your phone number to buy {subscription_type}").grid(row=0, column=0, padx=10, pady=10)
+        self.phone_var = tk.StringVar()
+        tk.Entry(new_win, textvariable=self.phone_var).grid(row=1, column=0, padx=10, pady=10)
+        
+        tk.Button(new_win, text="Submit", command=lambda: self.submit(subscription_type)).grid(row=2, column=0, pady=10)
+
+    def submit(self, subscription_type):
+        phone_number = self.phone_var.get()
+        
+        if not phone_number:
+            messagebox.showwarning("Input Error", "Please enter your phone number.")
+            return
+        
+        # Here you can add the logic to handle the Subscription
+        # For demonstration, we just show a success message
+        messagebox.showinfo("Subscription Successful", f"Subscribed to {subscription_type} for phone number {phone_number}.")
 
     def fund_account_from_other(self, current_username, other_account_number, other_username, other_bvn, other_password, amount):
         # Connect to MySQL database
