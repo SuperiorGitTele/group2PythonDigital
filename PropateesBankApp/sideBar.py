@@ -38,13 +38,13 @@ class Sidebar(tk.Frame):
 
 
         # Buttons
-        self.button1 = tk.Button(self, text="Dashboard", font=('yu gothic ui', 13, 'bold'), width=20, bd=0, bg='#0095B6', cursor='hand2', activebackground='#3047ff', fg='white', command=self.dashboard)
+        self.button1 = tk.Button(self, text="Dashboard", font=('yu gothic ui', 13, 'bold'), width=20, bd=0, bg='#0095B6', cursor='hand2', activebackground='#6CB4EE', fg='white', command=self.dashboard)
         self.button1.place(x=20, y=250)
 
-        self.button2 = tk.Button(self, text="Account Details", font=('yu gothic ui', 13, 'bold'), width=20, bd=0, bg='#0095B6', cursor='hand2', activebackground='#3047ff', fg='white', command=self.AcctDetail)
+        self.button2 = tk.Button(self, text="Account Details", font=('yu gothic ui', 13, 'bold'), width=20, bd=0, bg='#0095B6', cursor='hand2', activebackground='#6CB4EE', fg='white', command=self.AcctDetail)
         self.button2.place(x=20, y=350)
 
-        self.button3 = tk.Button(self, text="Settings", font=('yu gothic ui', 11, 'bold'), width=22, bd=0, bg='#0095B6', cursor='hand2', activebackground='#3047ff', fg='white', command=self.setting)
+        self.button3 = tk.Button(self, text="Settings", font=('yu gothic ui', 11, 'bold'), width=22, bd=0, bg='#0095B6', cursor='hand2', activebackground='#6CB4EE', fg='white', command=self.setting)
         self.button3.place(x=20, y=450)
     
     def load_image_from_path3(self):
@@ -92,16 +92,7 @@ class Sidebar(tk.Frame):
         # Add welcome message
         tk.Label(dashboard, text="Welcome to Your Dashboard", bg="#003262", fg="white", font=('Arial', 20, 'bold')).place(x=110, y=20)
 
-        
 
-        # tk.Label(quick_actions_frame, text="Quick Actions", bg="#003262", fg="white", font=('Arial', 14, 'bold')).pack(anchor='w')
-        # tk.Button(quick_actions_frame, text="Transfer Funds", font=('Arial', 12), bg='#0095B6', fg='white', cursor='hand2').pack(anchor='w', pady=5)
-        # tk.Button(quick_actions_frame, text="Pay Bills", font=('Arial', 12), bg='#0095B6', fg='white', cursor='hand2').pack(anchor='w', pady=5)
-        # tk.Button(quick_actions_frame, text="Deposit Checks", font=('Arial', 12), bg='#0095B6', fg='white', cursor='hand2').pack(anchor='w', pady=5)
-
-
-        # label = tk.Label(activities, text="Text", bg="#0095B6", font=('Arial', 12))
-        # label.place(x=50, y=50)
         self.username_label = tk.Label(dashboard, text=f"{self.username}", font=('yu gothic ui', 35, 'bold'),bg='#003262', fg="white")
         self.username_label.place(x=135, y=70)
 
@@ -216,6 +207,38 @@ class Sidebar(tk.Frame):
 
         AcctDetail.geometry(f"{dialog_width}x{dialog_height}+{x}+{y}")
 
+        # Retrieve account details
+        account_details = self.get_account_detail(self.username)
+
+        if account_details:
+            account_balance = account_details['account_balance']
+            account_number = account_details['account_number']
+            account_name = account_details['account_name']
+            email = account_details['email']
+            dob = account_details['dob']
+
+            # Configure style
+            style = ttk.Style()
+            style.configure("Big.TLabel", font=("Arial", 15), foreground="#003262", background="#0095B6")
+
+            # Display account details
+            self.balance_label = ttk.Label(AcctDetail, text=f"Account Balance ₦: {account_balance}", style="Big.TLabel", width=40)
+            self.balance_label.place(x=30, y=50)
+
+            self.account_number_label = ttk.Label(AcctDetail, text=f"Account Number: {account_number}", style="Big.TLabel", width=40)
+            self.account_number_label.place(x=30, y=100)
+
+            self.account_name_label = ttk.Label(AcctDetail, text=f"Account Name: {account_name}", style="Big.TLabel", width=40)
+            self.account_name_label.place(x=30, y=150)
+
+            self.email_label = ttk.Label(AcctDetail, text=f"Email: {email}", style="Big.TLabel", width=40)
+            self.email_label.place(x=30, y=200)
+
+            self.dob_label = ttk.Label(AcctDetail, text=f"Date of Birth: {dob}", style="Big.TLabel", width=40)
+            self.dob_label.place(x=30, y=250)
+
+        
+
     def setting(self):
         setting = tk.Toplevel(self.master)
         setting.title("Settings")
@@ -258,6 +281,38 @@ class Sidebar(tk.Frame):
 
             if row:
                 return row[0]
+            else:
+                return None
+        except mysql.connector.Error as err:
+            messagebox.showerror("Database Error", f"Error: {err}")
+            return None
+        finally:
+            cursor.close()
+            db.close()
+
+
+    def get_account_detail(self, username):
+        # Connect to MySQL database
+        db = mysql.connector.connect(
+            host="localhost",
+            user="Bank",
+            password="Bankappsql",
+            database="Bank_data",
+            auth_plugin='mysql_native_password'
+        )
+        cursor = db.cursor(dictionary=True)
+
+        try:
+            # Get account details from database
+            cursor.execute("""
+                SELECT account_balance, account_number, account_name, email, dob
+                FROM users
+                WHERE username = %s
+            """, (username,))
+            row = cursor.fetchone()
+
+            if row:
+                return row
             else:
                 return None
         except mysql.connector.Error as err:
