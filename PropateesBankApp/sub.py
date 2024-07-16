@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
 from PIL import ImageTk
+import mysql.connector
 
 class SubscripWindow:
     def __init__(self, master, username):
@@ -63,9 +64,6 @@ class SubscripWindow:
 
         new_win.geometry(f"{dialog_width}x{dialog_height}+{x}+{y}")
 
-        # Adjust subscription window size
-        new_win.geometry("400x300")
-
         tk.Label(new_win, text=f"Enter your phone number to buy {subscription_type}", bg='#003262', fg='white').pack(padx=10, pady=10)
         self.phone_var = tk.StringVar()
         tk.Entry(new_win, textvariable=self.phone_var).pack(padx=10, pady=10)
@@ -83,16 +81,66 @@ class SubscripWindow:
         if not phone_number:
             messagebox.showwarning("Input Error", "Please enter your phone number.")
             return
-        
+
         if not amount:
             messagebox.showwarning("Input Error", "Please enter the amount.")
             return
-        
-        # Close the input window
-        window.destroy()
 
-        # Show a receipt
-        self.show_receipt(subscription_type, phone_number, amount)
+        try:
+            amount = float(amount)
+        except ValueError:
+            messagebox.showwarning("Input Error", "Please enter a valid amount.")
+            return
+
+        # Deduct amount from account balance
+        if self.deduct_amount_from_balance(amount):
+            messagebox.showinfo("Success", f"{amount}₦ has been deducted from your account for {subscription_type}.")
+            window.destroy()
+            # Show a receipt
+            self.show_receipt(subscription_type, phone_number, amount)
+        else:
+            messagebox.showerror("Error", "Failed to deduct the amount. Please try again.")
+
+    def deduct_amount_from_balance(self, amount):
+        # Connect to MySQL database
+        db = mysql.connector.connect(
+            host="localhost",
+            user="Bank",
+            password="Bankappsql",
+            database="Bank_data",
+            auth_plugin='mysql_native_password'
+        )
+        cursor = db.cursor()
+
+        try:
+            # Get current balance
+            cursor.execute("SELECT account_balance FROM users WHERE username = %s", (self.username,))
+            row = cursor.fetchone()
+
+            if row:
+                current_balance = row[0]
+                if current_balance >= amount:
+                    new_balance = current_balance - amount
+
+                    # Update balance in database
+                    cursor.execute("UPDATE users SET account_balance = %s WHERE username = %s", (new_balance, self.username))
+                    db.commit()
+                    return True
+                else:
+                    messagebox.showwarning("Insufficient Funds", "You do not have enough funds for this transaction.")
+                    return False
+            else:
+                messagebox.showerror("Error", "Failed to retrieve account balance.")
+                return False
+        except mysql.connector.Error as err:
+            messagebox.showerror("Database Error", f"Error: {err}")
+            return False
+        finally:
+            cursor.close()
+            db.close()
+
+
+        
 
     def show_receipt(self, subscription_type, phone_number, amount):
         receipt_win = tk.Toplevel(self.sub_window)

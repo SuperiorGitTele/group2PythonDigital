@@ -192,8 +192,8 @@ class Sidebar(tk.Frame):
         AcctDetail.grab_set()
 
         # Set size of the fund account dialog
-        dialog_width = 600
-        dialog_height = 600
+        dialog_width = 500
+        dialog_height = 250
 
         # Center the dialog relative to the parent window (self.master)
         parent_x = self.master.winfo_x()
@@ -207,6 +207,28 @@ class Sidebar(tk.Frame):
 
         AcctDetail.geometry(f"{dialog_width}x{dialog_height}+{x}+{y}")
 
+        # Configure style
+        style = ttk.Style()
+        style.configure("CustomLabel.TLabel", font=("Arial", 10), foreground="#003262", background="#6CB4EE")
+
+        self.account_name_label = ttk.Label(AcctDetail, text=f"Account Name: ", style="CustomLabel.TLabel", width=15)
+        self.account_name_label.place(x=30, y=50)
+
+        # Display account details
+        self.balance_label = ttk.Label(AcctDetail, text=f"Account Balance ₦:", style="CustomLabel.TLabel", width=17)
+        self.balance_label.place(x=230, y=50)
+
+        self.account_number_label = ttk.Label(AcctDetail, text=f"Account Number:", style="CustomLabel.TLabel", width=15)
+        self.account_number_label.place(x=30, y=100)
+
+        self.email_label = ttk.Label(AcctDetail, text=f"Email:", style="CustomLabel.TLabel", width=7)
+        self.email_label.place(x=230, y=100)
+
+        self.dob_label = ttk.Label(AcctDetail, text=f"Date of Birth: ", style="CustomLabel.TLabel", width=15)
+        self.dob_label.place(x=30, y=150)
+
+        tk.Button(AcctDetail, text="Edit Details", font=('Arial', 12), bg='#6CB4EE', fg='white', cursor='hand2', command=self.edit_dialog).place(x=370, y=210)
+
         # Retrieve account details
         account_details = self.get_account_detail(self.username)
 
@@ -219,23 +241,23 @@ class Sidebar(tk.Frame):
 
             # Configure style
             style = ttk.Style()
-            style.configure("Big.TLabel", font=("Arial", 15), foreground="#003262", background="#0095B6")
+            style.configure("Big.TLabel", font=("Arial", 12), foreground="#003262", background="#0095B6")
+
+            self.account_name_label = ttk.Label(AcctDetail, text=f"{account_name}", style="Big.TLabel", width=15)
+            self.account_name_label.place(x=50, y=75)
 
             # Display account details
-            self.balance_label = ttk.Label(AcctDetail, text=f"Account Balance ₦: {account_balance}", style="Big.TLabel", width=40)
-            self.balance_label.place(x=30, y=50)
+            self.balance_label = ttk.Label(AcctDetail, text=f"{account_balance}", style="Big.TLabel", width=15)
+            self.balance_label.place(x=250, y=75)
 
-            self.account_number_label = ttk.Label(AcctDetail, text=f"Account Number: {account_number}", style="Big.TLabel", width=40)
-            self.account_number_label.place(x=30, y=100)
+            self.account_number_label = ttk.Label(AcctDetail, text=f"{account_number}", style="Big.TLabel", width=30)
+            self.account_number_label.place(x=50, y=125)
 
-            self.account_name_label = ttk.Label(AcctDetail, text=f"Account Name: {account_name}", style="Big.TLabel", width=40)
-            self.account_name_label.place(x=30, y=150)
+            self.email_label = ttk.Label(AcctDetail, text=f"{email}", style="Big.TLabel", width=30)
+            self.email_label.place(x=250, y=125)
 
-            self.email_label = ttk.Label(AcctDetail, text=f"Email: {email}", style="Big.TLabel", width=40)
-            self.email_label.place(x=30, y=200)
-
-            self.dob_label = ttk.Label(AcctDetail, text=f"Date of Birth: {dob}", style="Big.TLabel", width=40)
-            self.dob_label.place(x=30, y=250)
+            self.dob_label = ttk.Label(AcctDetail, text=f"{dob}", style="Big.TLabel", width=35)
+            self.dob_label.place(x=50, y=175)
 
         
 
@@ -262,6 +284,84 @@ class Sidebar(tk.Frame):
         y = parent_y + (parent_height // 2) - (dialog_height // 2)
 
         setting.geometry(f"{dialog_width}x{dialog_height}+{x}+{y}")
+
+    def edit_dialog(self):
+        edit_dialog = tk.Toplevel(self.master)
+        edit_dialog.title("Edit Details")
+        edit_dialog.configure(bg='#003262')
+        img = ImageTk.PhotoImage(file='logo.png')
+        edit_dialog.iconphoto(False, img)
+        edit_dialog.grab_set()
+
+        # Set size of the edit dialog
+        dialog_width = 400
+        dialog_height = 250
+
+        # Center the dialog relative to the parent window (self.master)
+        parent_x = self.master.winfo_x()
+        parent_y = self.master.winfo_y()
+        parent_width = self.master.winfo_width()
+        parent_height = self.master.winfo_height()
+
+        # Calculate the position
+        x = parent_x + (parent_width // 2) - (dialog_width // 2)
+        y = parent_y + (parent_height // 2) - (dialog_height // 2)
+
+        edit_dialog.geometry(f"{dialog_width}x{dialog_height}+{x}+{y}")
+
+        # Retrieve current details
+        account_details = self.get_account_detail(self.username)
+
+        # Entries to edit details
+        tk.Label(edit_dialog, text="Edit Name:", bg='#6CB4EE').pack(pady=5)
+        self.name_entry = tk.Entry(edit_dialog)
+        self.name_entry.pack(pady=5)
+        self.name_entry.insert(0, account_details['account_name'])
+
+        tk.Label(edit_dialog, text="Edit Email:", bg='#6CB4EE').pack(pady=5)
+        self.email_entry = tk.Entry(edit_dialog, width=45)
+        self.email_entry.pack(pady=5)
+        self.email_entry.insert(0, account_details['email'])
+
+        tk.Label(edit_dialog, text="Edit Date of Birth:", bg='#6CB4EE').pack(pady=5)
+        self.dob_entry = tk.Entry(edit_dialog)
+        self.dob_entry.pack(pady=5)
+        self.dob_entry.insert(0, account_details['dob'])
+
+        # Button to submit changes
+        submit_button = ttk.Button(edit_dialog, text="Submit", command=lambda: self.update_details(edit_dialog))
+        submit_button.pack(pady=10)
+
+    def update_details(self, dialog):
+        # Get new details from entries
+        new_name = self.name_entry.get()
+        new_email = self.email_entry.get()
+        new_dob = self.dob_entry.get()
+
+        # Update database
+        db = mysql.connector.connect(
+            host="localhost",
+            user="Bank",
+            password="Bankappsql",
+            database="Bank_data",
+            auth_plugin='mysql_native_password'
+        )
+        cursor = db.cursor()
+
+        try:
+            cursor.execute("""
+                UPDATE users
+                SET account_name = %s, email = %s, dob = %s
+                WHERE username = %s
+            """, (new_name, new_email, new_dob, self.username))
+            db.commit()
+            messagebox.showinfo("Success", "Details updated successfully.")
+            dialog.destroy()
+        except mysql.connector.Error as err:
+            messagebox.showerror("Database Error", f"Error: {err}")
+        finally:
+            cursor.close()
+            db.close()
 
     def get_account_balance(self, username):
         # Connect to MySQL database
