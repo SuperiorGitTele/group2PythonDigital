@@ -33,8 +33,8 @@ class Sidebar(tk.Frame):
         
         
 
-        self.username_label = tk.Label(self, text=f"{username}: Signed in", bg='#555555', fg="white")
-        self.username_label.place(x=70, y=180)
+        self.username_label = tk.Label(self, text=f"{username}: Signed in", bg='#555555', fg="#0095B6", font=("Helvetica", 16))
+        self.username_label.place(x=40, y=180)
 
 
         # Buttons
