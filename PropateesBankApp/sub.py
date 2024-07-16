@@ -9,6 +9,22 @@ class SubscripWindow:
         self.username = username
         self.sub_window.title("Subscription Service")
         self.sub_window.configure(bg='#003262')
+        self.sub_window.grab_set()
+
+        dialog_width = 400
+        dialog_height = 250
+
+        # Center the dialog relative to the parent window (self.new_window)
+        parent_x = self.master.winfo_x()
+        parent_y = self.master.winfo_y()
+        parent_width = self.master.winfo_width()
+        parent_height = self.master.winfo_height()
+
+        # Calculate the position
+        x = parent_x + (parent_width // 2) - (dialog_width // 2)
+        y = parent_y + (parent_height // 2) - (dialog_height // 2)
+
+        self.sub_window.geometry(f"{dialog_width}x{dialog_height}+{x}+{y}")
 
         # Adjust main window size
         self.sub_window.geometry("500x300")
@@ -28,6 +44,24 @@ class SubscripWindow:
         new_win = tk.Toplevel(self.sub_window)
         new_win.title(f"Buy {subscription_type}")
         new_win.configure(bg='#003262')
+        new_win.grab_set()
+        img = ImageTk.PhotoImage(file='logo.png')
+        new_win.iconphoto(False, img)
+
+        dialog_width = 400
+        dialog_height = 300
+
+        # Center the dialog relative to the parent window (self.new_window)
+        parent_x = self.master.winfo_x()
+        parent_y = self.master.winfo_y()
+        parent_width = self.master.winfo_width()
+        parent_height = self.master.winfo_height()
+
+        # Calculate the position
+        x = parent_x + (parent_width // 2) - (dialog_width // 2)
+        y = parent_y + (parent_height // 2) - (dialog_height // 2)
+
+        new_win.geometry(f"{dialog_width}x{dialog_height}+{x}+{y}")
 
         # Adjust subscription window size
         new_win.geometry("400x300")
@@ -64,6 +98,24 @@ class SubscripWindow:
         receipt_win = tk.Toplevel(self.sub_window)
         receipt_win.title("Receipt")
         receipt_win.configure(bg='#003262')
+        img = ImageTk.PhotoImage(file='logo.png')
+        receipt_win.iconphoto(False, img)
+        receipt_win.grab_set()
+
+        dialog_width = 400
+        dialog_height = 300
+
+        # Center the dialog relative to the parent window (self.new_window)
+        parent_x = self.master.winfo_x()
+        parent_y = self.master.winfo_y()
+        parent_width = self.master.winfo_width()
+        parent_height = self.master.winfo_height()
+
+        # Calculate the position
+        x = parent_x + (parent_width // 2) - (dialog_width // 2)
+        y = parent_y + (parent_height // 2) - (dialog_height // 2)
+
+        receipt_win.geometry(f"{dialog_width}x{dialog_height}+{x}+{y}")
 
         # Adjust receipt window size
         receipt_win.geometry("400x300")

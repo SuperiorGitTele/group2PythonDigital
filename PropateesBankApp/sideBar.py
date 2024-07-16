@@ -15,7 +15,7 @@ class Sidebar(tk.Frame):
         self.is_open = False
         self.image_path = None
         self.load_image_path()
-        self.configure(bg="#3B3C36")
+        self.configure(bg="#555555")
 
 
         # Open the image file
@@ -26,14 +26,14 @@ class Sidebar(tk.Frame):
         self.sidebar_button.image = dropdown_image
         self.sidebar_button.place(x=10, y=0)
 
-        self.logo_label3 = tk.Label(self, bg='#3B3C36')
+        self.logo_label3 = tk.Label(self, bg='#555555')
         self.logo_label3.place(x=70, y=85)
 
         self.load_image_from_path3()
         
         
 
-        self.username_label = tk.Label(self, text=f"{username}: Signed in", bg='#3B3C36', fg="white")
+        self.username_label = tk.Label(self, text=f"{username}: Signed in", bg='#555555', fg="white")
         self.username_label.place(x=70, y=180)
 
 
@@ -305,7 +305,7 @@ if __name__ == "__main__":
     root = tk.Tk()
     root.geometry("1200x600")  # Set window size
 
-    sidebar = Sidebar(root, username=None,bg='#3B3C36')
+    sidebar = Sidebar(root, username=None,bg='#555555')
     sidebar.place(x=0, y=0, relwidth=0.2, relheight=1)  
 
     root.mainloop()
