@@ -80,7 +80,7 @@ class LoginWindow(tk.Tk):
         # welcome text
         self.txt = """WELCOME TO PROPATEES BANK"""
         self.heading = Label(self.lgn_frame, text=self.txt, font=('Times New Roman', 25, 'bold'), bg='#3B3C36', fg='white')
-        self.heading.place(x=0, y=5, width=550, height=100)
+        self.heading.place(x=200, y=5, width=550, height=100)
 
         self.txt = """Financial Solution Tailored For Your Properties"""
         self.heading = Label(self.lgn_frame, text=self.txt, font=('Times New Roman', 12, 'bold'), bg='#3B3C36', fg='white')
