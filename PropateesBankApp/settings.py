@@ -86,8 +86,3 @@ class Settingfunction:
         entry_new_answer.grid(row=5, column=1, padx=10, pady=10)
 
         tk.Button(settings_window, text="Change Security Question", command=lambda: self.change_security_question(entry_username.get(), entry_new_question.get(), entry_new_answer.get())).grid(row=6, column=0, columnspan=2, pady=10)
-
-if __name__ == "__main__":
-    settings = tk.Tk()
-    app = Settingfunction(settings)
-    settings.mainloop()
