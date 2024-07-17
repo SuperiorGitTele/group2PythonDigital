@@ -87,7 +87,7 @@ class WelcomeWindow:
 
         label1 = tk.Label(self.lgn_frame, text=f"Welcome {username}, to our simple and easy to use bank app!", font=('yu gothic ui', 16, 'bold'), bg='#6CB4EE', fg='white')
         label = tk.Label(self.lgn_frame, text=f"Welcome {username}, to our simple and easy to use bank app!", font=('yu gothic ui', 16, 'bold'), bg='#0095B6', fg='white')
-        label1.place(x=900, y=36)
+        label1.place(x=400, y=36)
         self.lgn_frame.after(2000, label1.place_forget)
         self.lgn_frame.after(2000, lambda: label.place(x=900, y=36))
         self.lgn_frame.after(3000, label.place_forget)
@@ -141,7 +141,7 @@ class WelcomeWindow:
         self.balance_label = None
 
         loginpage = tk.Button(self.new_window, text='LOG OUT', font=("yu gothic ui", 13, "bold"), width=10, bd=0, bg='#3047ff', cursor='hand2', activebackground='#3047ff', fg='white', command=self.go_backLogin1)
-        loginpage.place(x=1400, y=700)
+        loginpage.place(x=0, y=250)
 
         
         image = Image.open("bar12.png")
