@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import messagebox
 from PIL import ImageTk
 import mysql.connector
+from decimal import Decimal
 
 class SubscripWindow:
     def __init__(self, master, username):
@@ -38,7 +39,7 @@ class SubscripWindow:
         button_frame.pack(pady=50)
 
         # Subscription options with increased button size
-        tk.Button(button_frame, text=f"Buy Airtime {username}", command=lambda: self.new_window("Airtime"), width=20, height=2).grid(row=0, column=0, padx=10)
+        tk.Button(button_frame, text=f"Buy Airtime", command=lambda: self.new_window("Airtime"), width=20, height=2).grid(row=0, column=0, padx=10)
         tk.Button(button_frame, text="Buy Data", command=lambda: self.new_window("Data"), width=20, height=2).grid(row=0, column=1, padx=10)
 
     def new_window(self, subscription_type):
@@ -87,7 +88,7 @@ class SubscripWindow:
             return
 
         try:
-            amount = float(amount)
+            amount = Decimal(amount)  # Convert to Decimal
         except ValueError:
             messagebox.showwarning("Input Error", "Please enter a valid amount.")
             return
@@ -96,8 +97,6 @@ class SubscripWindow:
         if self.deduct_amount_from_balance(amount):
             messagebox.showinfo("Success", f"{amount}₦ has been deducted from your account for {subscription_type}.")
             window.destroy()
-            # Show a receipt
-            self.show_receipt(subscription_type, phone_number, amount)
         else:
             messagebox.showerror("Error", "Failed to deduct the amount. Please try again.")
 

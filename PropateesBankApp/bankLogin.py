@@ -390,7 +390,7 @@ class LoginWindow(tk.Tk):
             audio_thread.daemon = True  # Set as daemon thread to exit when main thread exits
             audio_thread.start()
         else:
-            messagebox.showerror("Error", "Please enter a username")
+            self.play_welcome_audio_pyttsx3(username)
 
     def play_welcome_audio_pyttsx3(self, username):
         engine = pyttsx3.init()
