@@ -3,11 +3,17 @@ from tkinter import messagebox
 import mysql.connector
 
 class Settingfunction:
-    def __init__(self, root):
-        self.root = root
-        self.root.title("Bank App")
-        self.root.configure(bg="#003362")  
-        self.root.geometry("200x200")
+    def __init__(self, master, username):
+        settings = settings
+        self.master = master
+        self.username = username
+        self.settings = tk.Toplevel(self.master)
+        self.settings.title("Bank App")
+        self.settings.configure(bg="#003362")  
+        self.settings.geometry("200x200")
+        self.settings.grab_set()
+
+
 
         # Database connection
         try:
@@ -22,11 +28,11 @@ class Settingfunction:
         except mysql.connector.Error as err:
             print(f"Error: {err}")
             messagebox.showerror("Database Connection Error", f"Error: {err}")
-            self.root.destroy()
+            self.settings.destroy()
             return
 
         # Button to open settings window
-        tk.Button(self.root, text="Settings", command=self.create_settings_window).pack(pady=20)
+        tk.Button(self.settings, text="Settings", command=self.create_settings_window).pack(pady=20)
 
     def delete_transaction_history(self, username):
         try:
@@ -56,7 +62,7 @@ class Settingfunction:
             messagebox.showerror("Error", f"An error occurred: {e}")
 
     def create_settings_window(self):
-        settings_window = tk.Toplevel(self.root)
+        settings_window = tk.Toplevel(self.settings)
         settings_window.title("Settings")
         settings_window.configure(bg="#003362") 
         settings_window.geometry("400x350")
@@ -83,6 +89,6 @@ class Settingfunction:
         tk.Button(settings_window, text="Change Security Question", command=lambda: self.change_security_question(entry_username.get(), entry_new_question.get(), entry_new_answer.get())).grid(row=6, column=0, columnspan=2, pady=10)
 
 if __name__ == "__main__":
-    root = tk.Tk()
-    app = Settingfunction(root)
-    root.mainloop()
+    settings = tk.Tk()
+    app = Settingfunction(settings)
+    settings.mainloop()

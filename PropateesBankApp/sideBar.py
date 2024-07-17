@@ -5,7 +5,7 @@ import os
 import mysql.connector
 from tkinter import messagebox
 import tkinter as tk
-
+from settings import Settingfunction
 
 class Sidebar(tk.Frame):
     def __init__(self, master, username,**kwargs):
@@ -44,7 +44,7 @@ class Sidebar(tk.Frame):
         self.button2 = tk.Button(self, text="Account Details", font=('yu gothic ui', 13, 'bold'), width=20, bd=0, bg='#0095B6', cursor='hand2', activebackground='#6CB4EE', fg='white', command=self.AcctDetail)
         self.button2.place(x=20, y=350)
 
-        self.button3 = tk.Button(self, text="Settings", font=('yu gothic ui', 11, 'bold'), width=22, bd=0, bg='#0095B6', cursor='hand2', activebackground='#6CB4EE', fg='white', command=self.setting)
+        self.button3 = tk.Button(self, text="Settings", font=('yu gothic ui', 11, 'bold'), width=22, bd=0, bg='#0095B6', cursor='hand2', activebackground='#6CB4EE', fg='white', command=self.Setting_function)
         self.button3.place(x=20, y=450)
     
     def load_image_from_path3(self):
@@ -261,29 +261,10 @@ class Sidebar(tk.Frame):
 
         
 
-    def setting(self):
-        setting = tk.Toplevel(self.master)
-        setting.title("Settings")
-        setting.configure(bg='#003262')
-        img = ImageTk.PhotoImage(file='logo.png')
-        setting.iconphoto(False, img)
-        setting.grab_set()
+    def Setting_function(self):
+        Settingfunction(self.master, username=self.username)
 
-        # Set size of the fund account dialog
-        dialog_width = 600
-        dialog_height = 600
-
-        # Center the dialog relative to the parent window (self.master)
-        parent_x = self.master.winfo_x()
-        parent_y = self.master.winfo_y()
-        parent_width = self.master.winfo_width()
-        parent_height = self.master.winfo_height()
-
-        # Calculate the position
-        x = parent_x + (parent_width // 2) - (dialog_width // 2)
-        y = parent_y + (parent_height // 2) - (dialog_height // 2)
-
-        setting.geometry(f"{dialog_width}x{dialog_height}+{x}+{y}")
+        
 
     def edit_dialog(self):
         edit_dialog = tk.Toplevel(self.master)
