@@ -4,7 +4,6 @@ import mysql.connector
 
 class Settingfunction:
     def __init__(self, master, username):
-        settings = settings
         self.master = master
         self.username = username
         self.settings = tk.Toplevel(self.master)
