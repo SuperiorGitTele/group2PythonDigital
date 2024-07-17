@@ -11,6 +11,27 @@ class Settingfunction:
         self.settings.configure(bg="#003362")  
         self.settings.geometry("200x200")
         self.settings.grab_set()
+        
+        tk.Label(self.settings, text="Username:", bg="#003362", fg="white").grid(row=0, column=0, padx=10, pady=10)
+        entry_username = tk.Entry(settings_window)
+        entry_username.grid(row=0, column=1, padx=10, pady=10)
+
+        tk.Button(self.settings, text="Delete Transaction History", command=lambda: self.delete_transaction_history(entry_username.get())).grid(row=1, column=0, columnspan=2, pady=10)
+
+        tk.Label(self.settings, text="Beneficiary Account Number:", bg="#003362", fg="white").grid(row=2, column=0, padx=10, pady=10)
+        entry_account_number = tk.Entry(settings_window)
+        entry_account_number.grid(row=2, column=1, padx=10, pady=10)
+        tk.Button(self.settings, text="Delete Beneficiary", command=lambda: self.delete_beneficiary(entry_username.get(), entry_account_number.get())).grid(row=3, column=0, columnspan=2, pady=10)
+
+        tk.Label(self.settings, text="New Security Question:", bg="#003362", fg="white").grid(row=4, column=0, padx=10, pady=10)
+        entry_new_question = tk.Entry(settings_window)
+        entry_new_question.grid(row=4, column=1, padx=10, pady=10)
+
+        tk.Label(self.settings, text="New Answer:", bg="#003362", fg="white").grid(row=5, column=0, padx=10, pady=10)
+        entry_new_answer = tk.Entry(settings_window)
+        entry_new_answer.grid(row=5, column=1, padx=10, pady=10)
+
+        tk.Button(self.settings, text="Change Security Question", command=lambda: self.change_security_question(entry_username.get(), entry_new_question.get(), entry_new_answer.get())).grid(row=6, column=0, columnspan=2, pady=10)
 
 
 
@@ -30,8 +51,7 @@ class Settingfunction:
             self.settings.destroy()
             return
 
-        # Button to open settings window
-        tk.Button(self.settings, text="Settings", command=self.create_settings_window).pack(pady=20)
+        
 
     def delete_transaction_history(self, username):
         try:
@@ -60,29 +80,4 @@ class Settingfunction:
         except Exception as e:
             messagebox.showerror("Error", f"An error occurred: {e}")
 
-    def create_settings_window(self):
-        settings_window = tk.Toplevel(self.settings)
-        settings_window.title("Settings")
-        settings_window.configure(bg="#003362") 
-        settings_window.geometry("400x350")
-
-        tk.Label(settings_window, text="Username:", bg="#003362", fg="white").grid(row=0, column=0, padx=10, pady=10)
-        entry_username = tk.Entry(settings_window)
-        entry_username.grid(row=0, column=1, padx=10, pady=10)
-
-        tk.Button(settings_window, text="Delete Transaction History", command=lambda: self.delete_transaction_history(entry_username.get())).grid(row=1, column=0, columnspan=2, pady=10)
-
-        tk.Label(settings_window, text="Beneficiary Account Number:", bg="#003362", fg="white").grid(row=2, column=0, padx=10, pady=10)
-        entry_account_number = tk.Entry(settings_window)
-        entry_account_number.grid(row=2, column=1, padx=10, pady=10)
-        tk.Button(settings_window, text="Delete Beneficiary", command=lambda: self.delete_beneficiary(entry_username.get(), entry_account_number.get())).grid(row=3, column=0, columnspan=2, pady=10)
-
-        tk.Label(settings_window, text="New Security Question:", bg="#003362", fg="white").grid(row=4, column=0, padx=10, pady=10)
-        entry_new_question = tk.Entry(settings_window)
-        entry_new_question.grid(row=4, column=1, padx=10, pady=10)
-
-        tk.Label(settings_window, text="New Answer:", bg="#003362", fg="white").grid(row=5, column=0, padx=10, pady=10)
-        entry_new_answer = tk.Entry(settings_window)
-        entry_new_answer.grid(row=5, column=1, padx=10, pady=10)
-
-        tk.Button(settings_window, text="Change Security Question", command=lambda: self.change_security_question(entry_username.get(), entry_new_question.get(), entry_new_answer.get())).grid(row=6, column=0, columnspan=2, pady=10)
+    
