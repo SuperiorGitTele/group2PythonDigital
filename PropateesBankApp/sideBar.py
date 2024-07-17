@@ -13,7 +13,6 @@ class Sidebar(tk.Frame):
         self.master = master
         self.username = username
         self.is_open = False
-        self.image_path = None
         self.load_image_path()
         self.configure(bg="#555555")
 
@@ -28,8 +27,6 @@ class Sidebar(tk.Frame):
 
         self.logo_label3 = tk.Label(self, bg='#555555')
         self.logo_label3.place(x=70, y=85)
-
-        self.load_image_from_path3()
         
         
 
@@ -44,7 +41,7 @@ class Sidebar(tk.Frame):
         self.button2 = tk.Button(self, text="Account Details", font=('yu gothic ui', 13, 'bold'), width=20, bd=0, bg='#0095B6', cursor='hand2', activebackground='#6CB4EE', fg='white', command=self.AcctDetail)
         self.button2.place(x=20, y=350)
 
-        self.button3 = tk.Button(self, text="Settings", font=('yu gothic ui', 11, 'bold'), width=22, bd=0, bg='#0095B6', cursor='hand2', activebackground='#6CB4EE', fg='white', command=self.Setting_function)
+        self.button3 = tk.Button(self, text="Settings", font=('yu gothic ui', 13, 'bold'), width=20, bd=0, bg='#0095B6', cursor='hand2', activebackground='#6CB4EE', fg='white', command=self.Setting_function)
         self.button3.place(x=20, y=450)
     
     def load_image_from_path3(self):
@@ -100,8 +97,8 @@ class Sidebar(tk.Frame):
         style = ttk.Style()
         style.configure("Big.TLabel", font=("Arial", 15), foreground="#003262", background="#0095B6")
         # Label to display the account balance
-        self.balance_label = ttk.Label(dashboard, text=f"Account Balance ₦: {account_balance}", style="Big.TLabel", width="24")
-        self.balance_label.place(x=130, y=160)
+        self.balance_label = ttk.Label(dashboard, text=f"Account Balance ₦: {account_balance}", style="Big.TLabel", width="30")
+        self.balance_label.place(x=150, y=160)
 
         tk.Label(dashboard, text="Activities", bg="#003262", fg="white", font=('Arial', 14, 'bold')).place(x=40, y=190)
         
@@ -414,6 +411,7 @@ class Sidebar(tk.Frame):
                 self.is_open = True
 
     def close_sidebar(self):
+        self.load_image_from_path3()
         self.animate_close()
 
     def animate_open(self):
@@ -421,7 +419,9 @@ class Sidebar(tk.Frame):
         if self.winfo_x() > -self.winfo_width():
             self.place(x=self.winfo_x() - 20, y=0, relwidth=0.2, relheight=1)
             self.after(10, self.animate_open)
+            self.load_image_from_path3()
         else:
+            self.load_image_from_path3()
             self.place(x=0, y=0, relwidth=0.2, relheight=1)
             self.is_open = True
 
@@ -430,7 +430,9 @@ class Sidebar(tk.Frame):
         if self.winfo_x() < 0:
             self.place(x=self.winfo_x() + 20, y=0, relwidth=0.2, relheight=1)
             self.after(10, self.animate_close)
+            self.load_image_from_path3()
         else:
+            self.load_image_from_path3()
             self.place_forget()
             self.is_open = False
 
@@ -439,7 +441,7 @@ class Sidebar(tk.Frame):
 # Example usage
 if __name__ == "__main__":
     root = tk.Tk()
-    root.geometry("1200x600")  # Set window size
+    root.geometry("1200x500")  # Set window size
 
     sidebar = Sidebar(root, username=None,bg='#555555')
     sidebar.place(x=0, y=0, relwidth=0.2, relheight=1)  

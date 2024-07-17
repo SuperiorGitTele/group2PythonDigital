@@ -1,37 +1,57 @@
 import tkinter as tk
 from tkinter import messagebox
 import mysql.connector
+from PIL import Image, ImageTk
 
 class Settingfunction:
     def __init__(self, master, username):
         self.master = master
         self.username = username
         self.settings = tk.Toplevel(self.master)
-        self.settings.title("Bank App")
+        self.settings.title("Settings")
+        img = ImageTk.PhotoImage(file='logo.png')
+        self.settings.iconphoto(False, img)
         self.settings.configure(bg="#003362")  
-        self.settings.geometry("200x200")
+
+        dialog_width = 400
+        dialog_height = 400
+
+        # Center the dialog relative to the parent window (self.new_window)
+        parent_x = self.master.winfo_x()
+        parent_y = self.master.winfo_y()
+        parent_width = self.master.winfo_width()
+        parent_height = self.master.winfo_height()
+
+        # Calculate the position
+        x = parent_x + (parent_width // 2) - (dialog_width // 2)
+        y = parent_y + (parent_height // 2) - (dialog_height // 2)
+
+        self.settings.geometry(f"{dialog_width}x{dialog_height}+{x}+{y}")
+
+        self.settings.geometry("400x400")
         self.settings.grab_set()
+
         
         tk.Label(self.settings, text="Username:", bg="#003362", fg="white").grid(row=0, column=0, padx=10, pady=10)
-        entry_username = tk.Entry(settings_window)
+        entry_username = tk.Label(self.settings, text=f"{username}", bg="#003362", fg="white")
         entry_username.grid(row=0, column=1, padx=10, pady=10)
 
-        tk.Button(self.settings, text="Delete Transaction History", command=lambda: self.delete_transaction_history(entry_username.get())).grid(row=1, column=0, columnspan=2, pady=10)
+        tk.Button(self.settings, text="Delete Transaction History", bg='#0095B6',command=lambda: self.delete_transaction_history(entry_username.get())).grid(row=1, column=0, columnspan=2, pady=10)
 
         tk.Label(self.settings, text="Beneficiary Account Number:", bg="#003362", fg="white").grid(row=2, column=0, padx=10, pady=10)
-        entry_account_number = tk.Entry(settings_window)
+        entry_account_number = tk.Entry(self.settings)
         entry_account_number.grid(row=2, column=1, padx=10, pady=10)
-        tk.Button(self.settings, text="Delete Beneficiary", command=lambda: self.delete_beneficiary(entry_username.get(), entry_account_number.get())).grid(row=3, column=0, columnspan=2, pady=10)
+        tk.Button(self.settings, text="Delete Beneficiary", bg='#0095B6',command=lambda: self.delete_beneficiary(entry_username.get(), entry_account_number.get())).grid(row=3, column=0, columnspan=2, pady=10)
 
         tk.Label(self.settings, text="New Security Question:", bg="#003362", fg="white").grid(row=4, column=0, padx=10, pady=10)
-        entry_new_question = tk.Entry(settings_window)
+        entry_new_question = tk.Entry(self.settings)
         entry_new_question.grid(row=4, column=1, padx=10, pady=10)
 
         tk.Label(self.settings, text="New Answer:", bg="#003362", fg="white").grid(row=5, column=0, padx=10, pady=10)
-        entry_new_answer = tk.Entry(settings_window)
+        entry_new_answer = tk.Entry(self.settings)
         entry_new_answer.grid(row=5, column=1, padx=10, pady=10)
 
-        tk.Button(self.settings, text="Change Security Question", command=lambda: self.change_security_question(entry_username.get(), entry_new_question.get(), entry_new_answer.get())).grid(row=6, column=0, columnspan=2, pady=10)
+        tk.Button(self.settings, text="Change Security Question", bg='#0095B6',command=lambda: self.change_security_question(entry_username.get(), entry_new_question.get(), entry_new_answer.get())).grid(row=6, column=0, columnspan=2, pady=10)
 
 
 

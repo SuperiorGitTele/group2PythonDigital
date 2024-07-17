@@ -467,6 +467,20 @@ type the question if no one is around you)""", bg="#0095B6", fg="white", font=("
         elif self.add_beneficiary_var2.get() is True and self.add_beneficiary_var.get() is True:
             messagebox.showinfo("Pick one gender","Please pick one gender")
         else:
+            if self.master.state_string == 'zoomed':
+                self.master.state('zoomed')
+            else:
+                self.master.state('normal')
+            self.withdraw()
+            messagebox.showinfo("Registration Successful", "Your account has been created successfully, SIGN IN NOW!")
+            self.master.deiconify()
+            self.username_entry.delete(0, tk.END)
+            self.password_entry.delete(0, tk.END)
+            self.dob_entry.delete(0, tk.END)
+            self.secret_question_entry.delete(0, tk.END)
+            self.secret_answer_entry.delete(0, tk.END)
+            self.transaction_pin_entry.delete(0, tk.END)
+            self.reference_code_entry.delete(0, tk.END)
             self.load_image_from_path()
             
     

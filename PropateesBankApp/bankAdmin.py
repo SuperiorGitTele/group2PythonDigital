@@ -89,6 +89,11 @@ def create_toplevel():
                 
                 cursor.execute("UPDATE users SET account_balance = %s WHERE account_number = %s", (new_recipient_balance, recipient_account))
                 db.commit()
+                messagebox.showinfo("Admin Deposit", "Deposit Successfully Made!")
+                userbvn = Userbvn_entry.delete(0, tk.END)
+                acctNum_entry.delete(0, tk.END)
+                password_entry.delete(0, tk.END)
+                num_entry.delete(0, tk.END)
                
 
 
